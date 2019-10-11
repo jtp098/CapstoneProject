@@ -1,0 +1,56 @@
+<ion-header>
+  <ion-toolbar>
+    
+  <ion-buttons slot="start">
+      <ion-back-button text ="back"defaultHref="home"></ion-back-button>
+    </ion-buttons>
+            
+    <ion-title>User Registration</ion-title>
+    
+  </ion-toolbar>
+</ion-header>
+
+
+
+<ion-content class="bg-img">
+
+  <ion-card class="welcome-card">
+ <div class="main-content">
+
+    
+    <form >
+     
+      
+      <ion-list>
+        <ion-item padding-right>
+          <ion-label><ion-icon ios="ios-person" md="md-person"></ion-icon></ion-label>
+          <ion-input  id="username" type="text" required placeholder="Username *"></ion-input>
+        </ion-item>
+
+         <ion-item>
+          <ion-label><ion-icon ios="ios-mail" md="md-mail"></ion-icon></ion-label>
+          <ion-input  id="email" type="email" required placeholder="Email *"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label><ion-icon ios="ios-unlock" md="md-unlock"></ion-icon></ion-label>
+          <ion-input  id="password"  required placeholder="Password *"></ion-input>
+          
+        </ion-item>
+
+        <ion-item>
+          <ion-label><ion-icon ios="ios-unlock" md="md-unlock"></ion-icon></ion-label>
+          <ion-input  id="cnfpass"  required placeholder="Confirm Password *"></ion-input>
+         
+        </ion-item>
+      </ion-list>
+      <ion-button expand="block" ion-button full color="dark"  type="submit">Sign up</ion-button>
+    <ion-button expand="block" ion-button full color="light"  type="submit">Cancel</ion-button>
+    </form>
+   
+    
+   
+
+</div>
+ </ion-card>
+</ion-content>

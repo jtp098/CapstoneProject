@@ -1,0 +1,33 @@
+page-sign-up-page {
+  
+  .welcome-card img {
+  max-height: 25vh;
+  overflow: hidden;
+}
+  
+  .item-inner{
+    border-bottom: 0px !important;
+  }
+  .list-md, .list-ios {
+    margin:0 !important;
+  }
+  .list {
+    padding:0 !important;
+  }
+  form {
+    .button-md,
+    .button-ios {
+      margin: 0px !important;
+      background-color: black;
+      padding: 26px !important;
+    }
+  }
+  .form-bottom-text label,
+  a {
+    color: white;
+  }
+
+
+ 
+ 
+}
