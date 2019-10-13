@@ -16,7 +16,12 @@ const routes: Routes = [
     loadChildren: () => import('./list/list.module').then(m => m.ListPageModule)
   },
   { path: 'sign-up-page', loadChildren: './sign-up-page/sign-up-page.module#SignUpPagePageModule' },
-  { path: 'login', loadChildren: './login/login.module#LoginPageModule' }
+  { path: 'login', loadChildren: './login/login.module#LoginPageModule' },
+  { path: 'profile', loadChildren: './profile/profile.module#ProfilePageModule' },
+  { path: 'group-creation', loadChildren: './group-creation/group-creation.module#GroupCreationPageModule' },
+  { path: 'group-details', loadChildren: './group-details/group-details.module#GroupDetailsPageModule' },
+  { path: 'member-details', loadChildren: './member-details/member-details.module#MemberDetailsPageModule' },
+  { path: 'member-match', loadChildren: './member-match/member-match.module#MemberMatchPageModule' }
 ];
 
 @NgModule({
