@@ -47,7 +47,7 @@ export class SignUpPagePage implements OnInit {
 try {
   const res = await this.afAuth.auth.createUserWithEmailAndPassword(username + '@pace.edu', password)
 
-  this.afstore.doc('users/${res.user.uid}').set({
+  this.afstore.doc(`users/${res.user.uid}`).set({
     username
 
   })
