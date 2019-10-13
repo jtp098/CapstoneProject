@@ -25,7 +25,22 @@ export class AppComponent {
       title: 'SignUp',
       url: '/sign-up-page',
       icon: 'list'
-    }
+    },
+  
+    {
+      title: 'Update Profile Page',
+      url: '/update-profile',
+      icon: 'list'
+    },
+    {
+      title: 'Log in',
+      url: '/login',
+      icon: 'list'
+    },
+
+
+    
+
   ];
 
   constructor(

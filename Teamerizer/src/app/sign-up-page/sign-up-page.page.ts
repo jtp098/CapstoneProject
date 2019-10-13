@@ -58,7 +58,7 @@ try {
   
   this.presentAlert('Success','You are registered')
 //this will need to go to the profile later for set up
-  this.router.navigate(['/home'])
+  this.router.navigate(['/update-profile'])
 
 } catch (error) {
   console.dir(error)

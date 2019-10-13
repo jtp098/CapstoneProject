@@ -4,6 +4,10 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-
+<ion-content padding>
+  <div id="profile-info" *ngIf="username">
+    <p>{{ username }}</p>
+	
+  </div>
+	  <ion-button fill="solid" expand="block" color="dark" (click)="updateProfile">Update</ion-button>
 </ion-content>
