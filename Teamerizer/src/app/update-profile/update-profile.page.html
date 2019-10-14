@@ -5,29 +5,47 @@
 </ion-header>
 
 <ion-content padding>
-	<ion-list>
+	<!--<input type="file" #fyleBtn class="filebtn" (change) ="uploadPic($event" />
+	<div> 
+		<ion-img (click)="updateProfilePic()" src="https://ucarecdn.com/{{ profilePic }}/-/scale_crop/100x100/center"></ion-img>
+	</div>-->
+
+	
+	<div class="profile-info">
 
 		<ion-item>
 		  <ion-label position="floating">First Name</ion-label>
 		  <ion-input type="text" [(ngModel)]="firstName"></ion-input>
 		</ion-item>
 	  
-		<!--<ion-item>
+		<ion-item>
 		  <ion-label position="floating">Last Name</ion-label>
-		  <ion-input type="password" [(ngModel)]="lastName"></ion-input>
-    </ion-item>
+		  <ion-input type="text" [(ngModel)]="lastName"></ion-input>
+    	</ion-item>
     
-    <ion-item>
+    	<ion-item>
 		  <ion-label position="floating">Skills</ion-label>
-		  <ion-input type="password" [(ngModel)]="skills"></ion-input>
-    </ion-item>
+		  <ion-input type="text" [(ngModel)]="skills"></ion-input>
+    	</ion-item>
     
-    <ion-item>
+    	<ion-item>
 		  <ion-label position="floating">Skill Level</ion-label>
-		  <ion-input type="password" [(ngModel)]="skillLevel"></ion-input>
-		</ion-item>-->
-	  
-	  </ion-list>
+		  <ion-input type="text" [(ngModel)]="skillLevel"></ion-input>
+		</ion-item>
 
-	  <ion-button fill="solid" expand="block" color="dark" (click)="updateProfile">Update</ion-button>
+		<ion-item>
+				<ion-label position="floating">New password?</ion-label>
+				<ion-input type="password" [(ngModel)]="newpassword"></ion-input>
+		</ion-item>
+
+		<ion-item>
+				<ion-label position="floating">Enter old password</ion-label>
+				<ion-input type="password" [(ngModel)]="password"></ion-input>
+		</ion-item>
+
+		<ion-button fill="solid" expand="block" color="dark" (click)="updateProfile">Update</ion-button>
+	  
+	</div>
+
+	  
 </ion-content>
