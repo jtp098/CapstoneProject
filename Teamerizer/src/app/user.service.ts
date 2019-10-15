@@ -29,6 +29,10 @@ export class UserService {
     setUser(user: user) {
         this.user = user
     }
+
+    setFistName(fname: user){
+      this.user = fname
+    }
     
     async isAuthenticated() {
 		if(this.user) return true
@@ -38,7 +42,8 @@ export class UserService {
 		if(user) {
 			this.setUser({
 				username: user.email.split('@')[0],
-				uid: user.uid
+        uid: user.uid, 
+        //firstName: null
 			})
 
 			return true
@@ -48,7 +53,7 @@ export class UserService {
     
     getUID(): string {
        
-            return this.user.username
+            return this.user.uid;
         
 	
     }
@@ -62,7 +67,23 @@ export class UserService {
     }
     
     updateEmail(newemail: string) {
-		return this.afAuth.auth.currentUser.updateEmail(newemail + '@codedamn.com')
-	}
+		return this.afAuth.auth.currentUser.updateEmail(newemail + '@pace.edu')
+  }
+  
+  //updatefirstName(newfirstName: string){
+    //return this.afAuth.auth.currentUser.updatefirstName(newfirstName)
+ // }
+
+  updatelastName(newLastName: string){
+    return this.afAuth.auth.currentUser.updateEmail(newLastName)
+  }
+
+  updateSkills(newSkills: string){
+    return this.afAuth.auth.currentUser.updateEmail(newSkills)
+  }
+
+  updateSkillLevel(newSkillLevel: string){
+    return this.afAuth.auth.currentUser.updateEmail(newSkillLevel)
+  }
 
 }

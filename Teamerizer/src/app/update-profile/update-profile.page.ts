@@ -20,6 +20,7 @@ export class UpdateProfilePage implements OnInit {
     skillLevel: string
     username: string
     busy: boolean = false
+    sub
 
 
   constructor(
@@ -30,11 +31,17 @@ export class UpdateProfilePage implements OnInit {
     public user: UserService) { 
       this.mainuser = afs.doc(`users/${user.getUID()}`)
 
+      
+
 
     }
 
   ngOnInit() {
   }
+
+  ngOnDestroy() {
+		//this.sub.unsubscribe()
+	}
 
   async presentAlert(title: string, content: string) {
 		const alert = await this.alertController.create({
@@ -50,12 +57,18 @@ export class UpdateProfilePage implements OnInit {
     this.busy = true
 
       
-		if(this.firstName !== this.user.getUsername()) {
-			await this.user.updateEmail(this.firstName)
-			this.mainuser.set({
-				firstName: this.firstName
+		
+			//await this.user.updatefirstName(this.firstName)
+			this.mainuser.update({
+        firstName: this.firstName,
+       lastName: this.lastName, 
+        skills: this.skills, 
+        skillLevel:this.skillLevel
+
+
+        
 			})
-		}
+		
 
 
 		this.busy = false
@@ -67,6 +80,10 @@ export class UpdateProfilePage implements OnInit {
 
 
 
+  }
+
+  async cancel(){
+    this.router.navigate(['/home'])
   }
 
 }

@@ -13,6 +13,10 @@ import { Router } from '@angular/router';
 export class ProfilePage implements OnInit {
     mainuser: AngularFirestoreDocument
     username:string
+    firstname:string
+    lastname:string
+    skills:string
+    skillLevel:string
     sub
 
 
@@ -21,12 +25,23 @@ export class ProfilePage implements OnInit {
       this.mainuser = afs.doc(`users/${user.getUID()}`)
       this.sub = this.mainuser.valueChanges().subscribe(event => {
             this.username = event.username
+            this.firstname = event.firstName
+            this.lastname = event.lastName
+            this.skills = event.skills
+            this.skillLevel = event.skillLevel
+
             })
     }
 
   ngOnInit() {
   }
 
+  updateProfile(){
+    this.router.navigate(['/update-profile'])
+  }
 
+  async cancel(){
+    this.router.navigate(['/home'])
+  }
 
 }

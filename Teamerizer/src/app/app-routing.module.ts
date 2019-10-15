@@ -4,11 +4,8 @@ import { AuthService } from './auth.service';
 
 const routes: Routes = [
   {
-    path: '',
-    redirectTo: 'home',
-    pathMatch: 'full'
-  },
-  {path: 'home',loadChildren: './home/home.module#HomePageModule',canActivate: [AuthService]},
+    path: '',redirectTo: 'login',pathMatch: 'full',canActivate: [AuthService]},
+  {path: 'home',loadChildren: './home/home.module#HomePageModule'},
   {path: 'list',loadChildren: () => import('./list/list.module').then(m => m.ListPageModule)},
   { path: 'sign-up-page', loadChildren: './sign-up-page/sign-up-page.module#SignUpPagePageModule' },
   { path: 'login', loadChildren: './login/login.module#LoginPageModule' },

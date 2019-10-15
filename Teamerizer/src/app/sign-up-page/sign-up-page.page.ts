@@ -38,6 +38,8 @@ export class SignUpPagePage implements OnInit {
     await alert.present();
   }
 
+
+
   async register(){
     const{username,password, cpassword} = this 
     if(password!==cpassword){

@@ -37,6 +37,13 @@ export class AppComponent {
       url: '/login',
       icon: 'list'
     },
+    {
+      title: 'Profile',
+      url: '/profile',
+      icon: 'list'
+    },
+
+    
 
 
     
