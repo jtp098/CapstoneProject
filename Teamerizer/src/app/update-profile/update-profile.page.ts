@@ -47,23 +47,25 @@ export class UpdateProfilePage implements OnInit {
 		const alert = await this.alertController.create({
 			header: title,
 			message: content,
-			buttons: ['OK']
+      buttons: ['OK']
+      
 		})
 
-		await alert.present()
+    await alert.present()
 	}
 
   async updateProfile(){
     this.busy = true
 
       
-		
-			//await this.user.updatefirstName(this.firstName)
+    
+      //await this.user.updatefirstName(this.firstName)
 			this.mainuser.update({
         firstName: this.firstName,
        lastName: this.lastName, 
         skills: this.skills, 
         skillLevel:this.skillLevel
+        
 
 
         
