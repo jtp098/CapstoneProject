@@ -3,7 +3,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { auth } from 'firebase/app';
 import {AngularFirestore} from '@angular/fire/firestore';
 import { UserService } from '../user.service';
-import { AlertController } from '@ionic/angular';
+import { AlertController, MenuController } from '@ionic/angular';
 import { Router } from '@angular/router';
 
 @Component({
@@ -21,12 +21,14 @@ export class SignUpPagePage implements OnInit {
     public afstore: AngularFirestore,
     public user: UserService,
     public alertController: AlertController, 
-    public router: Router
+    public router: Router,
+    public menu: MenuController
     ) { }
 
 
 
   ngOnInit() {
+    this.menu.enable(false);
   }
 
   async presentAlert(title: string, content:string){

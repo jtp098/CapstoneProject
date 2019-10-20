@@ -35,8 +35,10 @@ export class UserService {
     }
     
     async isAuthenticated() {
+      
+      console.log("Current User :", this.user);
 		if(this.user) return true
-
+    console.log("Current User :", this.user);
 		const user = await this.afAuth.authState.pipe(first()).toPromise()
 
 		if(user) {
@@ -84,6 +86,11 @@ export class UserService {
 
   updateSkillLevel(newSkillLevel: string){
     return this.afAuth.auth.currentUser.updateEmail(newSkillLevel)
+  }
+
+  logout() {
+    this.afAuth.auth.signOut();
+    this.user = null;
   }
 
 }
