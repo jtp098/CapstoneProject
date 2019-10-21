@@ -1,18 +1,20 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar class="header-style">
     <ion-title>Profile</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content padding>
-  <ion-card>
+  <ion-card class="card-style">
     <ion-card-header>
-      <ion-card-subtitle>Card Subtitle</ion-card-subtitle>
+      <ion-card-subtitle></ion-card-subtitle>
 
       <div id="profile-info" *ngIf="username">
+        <ion-avatar>
+         <img src="assets/icon/me.png" alt="profile picture">
+        </ion-avatar>
+        <ion-card-title>{{firstname}} {{lastname}}</ion-card-title>
         <p>User Name: {{ username }}</p>
-        <p>First Name: {{ firstname }}</p>
-        <p>Last Name{{ lastname }}</p>
         <p>Skills: {{ skills }}</p>
         <p>Skill: Level{{ skillLevel }}</p>
       </div>
@@ -25,12 +27,7 @@
     </ion-card-content>
   </ion-card>
 
-  <ion-button
-    fill="solid"
-    expand="block"
-    color="dark"
-    (click)="updateProfile()"
-  >
+  <ion-button fill="solid" expand="block" color="dark" (click)="updateProfile()">
     Update
   </ion-button>
   <ion-button fill="solid" expand="block" color="dark" (click)="cancel()">
