@@ -6,9 +6,9 @@ const firebaseConfig = {
     projectId: "teamerizer",
     storageBucket: "teamerizer.appspot.com",
     messagingSenderId: "205618713468",
-    appId: "1:205618713468:web:71ca26bb61642a3f54caf9",
-    measurementId: "G-167L0QSYEY"
-}
+    appId: "1:205618713468:web:a2713348328df21c54caf9",
+    measurementId: "G-FZKPVPBPFK"
+  };
 
 export default firebaseConfig
 

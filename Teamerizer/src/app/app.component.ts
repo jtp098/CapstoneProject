@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
+import { UserService } from './user.service';
 
 @Component({
   selector: 'app-root',
@@ -21,22 +22,34 @@ export class AppComponent {
       url: '/list',
       icon: 'list'
     },
-    {
+    /*{
       title: 'SignUp',
       url: '/sign-up-page',
       icon: 'list'
-    },
+    },*/
   
     {
       title: 'Update Profile Page',
       url: '/update-profile',
       icon: 'list'
     },
-    {
+    /*{
       title: 'Log in',
       url: '/login',
       icon: 'list'
+    },*/
+    {
+      title: 'Profile',
+      url: '/profile',
+      icon: 'list'
     },
+    {
+      title: 'Log Out',
+      url: '/login',
+      icon: 'list'
+    },
+
+    
 
 
     
@@ -46,7 +59,8 @@ export class AppComponent {
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
-    private statusBar: StatusBar
+    private statusBar: StatusBar,
+    public user: UserService
   ) {
     this.initializeApp();
   }
@@ -56,5 +70,13 @@ export class AppComponent {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
     });
+  }
+
+  menuClicked(item){
+    console.log("Menu Clicked",item.title);
+    if (item.title === "Log Out") {
+      this.user.logout();
+    }
+
   }
 }

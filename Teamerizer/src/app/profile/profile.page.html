@@ -5,9 +5,35 @@
 </ion-header>
 
 <ion-content padding>
-  <div id="profile-info" *ngIf="username">
-    <p>{{ username }}</p>
-	
-  </div>
-	  <ion-button fill="solid" expand="block" color="dark" (click)="updateProfile">Update</ion-button>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle>Card Subtitle</ion-card-subtitle>
+
+      <div id="profile-info" *ngIf="username">
+        <p>User Name: {{ username }}</p>
+        <p>First Name: {{ firstname }}</p>
+        <p>Last Name{{ lastname }}</p>
+        <p>Skills: {{ skills }}</p>
+        <p>Skill: Level {{ skillLevel }}</p>
+      </div>
+      <ion-card-title>Card Title</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      Keep close to Nature's heart... and break clear away, once in awhile, and
+      climb a mountain or spend a week in the woods. Wash your spirit clean.
+    </ion-card-content>
+  </ion-card>
+
+  <ion-button
+    fill="solid"
+    expand="block"
+    color="dark"
+    (click)="updateProfile()"
+  >
+    Update
+  </ion-button>
+  <ion-button fill="solid" expand="block" color="dark" (click)="cancel()">
+    Cancel
+  </ion-button>
 </ion-content>

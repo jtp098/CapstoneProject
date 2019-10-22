@@ -27,6 +27,7 @@ export class UpdateProfilePage implements OnInit {
     password: string
     newpassword: string
     busy: boolean = false
+    sub
 
 
   constructor(
@@ -36,13 +37,10 @@ export class UpdateProfilePage implements OnInit {
     private router: Router,
     public user: UserService) { 
       this.mainuser = afs.doc(`users/${user.getUID()}`)
-      this.sub = this.mainuser.valueChanges().subscribe(event => {
-        this.firstName = event.firstName
-        this.lastName = event.lastName
-        this.skills = event.skills
-        this.skillLevel = event.skills
-         
-      })
+
+      
+
+
     }
 
 
@@ -54,45 +52,38 @@ export class UpdateProfilePage implements OnInit {
 
   }
 
+  ngOnDestroy() {
+		//this.sub.unsubscribe()
+	}
+
   async presentAlert(title: string, content: string) {
 		const alert = await this.alertController.create({
 			header: title,
 			message: content,
-			buttons: ['OK']
+      buttons: ['OK']
+      
 		})
 
-		await alert.present()
-  }
-  /**updateProfilePic(){
-    this.filebtn.nativeElement.click()
-  }
-  uploadPic(event){
-     const files = event.target.files
-     
-     const data = new FormData()
-     data.append('file', files[0])
-  }**/
+    await alert.present()
+	}
 
   async updateProfile(){
     this.busy = true
 
+      
     
-		if(this.username !== this.user.getUsername()) {
-			await this.user.updateEmail(this.username)
-			this.mainuser.set({
-				username: this.username
+      //await this.user.updatefirstName(this.firstName)
+			this.mainuser.update({
+        firstName: this.firstName,
+       lastName: this.lastName, 
+        skills: this.skills, 
+        skillLevel:this.skillLevel
+        
+
+
+        
 			})
-    }
-    if(!this.password){
-      this.busy = false
-      return this.presentAlert('Error!','You have to enter a password')
-    }
-    try{
-      await this.user.reAuth(this.user.getUsername(),this.password)
-    } catch(error){
-      this.busy = false
-      return this.presentAlert('Error!', 'Wrong password!')
-    }
+		
 
 
     if(this.newpassword){
@@ -110,6 +101,10 @@ export class UpdateProfilePage implements OnInit {
 
 
 
+  }
+
+  async cancel(){
+    this.router.navigate(['/home'])
   }
 
 }

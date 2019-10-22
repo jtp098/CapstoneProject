@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { auth } from 'firebase/app';
 import { UserService } from '../user.service';
 import { Router } from '@angular/router';
+import { MenuController } from '@ionic/angular';
 
 @Component({
   selector: 'app-login',
@@ -14,9 +14,28 @@ export class LoginPage implements OnInit {
   username: string = ""
   password: string = ""
 
-  constructor(public afAuth: AngularFireAuth, public user: UserService,public router: Router) { }
+  constructor(private afAuth: AngularFireAuth, public user: UserService,public router: Router, private menu: MenuController ) { }
 
   ngOnInit() {
+   
+  }
+
+  async signUp(){
+    this.router.navigate(['/sign-up-page'])
+  }
+
+  ionViewWillEnter() {
+    console.log("ionViewWillEnter");
+let self: any = this;
+this.afAuth.auth.onAuthStateChanged(function(user) {
+  console.log("User",user);
+  if (user) {
+    self.router.navigate(['/home'])
+  } else {
+    self.menu.enable(false);
+  }
+})
+    
   }
 
   async login(){
