@@ -17,7 +17,7 @@ export class UpdateProfilePage implements OnInit {
   }**/
 
   mainuser: AngularFirestoreDocument
-    sub
+    
     firstName: string
     lastName: string
     skills: string
@@ -27,7 +27,7 @@ export class UpdateProfilePage implements OnInit {
     password: string
     newpassword: string
     busy: boolean = false
-    sub
+    
 
 
   constructor(
@@ -47,14 +47,7 @@ export class UpdateProfilePage implements OnInit {
   ngOnInit() {
   }
   
-  ngOnDestroy() {
-    this.sub.unsubscribe()
-
-  }
-
-  ngOnDestroy() {
-		//this.sub.unsubscribe()
-	}
+  
 
   async presentAlert(title: string, content: string) {
 		const alert = await this.alertController.create({
