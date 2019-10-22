@@ -40,6 +40,10 @@ export class SignUpPagePage implements OnInit {
     await alert.present();
   }
 
+  backEvent(){
+    this.router.navigate(['/login'])
+  }
+
 
 
   async register(){

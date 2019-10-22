@@ -14,7 +14,7 @@ export class LoginPage implements OnInit {
   username: string = ""
   password: string = ""
 
-  constructor(private afAuth: AngularFireAuth, public user: UserService,public router: Router, public menu: MenuController ) { }
+  constructor(private afAuth: AngularFireAuth, public user: UserService,public router: Router, private menu: MenuController ) { }
 
   ngOnInit() {
    
@@ -26,13 +26,13 @@ export class LoginPage implements OnInit {
 
   ionViewWillEnter() {
     console.log("ionViewWillEnter");
-
+let self: any = this;
 this.afAuth.auth.onAuthStateChanged(function(user) {
-  console.log("User",this.afAuth.auth.currentUser);
+  console.log("User",user);
   if (user) {
-    this.router.navigate(['/home'])
+    self.router.navigate(['/home'])
   } else {
-    this.menu.enable(false);
+    self.menu.enable(false);
   }
 })
     
