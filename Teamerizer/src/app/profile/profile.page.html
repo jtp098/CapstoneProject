@@ -4,33 +4,37 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content padding>
-  <ion-card class="card-style">
-    <ion-card-header>
-      <ion-card-subtitle></ion-card-subtitle>
+  <ion-content padding>
+    <ion-card class="card-style">
+      <ion-card-header class="shadow-2">
+        <ion-card-subtitle></ion-card-subtitle>
 
-      <div id="profile-info" *ngIf="username">
-        <ion-avatar>
-         <img src="assets/icon/me.png" alt="profile picture">
-        </ion-avatar>
-        <ion-card-title>{{firstname}} {{lastname}}</ion-card-title>
-        <p>User Name: {{ username }}</p>
-        <p>Skills: {{ skills }}</p>
-        <p>Skill: Level{{ skillLevel }}</p>
-      </div>
-      <ion-card-title>Card Title</ion-card-title>
-    </ion-card-header>
+        <div id="profile-info" *ngIf="username">
+          <ion-avatar>
+            <img src="assets/icon/me.png" alt="profile picture">
+          </ion-avatar>
+          <br>
+          <ion-card-title>{{firstname}} {{lastname}}</ion-card-title>
+        </div>
+      </ion-card-header>
+      <br>
 
-    <ion-card-content>
-      Keep close to Nature's heart... and break clear away, once in awhile, and
-      climb a mountain or spend a week in the woods. Wash your spirit clean.
-    </ion-card-content>
-  </ion-card>
+      <ion-card-content>
+        <p><b>User Name:</b> {{ username }}</p>
+        <p><b>Skills:</b> {{ skills }}</p>
+        <p><b>Skill Level:</b> {{ skillLevel }}</p>
+        <br>
 
-  <ion-button fill="solid" expand="block" color="dark" (click)="updateProfile()">
-    Update
-  </ion-button>
-  <ion-button fill="solid" expand="block" color="dark" (click)="cancel()">
-    Cancel
-  </ion-button>
-</ion-content>
+        <p class="fs-12">Description</p>
+
+        Keep close to Nature's heart... and break clear away, once in awhile, and
+        climb a mountain or spend a week in the woods. Wash your spirit clean.
+      </ion-card-content>
+    </ion-card>
+
+    <div class="profile-button mgb--25 mgr-20">
+      <ion-button class="" color="primary" shape="round"  (click)="cancel()">Cancel</ion-button>
+      <ion-button class="" color="secondary" shape="round" (click)="updateProfile()">Update</ion-button>
+    </div>
+
+  </ion-content>
