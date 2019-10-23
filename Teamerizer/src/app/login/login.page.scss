@@ -1,3 +1,33 @@
-.header-color{
+.header-style {
     --background: #062f6f;
+    color: #33A9AC;
+}
+
+ion-content{
+    --ion-background-color: #484b86;
+}
+
+.container {
+    width: 100%;
+    text-align: center;
+}
+
+.logo-holder {
+    display: inline-block;
+    height: 150px;
+    width: 150px;
+}
+
+img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.items {
+    --background: white;
+}
+
+.login-button {
+    margin-left: auto;
+    margin-right: auto;
 }

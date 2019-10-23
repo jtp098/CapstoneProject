@@ -1,24 +1,34 @@
 <ion-header>
-  <ion-toolbar class="header-color">
-    <ion-title>Login</ion-title>
+  <ion-toolbar class="header-style">
+    <ion-title>Teamerizer!</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content padding>
+  <div class="container">
+    <br>
+    <div class="logo-holder">
+      <ion-img src="assets/images/teamerizer.png"></ion-img>
+    </div>
+  </div>
 	<ion-list>
+    <ion-item class="items">
+      <ion-label position="floating">Username</ion-label>
+      <ion-input type="text" [(ngModel)]="username"></ion-input>
+    </ion-item>
+    
+    <ion-item class="items">
+      <ion-label position="floating">Password</ion-label>
+      <ion-input type="password" [(ngModel)]="password"></ion-input>
+    </ion-item>
+	</ion-list>
 
-		<ion-item>
-		  <ion-label position="floating">Username</ion-label>
-		  <ion-input type="text" [(ngModel)]="username"></ion-input>
-		</ion-item>
-	  
-		<ion-item>
-		  <ion-label position="floating">Password</ion-label>
-		  <ion-input type="password" [(ngModel)]="password"></ion-input>
-		</ion-item>
-	  
-	  </ion-list>
-
-	  <ion-button fill="solid" expand="block" color="primary" (click)="login()">Login</ion-button>
-	  <ion-button fill="solid" expand="block" color="primary" (click)="signUp()">SignUp</ion-button>
+  <ion-row>
+    <ion-col width-50 style="text-align: right">
+      <ion-button fill="solid" shape="round" color="primary" (click)="login()">Login</ion-button>
+    </ion-col>
+    <ion-col width-50 style="text-align: left">
+      <ion-button fill="solid" shape="round" color="success" (click)="signUp()">SignUp</ion-button>
+    </ion-col>
+  </ion-row>
 </ion-content>
