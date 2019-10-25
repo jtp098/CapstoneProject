@@ -35,8 +35,10 @@ export class UserService {
     }
     
     async isAuthenticated() {
+      
+      console.log("Current User :", this.user);
 		if(this.user) return true
-
+    console.log("Current User :", this.user);
 		const user = await this.afAuth.authState.pipe(first()).toPromise()
 
 		if(user) {
@@ -59,7 +61,7 @@ export class UserService {
     }
     
     reAuth(username: string, password: string) {
-		return this.afAuth.auth.currentUser.reauthenticateWithCredential(auth.EmailAuthProvider.credential(username + '@codedamn.com', password))
+		return this.afAuth.auth.currentUser.reauthenticateWithCredential(auth.EmailAuthProvider.credential(username + '@pace.edu', password))
     }
     
     getUsername(): string {
@@ -84,6 +86,15 @@ export class UserService {
 
   updateSkillLevel(newSkillLevel: string){
     return this.afAuth.auth.currentUser.updateEmail(newSkillLevel)
+  }
+
+  logout() {
+    this.afAuth.auth.signOut();
+    this.user = null;
+  }
+
+  updatePassword(newpassword: string){
+    return this.afAuth.auth.currentUser.updatePassword(newpassword)
   }
 
 }

@@ -20,7 +20,8 @@ export class UpdateProfilePage implements OnInit {
     skillLevel: string
     username: string
     busy: boolean = false
-    sub
+    password: string
+    newpassword: string
 
 
   constructor(
@@ -69,7 +70,14 @@ export class UpdateProfilePage implements OnInit {
         
 			})
 		
+      if(this.newpassword){
+        await this.user.updatePassword(this.newpassword)
+    }
 
+
+
+    this.password = ""
+    this.newpassword = ""
 
 		this.busy = false
 
