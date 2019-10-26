@@ -1,8 +1,8 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar class="header-style">
     
   <ion-buttons slot="start">
-      <ion-back-button text ="back"defaultHref="home"></ion-back-button>
+      <ion-back-button color="success" text ="back"defaultHref="home"></ion-back-button>
     </ion-buttons>
             
     <ion-title>User Registration</ion-title>
@@ -12,38 +12,64 @@
 
 <ion-content class="bg-img">
 
+    <div class="container">
+        <br>
+        <div class="logo-holder">
+          <ion-img src="assets/images/teamerizer.png"></ion-img>
+        </div>
+      </div>
+
   <ion-card class="welcome-card">
  <div class="main-content">
 
     
-
-     
+    <form [formGroup]="authForm">
+        <div class="errormsg">
+            <div *ngIf="username.errors && username.touched">
+              <p>Username is required.</p>
+            </div>
+            <div class="error-box" *ngIf="email.errors && email.touched">
+              <p>Email is required.</p>
+            </div>
+            <div *ngIf="password.errors && password.touched">
+              <p>Password is required.</p>
+            </div>
+            <div *ngIf="cnfpass.errors && cnfpass.touched">
+              <p>Confirm password is required.</p>
+            </div> 
+          </div>
       
       <ion-list>
         <!--<ion-item padding-right>
           <ion-label><ion-icon ios="ios-person" md="md-person"></ion-icon></ion-label>
           <ion-input  id="username" type="text" required placeholder="User *"></ion-input>
         </ion-item>-->
+        <ion-item class="items">
+        <ion-label><ion-icon ios="ios-person" md="md-person"></ion-icon></ion-label>
+        <ion-input [(ngModel)]="regData.name" [formControl]="username2" id="username" type="text" required placeholder="Username *"></ion-input>
+      </ion-item>
 
-         <ion-item>
-          <ion-label><ion-icon ios="ios-mail" md="md-mail"></ion-icon></ion-label>
-          <ion-input  id="email" type="email" required placeholder="Email *" [(ngModel)]="username"></ion-input>
-        </ion-item>
+        <ion-item class="items">
+            <ion-label><ion-icon ios="ios-mail" md="md-mail"></ion-icon></ion-label>
+            <ion-input [(ngModel)]="regData.mail" [formControl]="email" id="email" type="email" required placeholder="Email *"></ion-input>
+          </ion-item>
 
-        <ion-item>
+        <ion-item class="items">
           <ion-label><ion-icon ios="ios-unlock" md="md-unlock"></ion-icon></ion-label>
-          <ion-input  id="password"  required placeholder="Password *" [(ngModel)]="password" ></ion-input>
-          
+          <ion-input [(ngModel)]="regData.pass" [formControl]="password" id="password" type="{{passwordtype}}" required placeholder="Password *"></ion-input>
+          <button ion-button clear class="eye-icon-btn" type="button" item-right (click)="showPassword()"><ion-icon name="{{passeye}}"></ion-icon></button>
         </ion-item>
 
-        <ion-item>
+        <ion-item class="items">
           <ion-label><ion-icon ios="ios-unlock" md="md-unlock"></ion-icon></ion-label>
-          <ion-input  id="cnfpass"  required placeholder="Confirm Password *" [(ngModel)]="cpassword"></ion-input>
-         
-        </ion-item>
+          <ion-input [(ngModel)]="regData.cnfpass" [formControl]="cnfpass" id="cnfpass" type="{{cnfpasswordtype}}" required placeholder="Confirm Password *"></ion-input>
+          <button ion-button  clear class="eye-icon-btn" type="button" item-right (click)="showcnfPassword()"><ion-icon name="{{cnfpasseye}}"></ion-icon></button>
+        </ion-item>  
+        
       </ion-list>
-      <ion-button expand="block" ion-button full color="dark"  type="submit" (click)="register()">Sign up</ion-button>
-      <ion-button expand="block" ion-button full color="light"  type="submit" (click)="backEvent()">Cancel</ion-button>
+      <ion-button expand="block" color="primary" type="submit" shape="round" [disabled]="!authForm.valid" (click)="register(regData)">Sign up</ion-button>
+    </form>
+      <ion-button expand="block" color="success" shape="round"  type="submit" (click)="backEvent()">Cancel</ion-button>
    
    
     

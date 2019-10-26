@@ -1,8 +1,14 @@
+
+.header-style {
+  --background: #062f6f;
+  color: #33A9AC;
+}
 page-sign-up-page {
   
   .welcome-card img {
   max-height: 25vh;
   overflow: hidden;
+  --background: white!important;
 }
   
   .item-inner{
@@ -26,8 +32,37 @@ page-sign-up-page {
   a {
     color: white;
   }
+}
 
 
- 
- 
+ion-content{
+  --ion-background-color: #484b86;
+}
+
+.container {
+  width: 100%;
+  text-align: center;
+}
+
+.logo-holder {
+  display: inline-block;
+  height: 15vh; 
+  width: 25vh;
+}
+
+img {
+  max-width: 25vh;
+  max-height: 5vh;
+}
+
+
+
+
+.items {
+  --background: white!important;
+}
+
+.login-button {
+  margin-left: auto;
+  margin-right: auto;
 }
