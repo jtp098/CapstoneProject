@@ -5,6 +5,7 @@ import {AngularFirestore} from '@angular/fire/firestore';
 import { UserService } from '../user.service';
 import { AlertController, MenuController } from '@ionic/angular';
 import { Router } from '@angular/router';
+import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 
 @Component({
   selector: 'app-sign-up-page',
@@ -14,16 +15,38 @@ import { Router } from '@angular/router';
 export class SignUpPagePage implements OnInit {
 
   username: string = ""
-  password: string = ""
+  //password: string = ""
   cpassword: string =""
+  regData = { name: '', mail: '', pass: '', cnfpass: '' };
+  authForm : FormGroup;
+	username2: AbstractControl;
+	email: AbstractControl;
+	password: AbstractControl;
+  cnfpass: AbstractControl;  
+  passwordtype:string='password';
+  cnfpasswordtype:string='password';
+  cnfpasseye:string='eye';
+  passeye:string ='eye';
 
-  constructor(public afAuth: AngularFireAuth,
+  constructor(public afAuth: AngularFireAuth, public fb: FormBuilder,
     public afstore: AngularFirestore,
     public user: UserService,
     public alertController: AlertController, 
-    public router: Router,
+    public router: Router, 
     public menu: MenuController
-    ) { }
+    ) {
+      this.authForm = this.fb.group({
+        'username' : [null, Validators.compose([Validators.required])],
+        'email': [null, Validators.compose([Validators.required])],
+        'password': [null, Validators.compose([Validators.required])],
+        'cnfpass': [null, Validators.compose([Validators.required])]
+    });
+
+      this.username2 = this.authForm.controls['username'];
+      this.email = this.authForm.controls['email'];
+      this.password = this.authForm.controls['password'];
+      this.cnfpass = this.authForm.controls['cnfpass'];
+     }
 
 
 
@@ -45,17 +68,17 @@ export class SignUpPagePage implements OnInit {
   }
 
 
-  async register(){
-    const{username,password, cpassword} = this 
-    if(password!==cpassword){
-      return console.error("password does not match")
-    }
+  async register(regData){
+    const { username} = this
+    if(regData.pass == regData.cnfpass){
+      
+    
 
 try {
-  const res = await this.afAuth.auth.createUserWithEmailAndPassword(username + '@pace.edu', password)
+  const res = await this.afAuth.auth.createUserWithEmailAndPassword(regData.mail, regData.pass)
 
   this.afstore.doc(`users/${res.user.uid}`).set({
-    username
+    username: this.regData.name
 
   })
   this.user.setUser({
@@ -70,11 +93,27 @@ try {
 } catch (error) {
   console.dir(error)
 }
-
-
-
-      
-    
   }
+
+}
+
+showPassword() {
+  if(this.passwordtype == 'password'){
+    this.passwordtype='text';
+    this.passeye='eye-off';
+  }else{
+    this.passwordtype='password';
+    this.passeye = 'eye';
+  }
+}
+showcnfPassword() {
+  if(this.cnfpasswordtype == 'password'){
+    this.cnfpasswordtype='text';
+    this.cnfpasseye='eye-off';
+  }else{
+    this.cnfpasswordtype='password';
+    this.cnfpasseye = 'eye';
+  }
+}
 
 }
