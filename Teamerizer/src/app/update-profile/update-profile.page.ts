@@ -4,6 +4,7 @@ import { UserService } from '../user.service';
 import { firestore } from 'firebase/app';
 import { AlertController } from '@ionic/angular';
 import { Router } from '@angular/router';
+import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 
 @Component({
   selector: 'app-update-profile',
@@ -14,15 +15,15 @@ export class UpdateProfilePage implements OnInit {
 
   mainuser: AngularFirestoreDocument
 
-    firstName: string
-    lastName: string
+    firstname: string
+    lastname: string
     skills: string
     skillLevel: string
     username: string
     busy: boolean = false
     password: string
     newpassword: string
-
+    sub
 
   constructor(
     public afstore: AngularFirestore,
@@ -31,6 +32,14 @@ export class UpdateProfilePage implements OnInit {
     private router: Router,
     public user: UserService) { 
       this.mainuser = afs.doc(`users/${user.getUID()}`)
+      this.sub = this.mainuser.valueChanges().subscribe(event => {
+        this.username = event.username
+        this.firstname = event.firstName
+        this.lastname = event.lastName
+        this.skills = event.skills
+        this.skillLevel = event.skillLevel
+
+        })
 
       
 
@@ -61,8 +70,11 @@ export class UpdateProfilePage implements OnInit {
 		
 			//await this.user.updatefirstName(this.firstName)
 			this.mainuser.update({
-        firstName: this.firstName,
-       lastName: this.lastName, 
+        
+      
+
+        firstName: this.firstname,
+       lastName: this.lastname, 
         skills: this.skills, 
         skillLevel:this.skillLevel
 
