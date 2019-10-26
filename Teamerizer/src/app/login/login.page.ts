@@ -4,6 +4,8 @@ import { UserService } from '../user.service';
 import { Router } from '@angular/router';
 import { MenuController } from '@ionic/angular';
 
+import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
@@ -12,9 +14,24 @@ import { MenuController } from '@ionic/angular';
 export class LoginPage implements OnInit {
 
   username: string = ""
-  password: string = ""
+  //password: string = ""
+  loginData = { email:'', password:'' };
+  authForm : FormGroup;
+  email: AbstractControl;
+	password: AbstractControl;
+  passwordtype:string='password';
+  passeye:string ='eye';
+  
+  constructor(private afAuth: AngularFireAuth, public user: UserService,public router: Router, private menu: MenuController, public fb: FormBuilder ) { 
+    this.authForm = this.fb.group({
+      'email' : [null, Validators.compose([Validators.required])],
+      'password': [null, Validators.compose([Validators.required])],
+    });
 
-  constructor(private afAuth: AngularFireAuth, public user: UserService,public router: Router, private menu: MenuController ) { }
+        this.email = this.authForm.controls['email'];
+        this.password = this.authForm.controls['password'];
+
+  }
 
   ngOnInit() {
   }
@@ -38,12 +55,14 @@ this.afAuth.auth.onAuthStateChanged(function(user) {
     
   }
 
-  async login(){
-    const { username, password} = this
+ 
+
+  async login(loginData){
+    const { username} = this
 
     try {
-      //update later..
-      const res = await this.afAuth.auth.signInWithEmailAndPassword(username + '@pace.edu',password)
+      
+      const res = await this.afAuth.auth.signInWithEmailAndPassword(loginData.email,loginData.password)
 
       if(res.user){
         this.user.setUser({
@@ -57,6 +76,17 @@ this.afAuth.auth.onAuthStateChanged(function(user) {
     } catch (error) {
       console.dir(error)
       
+    }
+  }
+
+
+  showPassword() {
+    if(this.passwordtype == 'password'){
+      this.passwordtype='text';
+      this.passeye='eye-off';
+    }else{
+      this.passwordtype='password';
+      this.passeye = 'eye';
     }
   }
 

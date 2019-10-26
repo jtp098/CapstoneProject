@@ -11,24 +11,45 @@
       <ion-img src="assets/images/teamerizer.png"></ion-img>
     </div>
   </div>
+  <form [formGroup]="authForm" (ngSubmit)="login(loginData)">
+
+      <div class="errormsg">
+          <div *ngIf="email.errors && email.touched">
+              <p>Email is required.</p>
+          </div>
+          <div *ngIf="password.errors && password.touched">
+              <p>Password is required.</p>
+          </div>
+        </div>
+
 	<ion-list>
     <ion-item class="items">
-      <ion-label position="floating">Username</ion-label>
-      <ion-input type="text" [(ngModel)]="username"></ion-input>
+      <ion-label>
+          <ion-icon ios="ios-mail" md="md-mail"></ion-icon>
+      </ion-label>
+      <ion-input [(ngModel)]="loginData.email" [formControl]="email" id="email" type="text" required placeholder="Email *"></ion-input>
     </ion-item>
     
     <ion-item class="items">
-      <ion-label position="floating">Password</ion-label>
-      <ion-input type="password" [(ngModel)]="password"></ion-input>
+      <ion-label>
+          <ion-icon ios="ios-unlock" md="md-unlock"></ion-icon>
+      </ion-label>
+      <ion-input [(ngModel)]="loginData.password" [formControl]="password" id="password" type="{{passwordtype}}" required placeholder="Password *"></ion-input>
+            <button ion-button clear class="eye-icon-btn" type="button" item-right (click)="showPassword()"><ion-icon name="{{passeye}}"></ion-icon></button>
     </ion-item>
 	</ion-list>
 
   <ion-row>
-    <ion-col width-50 style="text-align: right">
-      <ion-button fill="solid" shape="round" color="primary" (click)="login()">Login</ion-button>
+    <ion-col width-50 style="text-align: center">
+      <ion-button type ="submit" fill="solid" shape="round" color="primary" [disabled]="!authForm.valid">Login</ion-button>
     </ion-col>
-    <ion-col width-50 style="text-align: left">
+  </ion-row>
+  </form>
+  <ion-row>
+    <ion-col width-50 style="text-align: center">
       <ion-button fill="solid" shape="round" color="success" (click)="signUp()">SignUp</ion-button>
     </ion-col>
   </ion-row>
+
+
 </ion-content>

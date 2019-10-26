@@ -15,9 +15,15 @@ import { UserService } from './user.service';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AuthService } from './auth.service';
 
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
+  exports: [
+    FormsModule,
+    ReactiveFormsModule
+  ],
   imports: [
     BrowserModule,
     IonicModule.forRoot(),
@@ -25,7 +31,9 @@ import { AuthService } from './auth.service';
     AngularFireModule.initializeApp(firebaseConfig), 
     AngularFireAuthModule,
     AngularFireModule, 
-    AngularFirestoreModule
+    AngularFirestoreModule,
+    FormsModule, 
+    ReactiveFormsModule
   ],
   providers: [
     StatusBar,
