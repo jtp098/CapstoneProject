@@ -3,6 +3,7 @@ import { FormGroup, AbstractControl, FormBuilder, Validators } from '@angular/fo
 import { NavController } from '@ionic/angular';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireAuth } from '@angular/fire/auth';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-group-creation',
@@ -19,12 +20,14 @@ export class GroupCreationPage implements OnInit {
   newGroupData = { groupname: '', desc: '' };
   groupnameAC: AbstractControl;
 	descAC: AbstractControl;
-  constructor(
+  constructor( 
     public fb: FormBuilder,
     private navCtrl: NavController, 
     public afstore: AngularFirestore,
     public afAuth: AngularFireAuth,
+    public alertController: AlertController
   ) 
+   
   
   { 
     // <!-- <This is form validation where we can define the required fields -->
@@ -36,6 +39,14 @@ export class GroupCreationPage implements OnInit {
     this.groupnameAC = this.newFormGroup.controls['groupname'];
     this.descAC = this.newFormGroup.controls['desc'];
   }
+  async presentAlert(title: string, content:string){
+    const alert = await this.alertController.create({
+      header: title, 
+      message:content, 
+      buttons:['Ok']
+    })
+    await alert.present();
+  }
 
   ngOnInit() {
   }
@@ -46,7 +57,9 @@ export class GroupCreationPage implements OnInit {
       groupname:this.newGroupData.groupname,
       desc:this.newGroupData.desc,
       createdBy: this.afAuth.auth.currentUser.uid
+      
     });
+    this.presentAlert("Sucess","Group has been created!")
   }
 
   cancel(){
