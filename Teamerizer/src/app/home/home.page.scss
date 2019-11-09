@@ -1,4 +1,31 @@
-.welcome-card img {
-  max-height: 35vh;
-  overflow: hidden;
+.header-style {
+  --background: #062f6f;
+  color: #33A9AC;
 }
+
+.logo {
+  width: 50px;
+  height: 50px;
+}
+
+ion-content{
+  --ion-background-color: #484b86;
+}
+
+.card-style {
+  --background: white;
+}
+
+.teams {
+  font-size: 20px;
+  color: rgb(172, 172, 172);
+}
+
+.team-list {
+  border-bottom: 1px solid grey;
+}
+
+.team-label {
+  color: white;
+}
+
