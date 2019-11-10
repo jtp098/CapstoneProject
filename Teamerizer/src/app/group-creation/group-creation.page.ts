@@ -74,10 +74,8 @@ export class GroupCreationPage implements OnInit {
   addGroup(){
 
     let self = this;
-    this.authUserStateSub = this.afAuth.authState.subscribe(user => {
-      if(user){
         //Get Group list created bycurrent user by passing uid as createdBy
-        this.getAllGroupsCreatedByCurrentUser(user.uid).subscribe(data => {
+        this.authUserStateSub = this.getAllGroups().subscribe(data => {
           console.log("Group List Data:",data);
           let grouplist = data;
           var groupNameFound = grouplist.find(function(group){
@@ -91,15 +89,12 @@ export class GroupCreationPage implements OnInit {
           }
 
         });
-      }
-    });
 
-    
-   
   }
 
   addGropAfterVerfyingGroupList(){
     let id = this.afstore.createId();
+    this.authUserStateSub.unsubscribe();
     this.afstore.doc("grouplist/"+id).set({
       groupname:this.newGroupData.groupname,
       desc:this.newGroupData.desc,
@@ -109,10 +104,10 @@ export class GroupCreationPage implements OnInit {
     }).then(() => {
       console.log("New Group added successfully!");
       this.presentAlert("Sucess","Group has been created!");
-      this.authUserStateSub.unsubscribe();
+      
       this.navCtrl.navigateBack('/list');
-    }, err => {
-      this.presentAlert("Error","Group has not been created!")
+     }, err => {
+       this.presentAlert("Error","Group has not been created!")
     });
   }
 
@@ -131,6 +126,11 @@ export class GroupCreationPage implements OnInit {
 
   getSkillLevels(): Observable<any> {
     return this.afstore.collection<any>("Skill_level").valueChanges();
+  }
+
+  
+  getAllGroups(): Observable<any> {
+    return this.afstore.collection<any>("grouplist").valueChanges();
   }
 
 }
