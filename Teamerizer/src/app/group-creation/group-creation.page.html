@@ -18,16 +18,16 @@
               <ion-input [(ngModel)]="newGroupData.desc" [formControl]="descAC" id="desc" type="text" required placeholder="Description"></ion-input>
           </ion-item>
           <ion-item  class="items">
-            <ion-select>
-              <ion-option value="f">JAVA</ion-option>
-              <ion-option value="m">iOS</ion-option>
+            <ion-label position="floating">Skill</ion-label>
+            <ion-select [(ngModel)]="newGroupData.skill"  [formControl]="skillAC">
+              <!-- <ngfor creates a loop and choose a skill on each iteration -->
+              <ion-select-option *ngFor="let skill of allSkills" [value]="skill">{{skill.skill_name}}</ion-select-option>
             </ion-select>
           </ion-item>
           <ion-item  class="items">
-            <ion-select >
-              <ion-option value="f">Beginner</ion-option>
-              <ion-option value="m">Intermidate</ion-option>
-              <ion-option value="m">Advanced</ion-option>
+              <ion-label position="floating">Level</ion-label>
+            <ion-select [(ngModel)]="newGroupData.level"  [formControl]="levelAC">
+                <ion-select-option *ngFor="let level of allSkillLevels" [value]="level">{{level.level_name}}</ion-select-option>
             </ion-select>
           </ion-item>
         </ion-list>
