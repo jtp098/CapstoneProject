@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { MenuController } from '@ionic/angular';
 import { AngularFirestore } from '@angular/fire/firestore';
-
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
@@ -10,7 +10,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
 export class HomePage {
   public groupList: any[]; 
 
-  constructor(public menu: MenuController, private fireStore: AngularFirestore) {
+  constructor(public menu: MenuController, private fireStore: AngularFirestore,public router: Router ) {
 
   }
 
@@ -20,6 +20,10 @@ export class HomePage {
     this.fireStore.collection('grouplist').valueChanges().subscribe(groupList => {
       this.groupList = groupList;
     })
+  }
+
+  async createGroup(){
+    this.router.navigate(['/group-creation'])
   }
 
 

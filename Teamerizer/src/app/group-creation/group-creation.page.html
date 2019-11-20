@@ -4,6 +4,35 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
 
+<!-- <This is a form for group creation -->
+<ion-content padding>
+  <form [formGroup]="newFormGroup">
+      <ion-list>
+          <ion-item class="items">
+            <ion-label><ion-icon ios="ios-person" md="md-person"></ion-icon></ion-label>
+            <ion-input [(ngModel)]="newGroupData.groupname" [formControl]="groupnameAC" id="groupname" type="text" required placeholder="Group Name"></ion-input>
+          </ion-item>
+          <ion-item class="items">
+              <ion-label><ion-icon ios="ios-mail" md="md-mail"></ion-icon></ion-label>
+              <ion-input [(ngModel)]="newGroupData.desc" [formControl]="descAC" id="desc" type="text" required placeholder="Description"></ion-input>
+          </ion-item>
+          <ion-item  class="items">
+            <ion-label position="floating">Skill</ion-label>
+            <ion-select [(ngModel)]="newGroupData.skill"  [formControl]="skillAC">
+              <!-- <ngfor creates a loop and choose a skill on each iteration -->
+              <ion-select-option *ngFor="let skill of allSkills" [value]="skill">{{skill.skill_name}}</ion-select-option>
+            </ion-select>
+          </ion-item>
+          <ion-item  class="items">
+              <ion-label position="floating">Level</ion-label>
+            <ion-select [(ngModel)]="newGroupData.level"  [formControl]="levelAC">
+                <ion-select-option *ngFor="let level of allSkillLevels" [value]="level">{{level.level_name}}</ion-select-option>
+            </ion-select>
+          </ion-item>
+        </ion-list>
+        <!-- <if the form is not valid, the addGroup button would be disabled -->
+        <ion-button expand="block" color="primary" type="submit" shape="round" [disabled]="!newFormGroup.valid" (click)="addGroup()">Add Group</ion-button>
+      </form>
+        <ion-button expand="block" color="success" shape="round"  type="submit" (click)="cancel()">Cancel</ion-button>
 </ion-content>
