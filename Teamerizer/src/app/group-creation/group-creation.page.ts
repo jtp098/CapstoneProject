@@ -5,6 +5,9 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AlertController } from '@ionic/angular';
 import { Observable } from 'rxjs';
+import {PickerController} from '@ionic/angular';
+import{PickerOptions} from '@ionic/core'
+
 
 @Component({
   selector: 'app-group-creation',
@@ -12,6 +15,8 @@ import { Observable } from 'rxjs';
   styleUrls: ['./group-creation.page.scss'],
 })
 export class GroupCreationPage implements OnInit {
+  Framework = '';
+  selected =['','','']
 
   groupname: string;
   desc: string;
@@ -31,7 +36,8 @@ export class GroupCreationPage implements OnInit {
     private navCtrl: NavController, 
     public afstore: AngularFirestore,
     public afAuth: AngularFireAuth,
-    public alertController: AlertController
+    public alertController: AlertController, 
+    private pickerCtrl: PickerController
   ) 
    
   
@@ -132,5 +138,104 @@ export class GroupCreationPage implements OnInit {
   getAllGroups(): Observable<any> {
     return this.afstore.collection<any>("grouplist").valueChanges();
   }
+
+  async showAdvancedPicker(){
+    let opts:PickerOptions = {
+      cssClass:'skills-Picker',
+      buttons: [
+        {
+        text:'Cancel',
+        role: 'cancel'
+        },
+        {
+          text: 'Done',
+          cssClass: 'special-done'
+        }
+      ],
+      columns:[
+        {
+        name: 'Framework',
+        options:[
+          {text:'Angular', value: 'A'},
+          {text:'Vue', value: 'B'},
+          {text:'React', value: 'C'}
+        ]
+      },
+      {
+        name: 'Level',
+        options:[
+          {text:'Angular', value: 'A'},
+          {text:'Vue', value: 'B'},
+          {text:'React', value: 'C'}
+        ]
+      },
+      {
+        name: 'Skills',
+        options:[
+          {text:'Angular', value: 'A'},
+          {text:'Vue', value: 'B'},
+          {text:'React', value: 'C'}
+        ]
+      }
+
+  
+      ]
+    };
+    let picker = await this.pickerCtrl.create(opts);
+    picker.present();
+    picker.onDidDismiss().then(async data => {
+      console.log('data: ', data);
+      let game = await picker.getColumn('Framework');
+      let cat = await picker.getColumn('Level');
+      let rating = await picker.getColumn('Skills');
+  
+      this.selected =[
+        game.options[game.selectedIndex].value,
+        cat.options[cat.selectedIndex].value,
+        rating.options[rating.selectedIndex].value
+
+
+      ];
+    });
+
+  }
+
+
+async showBasicPicker(){
+  let opts:PickerOptions = {
+    buttons: [
+      {
+      text:'Cancel',
+      role: 'cancel'
+      },
+      {
+        text: 'Done'
+      }
+    ],
+    columns:[
+      {
+      name: 'Framework',
+      options:[
+        {text:'Angular', value: 1},
+        {text:'Vue', value: 2},
+        {text:'React', value: 3}
+      ]
+    }
+
+    ]
+  };
+  let picker = await this.pickerCtrl.create(opts);
+  picker.present();
+  picker.onDidDismiss().then(async data => {
+    let col = await picker.getColumn('Framework');
+    console.log('col: ', col);
+    this.Framework = col.options[col.selectedIndex].text;
+
+  });
+
+
+}
+
+
 
 }

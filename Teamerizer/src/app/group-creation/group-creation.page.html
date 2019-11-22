@@ -34,5 +34,30 @@
         <!-- <if the form is not valid, the addGroup button would be disabled -->
         <ion-button expand="block" color="primary" type="submit" shape="round" [disabled]="!newFormGroup.valid" (click)="addGroup()">Add Group</ion-button>
       </form>
-        <ion-button expand="block" color="success" shape="round"  type="submit" (click)="cancel()">Cancel</ion-button>
+
+     
+
+        <!--<ion-button expand="block" color="success" shape="round"  type="submit" (click)="cancel()">Cancel</ion-button>-->
+
+        <ion-item  class="items">
+            <ion-label >Framework:</ion-label>
+            <ion-label color ="primary">{{Framework}} </ion-label>
+            <ion-button slot="end" fill ="clear" (click)="showBasicPicker()"> Select</ion-button>
+          </ion-item>
+
+            <ion-row text-center>
+              <ion-col size="4">Game</ion-col>
+              <ion-col size="4">Category</ion-col>
+              <ion-col size="4">Rating</ion-col>
+            </ion-row>
+    
+            <ion-row text-center>
+                <ion-col size="4">{{ selected[0] }}</ion-col>
+                <ion-col size="4">{{ selected[1] }}</ion-col>
+                <ion-col size="4">{{ selected[2] }}</ion-col>
+              </ion-row>
+    
+              <ion-button expand="block" (click)="showAdvancedPicker()"> Show advanced Picker</ion-button>
+        
+      
 </ion-content>
