@@ -26,5 +26,4 @@ export class HomePage {
     this.router.navigate(['/group-creation'])
   }
 
-
 }
