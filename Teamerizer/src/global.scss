@@ -25,6 +25,18 @@
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
 
+.special-done {
+	font-weight: 600 !important;
+	color: rgb(97, 96, 96) !important
+}
+
+.academy-picker {
+	--ion-text-color: black;
+	.picker-opt-selected {
+		color: #F2884B;
+	}
+}
+
 /*text css fontsize*/
 
 .fs-5{

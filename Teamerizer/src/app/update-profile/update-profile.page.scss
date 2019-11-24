@@ -24,11 +24,17 @@ ion-content{
     max-height: 5vh;
   }
   
-  
-  
-  
   .items {
     --background: white!important;
+  }
+
+  .skills {
+    background: white;
+  }
+
+  .skills-header {
+    font-weight: bold;
+    font-size: 20px;
   }
   
   
