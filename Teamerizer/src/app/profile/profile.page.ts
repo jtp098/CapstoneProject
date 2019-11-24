@@ -15,7 +15,7 @@ export class ProfilePage implements OnInit {
     username:string
     firstname:string
     lastname:string
-    skills:string
+    skillType:string
     skillLevel:string
     sub
 
@@ -27,7 +27,7 @@ export class ProfilePage implements OnInit {
             this.username = event.username
             this.firstname = event.firstName
             this.lastname = event.lastName
-            this.skills = event.skills
+            this.skillType = event.skillType
             this.skillLevel = event.skillLevel
 
             })
