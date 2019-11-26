@@ -43,6 +43,11 @@ export class AppComponent {
       url: '/profile',
       icon: 'list'
     },
+ {
+      title: 'Group Details',
+      url: '/groupdetailspage',
+      icon: 'list'
+    },
     {
       title: 'Log Out',
       url: '/login',

@@ -1,0 +1,32 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>You're Member Of!</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+<ion-item>
+  <ion-label>Select Name</ion-label>
+  <ion-select (ionChange)="gropudetailsDisplay(groupName)">
+    <ion-option *ngFor="let groupName of group$" ></ion-option>
+  </ion-select>
+</ion-item>
+    <ion-list *ngFor='let grpObserva of grouponSelectedname$'>
+      <ion-card padding >
+      <div >
+        Group Description: {{grpObserva.groupname}}
+      </div>
+  </ion-card>
+  <ion-card padding >
+    <div>
+      Team Members: {{grpObserva.teammembers}}
+    </div>
+  </ion-card>
+      <ion-card padding >
+        <div>
+          description: {{grpObserva.description}}
+        </div>
+      </ion-card>
+
+    </ion-list>
+</ion-content>
