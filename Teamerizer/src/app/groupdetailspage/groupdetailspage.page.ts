@@ -14,7 +14,7 @@ import {Observable} from 'rxjs';
 })
 export class GroupdetailspagePage implements OnInit {
     uid: string;
-    groupName;
+    selectedName;
     group$;
     grouponSelectedname$;
     grouplist: any;
@@ -34,16 +34,17 @@ export class GroupdetailspagePage implements OnInit {
             }
         });
     }
-    gropudetailsDisplay(groupNameSel){
-        this.getDetails(groupNameSel).subscribe(data => {
+    gropudetailsDisplay(event) {
+        console.log("selected" + event.target.value)
+        this.getDetails(event.target.value).subscribe(data => {
             this.grouponSelectedname$ = data;
         });
     }
     getAllGroupsCreatedByCurrentUser(uid): Observable<any> {
         return this.afstore.collection<any>('grouplist', ref => ref.where('createdBy', '==', uid)).valueChanges();
     }
-    getDetails(grpName) {
-        return this.afstore.collection<any>('grouplist', ref => ref.where('gropname=', '==', grpName)).valueChanges();
+    getDetails(grpName): Observable<any> {
+        return this.afstore.collection<any>('grouplist', ref => ref.where('groupname', '==', grpName)).valueChanges();
 
     }
 }

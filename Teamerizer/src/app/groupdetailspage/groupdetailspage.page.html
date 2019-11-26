@@ -3,28 +3,27 @@
     <ion-title>You're Member Of!</ion-title>
   </ion-toolbar>
 </ion-header>
-
 <ion-content>
 <ion-item>
   <ion-label>Select Name</ion-label>
-  <ion-select (ionChange)="gropudetailsDisplay(groupName)">
-    <ion-option *ngFor="let groupName of group$" ></ion-option>
+  <ion-select [(ngModel)]="selectedName" (ionChange)="gropudetailsDisplay($event)">
+    <ion-select-option *ngFor="let name of group$" [value]="name.groupname" >
+        {{name.groupname}}
+    </ion-select-option>
   </ion-select>
 </ion-item>
     <ion-list *ngFor='let grpObserva of grouponSelectedname$'>
       <ion-card padding >
       <div >
-        Group Description: {{grpObserva.groupname}}
+        Group Description: {{grpObserva.desc}}
       </div>
   </ion-card>
   <ion-card padding >
-    <div>
-      Team Members: {{grpObserva.teammembers}}
-    </div>
-  </ion-card>
+      Team Members: {{grpObserva.level.level_id}}
+      </ion-card>
       <ion-card padding >
         <div>
-          description: {{grpObserva.description}}
+          Group Name: {{grpObserva.groupname}}
         </div>
       </ion-card>
 
