@@ -14,7 +14,8 @@ const routes: Routes = [
   { path: 'group-details', loadChildren: './group-details/group-details.module#GroupDetailsPageModule' },
   { path: 'member-details', loadChildren: './member-details/member-details.module#MemberDetailsPageModule' },
   { path: 'member-match', loadChildren: './member-match/member-match.module#MemberMatchPageModule' },
-  { path: 'update-profile', loadChildren: './update-profile/update-profile.module#UpdateProfilePageModule' }
+  { path: 'update-profile', loadChildren: './update-profile/update-profile.module#UpdateProfilePageModule' },
+  { path: 'groupdetailspage', loadChildren: './groupdetailspage/groupdetailspage.module#GroupdetailspagePageModule' }
 ];
 
 @NgModule({
