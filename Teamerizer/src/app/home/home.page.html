@@ -30,7 +30,7 @@
     </ion-list-header>
     <br>
     <ion-item-sliding *ngFor="let item of groupList">
-      <ion-item class="team-list" href="https://ionicframework.com/docs/">
+      <ion-item class="team-list" (click)="groupdetail()">
         <ion-icon slot="start" color="medium" name="people"></ion-icon>
         <ion-label class="team-label"> {{item.desc}}</ion-label>
       </ion-item>

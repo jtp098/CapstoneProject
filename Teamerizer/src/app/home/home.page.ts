@@ -26,4 +26,8 @@ export class HomePage {
     this.router.navigate(['/group-creation'])
   }
 
+  async groupdetail(){
+    this.router.navigate(['/group-details'])
+  }
+
 }
