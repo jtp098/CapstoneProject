@@ -4,6 +4,7 @@ import { UserService } from '../user.service';
 import { firestore } from 'firebase/app';
 import { AlertController } from '@ionic/angular';
 import { Router } from '@angular/router';
+import { AngularFireAuth } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-profile',
@@ -12,6 +13,7 @@ import { Router } from '@angular/router';
 })
 export class ProfilePage implements OnInit {
     mainuser: AngularFirestoreDocument
+    
     username:string
     firstname:string
     lastname:string
@@ -19,21 +21,38 @@ export class ProfilePage implements OnInit {
     skillLevel:string
     sub
 
+    selectedSkill = [];
+  selectedLevel = [];
 
 
-    constructor(private afs: AngularFirestore, private user: UserService, private router: Router) {
-      this.mainuser = afs.doc(`users/${user.getUID()}`)
-      this.sub = this.mainuser.valueChanges().subscribe(event => {
-            this.username = event.username
-            this.firstname = event.firstName
-            this.lastname = event.lastName
-            this.skillType = event.skillType
-            this.skillLevel = event.skillLevel
 
-            })
+    constructor(private afs: AngularFirestore, private user: UserService, private router: Router, 
+      private afAuth: AngularFireAuth) {
+     
     }
 
   ngOnInit() {
+    let self = this;
+    this.afAuth.auth.onAuthStateChanged(function(user) {
+      console.log("User",user);
+      if (user) {
+        self.setUserProfileData();
+      } else {
+        
+      }
+    });
+  }
+
+  setUserProfileData(){
+    this.mainuser = this.afs.doc(`users/${this.afAuth.auth.currentUser.uid}`)
+    this.sub = this.mainuser.valueChanges().subscribe(event => {
+      this.username = event.username
+      this.firstname = event.firstName
+      this.lastname = event.lastName
+      this.selectedSkill = event.skillType
+      this.selectedLevel = event.skillLevel
+      console.log(this.selectedSkill);
+    })
   }
 
   updateProfile(){

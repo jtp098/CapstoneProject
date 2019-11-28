@@ -34,13 +34,16 @@
 
 		<div class="skills">
 			<ion-row text-center>
-				<ion-col size="6" class="skills-header">Skill</ion-col>
-				<ion-col size="6" class="skills-header">Level</ion-col>
+				<ion-col size="5" class="skills-header">Skill</ion-col>
+				<ion-col size="5" class="skills-header">Level</ion-col>
 			</ion-row>
 
-			<ion-row text-center>
-				<ion-col size="6">{{ selected[0] }}</ion-col>
-				<ion-col size="6">{{ selected[1] }}</ion-col>
+			<ion-row text-center *ngFor="let skill of selectedSkill; let i = index">
+				<ion-col size="5">{{ selectedSkill[i].text }}</ion-col>
+				<ion-col size="5">{{ selectedLevel[i].text }}</ion-col>
+				<ion-col size="2">
+					<ion-icon name="trash" (click)="deleteSkill(i)"></ion-icon>
+				</ion-col>
 			</ion-row>
 		</div>
 
