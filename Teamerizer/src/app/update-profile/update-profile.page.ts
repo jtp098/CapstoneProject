@@ -16,9 +16,7 @@ import { FireStoreFetchService } from '../fire-store-fetch.service';
   styleUrls: ['./update-profile.page.scss'],
 })
 export class UpdateProfilePage implements OnInit {
-  skill = '';
-  selectedSkill = [];
-  selectedLevel = [];
+  
 
   mainuser: AngularFirestoreDocument
 
@@ -33,6 +31,9 @@ export class UpdateProfilePage implements OnInit {
     sub;
     allSkills: any;
     allSkillLevels: any;
+    skill = '';
+    selectedSkill = [];
+    selectedLevel = [];
 
   constructor(
     public afstore: AngularFirestore,
@@ -97,6 +98,7 @@ export class UpdateProfilePage implements OnInit {
           cssClass: 'special-done',
           handler: (value : any): void => {
             console.log(value, 'ok');
+
             this.selectedSkill.push(value.skillType);
             this.selectedLevel.push(value.skillLevel);
           } 

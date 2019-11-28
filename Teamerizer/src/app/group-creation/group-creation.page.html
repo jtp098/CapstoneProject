@@ -18,9 +18,13 @@
               <ion-input [(ngModel)]="newGroupData.desc" [formControl]="descAC" id="desc" type="text" required placeholder="Description"></ion-input>
           </ion-item>
           <ion-item  class="items">
-            <ion-label position="floating">Skill</ion-label>
+              <ion-item class="items">
+                  <ion-label>Skills</ion-label>
+                  <ion-button expand="block" (click)="showAdvancedPicker()" color="success">Add Skill Info</ion-button>
+                </ion-item>
+            <!-- <ion-label position="floating">Skill</ion-label>
             <ion-select [(ngModel)]="newGroupData.skill"  [formControl]="skillAC">
-              <!-- <ngfor creates a loop and choose a skill on each iteration -->
+              <ngfor creates a loop and choose a skill on each iteration
               <ion-select-option *ngFor="let skill of allSkills" [value]="skill">{{skill.skill_name}}</ion-select-option>
             </ion-select>
           </ion-item>
@@ -28,9 +32,23 @@
               <ion-label position="floating">Level</ion-label>
             <ion-select [(ngModel)]="newGroupData.level"  [formControl]="levelAC">
                 <ion-select-option *ngFor="let level of allSkillLevels" [value]="level">{{level.level_name}}</ion-select-option>
-            </ion-select>
+            </ion-select> -->
           </ion-item>
         </ion-list>
+        <div class="skills">
+            <ion-row text-center>
+              <ion-col size="5" class="skills-header">Skill</ion-col>
+              <ion-col size="5" class="skills-header">Level</ion-col>
+            </ion-row>
+      
+            <ion-row text-center *ngFor="let skill of selectedSkill; let i = index">
+              <ion-col size="5">{{ selectedSkill[i].text }}</ion-col>
+              <ion-col size="5">{{ selectedLevel[i].text }}</ion-col>
+              <ion-col size="2">
+                <ion-icon name="trash" (click)="deleteSkill(i)"></ion-icon>
+              </ion-col>
+            </ion-row>
+          </div>
         <!-- <if the form is not valid, the addGroup button would be disabled -->
         <ion-button expand="block" color="primary" type="submit" shape="round" [disabled]="!newFormGroup.valid" (click)="addGroup()">Add Group</ion-button>
       </form>
@@ -39,13 +57,13 @@
 
         <!--<ion-button expand="block" color="success" shape="round"  type="submit" (click)="cancel()">Cancel</ion-button>-->
 
-        <ion-item  class="items">
+        <!-- <ion-item  class="items">
             <ion-label >Framework:</ion-label>
             <ion-label color ="primary">{{Framework}} </ion-label>
             <ion-button slot="end" fill ="clear" (click)="showBasicPicker()"> Select</ion-button>
-          </ion-item>
+          </ion-item> -->
 
-            <ion-row text-center>
+            <!-- <ion-row text-center>
               <ion-col size="4">Game</ion-col>
               <ion-col size="4">Category</ion-col>
               <ion-col size="4">Rating</ion-col>
@@ -57,7 +75,7 @@
                 <ion-col size="4">{{ selected[2] }}</ion-col>
               </ion-row>
     
-              <ion-button expand="block" (click)="showAdvancedPicker()"> Show advanced Picker</ion-button>
+              <ion-button expand="block" (click)="showAdvancedPicker()"> Show advanced Picker</ion-button> -->
         
       
 </ion-content>

@@ -31,6 +31,9 @@ export class GroupCreationPage implements OnInit {
   allSkills: any;
   allSkillLevels: any;
   authUserStateSub: any;
+  selectedSkill = [];
+  selectedLevel = [];
+
   constructor( 
     public fb: FormBuilder,
     private navCtrl: NavController, 
@@ -76,6 +79,49 @@ export class GroupCreationPage implements OnInit {
       this.allSkillLevels = data;
     });
   }
+  async showAdvancedPicker() {
+    let opts: PickerOptions = {
+      cssClass: 'academy-picker',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel'
+        },
+        {
+          text: 'Done',
+          cssClass: 'special-done',
+          handler: (value : any): void => {
+            console.log(value, 'ok');
+
+            this.selectedSkill.push(value.skillType);
+            this.selectedLevel.push(value.skillLevel);
+          } 
+        }
+      ],
+      columns: [ 
+        {
+          name: 'skillType',
+          options: this.allSkills
+        },
+        {
+          name: 'skillLevel',
+          options: this.allSkillLevels
+        }
+      ]
+    };
+
+    let picker = await this.pickerCtrl.create(opts);
+    picker.present();
+    
+    // picker.onDidDismiss().then(async data => {
+    //   let skillType = await picker.getColumn('skillType');
+    //   let skillLevel = await picker.getColumn('skillLevel');
+    //   console.log('col: ', skillType);
+    //   this.selectedSkill.push(skillType.options[skillType.selectedIndex]);
+    //   this.selectedLevel.push(skillLevel.options[skillLevel.selectedIndex]);
+    // });
+
+  }
 
   addGroup(){
 
@@ -91,21 +137,21 @@ export class GroupCreationPage implements OnInit {
           if(groupNameFound){
             this.presentAlert("Error","Group name already exists!");
           } else {
-            this.addGropAfterVerfyingGroupList();
+            this.addGroupAfterVerfyingGroupList();
           }
 
         });
 
   }
 
-  addGropAfterVerfyingGroupList(){
+  addGroupAfterVerfyingGroupList(){
     let id = this.afstore.createId();
     this.authUserStateSub.unsubscribe();
     this.afstore.doc("grouplist/"+id).set({
       groupname:this.newGroupData.groupname,
       desc:this.newGroupData.desc,
-      skill: this.newGroupData.skill,
-      level: this.newGroupData.level,
+      // skill: this.newGroupData.skill,
+      // level: this.newGroupData.level,
       createdBy: this.afAuth.auth.currentUser.uid
     }).then(() => {
       console.log("New Group added successfully!");
@@ -139,66 +185,6 @@ export class GroupCreationPage implements OnInit {
     return this.afstore.collection<any>("grouplist").valueChanges();
   }
 
-  async showAdvancedPicker(){
-    let opts:PickerOptions = {
-      cssClass:'skills-Picker',
-      buttons: [
-        {
-        text:'Cancel',
-        role: 'cancel'
-        },
-        {
-          text: 'Done',
-          cssClass: 'special-done'
-        }
-      ],
-      columns:[
-        {
-        name: 'Framework',
-        options:[
-          {text:'Angular', value: 'A'},
-          {text:'Vue', value: 'B'},
-          {text:'React', value: 'C'}
-        ]
-      },
-      {
-        name: 'Level',
-        options:[
-          {text:'Angular', value: 'A'},
-          {text:'Vue', value: 'B'},
-          {text:'React', value: 'C'}
-        ]
-      },
-      {
-        name: 'Skills',
-        options:[
-          {text:'Angular', value: 'A'},
-          {text:'Vue', value: 'B'},
-          {text:'React', value: 'C'}
-        ]
-      }
-
-  
-      ]
-    };
-    let picker = await this.pickerCtrl.create(opts);
-    picker.present();
-    picker.onDidDismiss().then(async data => {
-      console.log('data: ', data);
-      let game = await picker.getColumn('Framework');
-      let cat = await picker.getColumn('Level');
-      let rating = await picker.getColumn('Skills');
-  
-      this.selected =[
-        game.options[game.selectedIndex].value,
-        cat.options[cat.selectedIndex].value,
-        rating.options[rating.selectedIndex].value
-
-
-      ];
-    });
-
-  }
 
 
 async showBasicPicker(){
