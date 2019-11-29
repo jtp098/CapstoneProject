@@ -22,7 +22,7 @@ export class ProfilePage implements OnInit {
     sub
 
     selectedSkill = [];
-  selectedLevel = [];
+    selectedLevel = [];
 
 
 

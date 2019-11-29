@@ -56,8 +56,7 @@ export class UpdateProfilePage implements OnInit {
         self.setUserProfileData();
       } else {
         
-      }
-    });
+      }});
 
     this.firestoreFetchService.getSkills().subscribe((data) => {
       console.log("All Skills :",data);
@@ -76,8 +75,14 @@ export class UpdateProfilePage implements OnInit {
       this.username = event.username
       this.firstname = event.firstName
       this.lastname = event.lastName
-      this.selectedSkill = event.skillType
-      this.selectedLevel = event.skillLevel
+      console.log("event.skillType",event.skillType);
+      if (event.skillType !== undefined ) {
+        this.selectedSkill = event.skillType
+      } 
+      if( event.skillLevel !== undefined){
+        this.selectedLevel = event.skillLevel
+
+      }
     })
   }
 

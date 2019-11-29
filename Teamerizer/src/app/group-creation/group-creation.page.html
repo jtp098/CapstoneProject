@@ -49,8 +49,20 @@
               </ion-col>
             </ion-row>
           </div>
+          <div>
+            <ion-button (click)="getSkillMatchedUser()">Get Users</ion-button>
+            <ion-row *ngFor="let user of matchedUsers">
+                <ion-col size="5">{{user.firstName}} {{user.lastName}} ({{user.skillType[0].text}})</ion-col>
+            </ion-row>
+            
+          </div>
         <!-- <if the form is not valid, the addGroup button would be disabled -->
         <ion-button expand="block" color="primary" type="submit" shape="round" [disabled]="!newFormGroup.valid" (click)="addGroup()">Add Group</ion-button>
+        <ion-row>
+            <ion-col width-50 style="text-align: center">
+              <ion-button fill="solid" color="success" shape="round" (click)="cancel()">Cancel</ion-button>
+            </ion-col>
+          </ion-row>
       </form>
 
      

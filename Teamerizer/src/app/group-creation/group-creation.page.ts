@@ -7,6 +7,7 @@ import { AlertController } from '@ionic/angular';
 import { Observable } from 'rxjs';
 import {PickerController} from '@ionic/angular';
 import{PickerOptions} from '@ionic/core'
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -23,7 +24,7 @@ export class GroupCreationPage implements OnInit {
   skill: string;
   skill_level: string;
   newFormGroup : FormGroup;
-  newGroupData = { groupname: '', desc: '', skill: null, level: null };
+  newGroupData = { groupname: '', desc: '' };
   groupnameAC: AbstractControl;
   descAC: AbstractControl;
   skillAC: AbstractControl;
@@ -33,6 +34,7 @@ export class GroupCreationPage implements OnInit {
   authUserStateSub: any;
   selectedSkill = [];
   selectedLevel = [];
+  matchedUsers = [];
 
   constructor( 
     public fb: FormBuilder,
@@ -40,7 +42,8 @@ export class GroupCreationPage implements OnInit {
     public afstore: AngularFirestore,
     public afAuth: AngularFireAuth,
     public alertController: AlertController, 
-    private pickerCtrl: PickerController
+    private pickerCtrl: PickerController,
+    private router: Router
   ) 
    
   
@@ -48,15 +51,15 @@ export class GroupCreationPage implements OnInit {
     // <!-- <This is form validation where we can define the required fields -->
     this.newFormGroup = this.fb.group({
       'groupname' : [null, Validators.compose([Validators.required])],
-      'desc': [null, Validators.compose([Validators.required])],
-      'skill': [null, Validators.compose([Validators.required])],
-      'level': [null, Validators.compose([Validators.required])]
+      'desc': [null, Validators.compose([Validators.required])]
+      // 'skill': [null, Validators.compose([Validators.required])],
+      // 'level': [null, Validators.compose([Validators.required])]
     }); 
 
     this.groupnameAC = this.newFormGroup.controls['groupname'];
     this.descAC = this.newFormGroup.controls['desc'];
-    this.skillAC = this.newFormGroup.controls['skill'];
-    this.levelAC = this.newFormGroup.controls['level'];
+    // this.skillAC = this.selectedSkill['skill'];
+    // this.levelAC = this.newFormGroup.controls['level'];
   }
   async presentAlert(title: string, content:string){
     const alert = await this.alertController.create({
@@ -144,20 +147,32 @@ export class GroupCreationPage implements OnInit {
 
   }
 
+  getSkillMatchedUser(){
+    if (this.selectedSkill.length > 0) {
+      this.getMatchedSkillUsers().subscribe( data  => {
+        console.log("Match users",data);
+        this.matchedUsers = data;
+      });
+
+    } else {
+      
+    }
+  }
+
   addGroupAfterVerfyingGroupList(){
     let id = this.afstore.createId();
     this.authUserStateSub.unsubscribe();
     this.afstore.doc("grouplist/"+id).set({
       groupname:this.newGroupData.groupname,
       desc:this.newGroupData.desc,
-      // skill: this.newGroupData.skill,
-      // level: this.newGroupData.level,
+      selectedSkill: this.selectedSkill,
+      selectedLevel: this.selectedLevel,
       createdBy: this.afAuth.auth.currentUser.uid
     }).then(() => {
       console.log("New Group added successfully!");
       this.presentAlert("Sucess","Group has been created!");
       
-      this.navCtrl.navigateBack('/list');
+      this.navCtrl.navigateBack('/home');
      }, err => {
        this.presentAlert("Error","Group has not been created!")
     });
@@ -167,9 +182,14 @@ export class GroupCreationPage implements OnInit {
     return this.afstore.collection<any>('grouplist', ref => ref.where('createdBy', '==',uid)).valueChanges();
   }
 
+  getMatchedSkillUsers(): Observable<any> {
+    //return this.afstore.collection<any>('user', ref => ref.
+    return this.afstore.collection<any>('users', ref => ref.where('skillType', "array-contains-any",this.selectedSkill)).valueChanges();
+  }
 
-  cancel(){
-    this.navCtrl.navigateBack('/home');
+
+  async cancel(){
+    this.router.navigate(['/home'])
   }
 
   getSkills() : Observable <any> {
@@ -221,6 +241,10 @@ async showBasicPicker(){
 
 
 }
+deleteSkill(i){
+    this.selectedSkill.splice(i,1);
+    this.selectedLevel.splice(i,1);
+  }
 
 
 
