@@ -246,6 +246,11 @@ deleteSkill(i){
     this.selectedLevel.splice(i,1);
   }
 
+  skillMatched(userSkills: any[]) {
+      return userSkills.filter((skill:any) => this.selectedSkill.findIndex((selectedSkill: any) => selectedSkill.text === skill.text) > -1).map((skill:any) => skill.text).join(', ');
+      //filter will go and check what is the exact skill exist in selectedSkill, then map so it can only show the text, so put it in the string you do join of skill with coma separate.
 
+      
+  }
 
 }
