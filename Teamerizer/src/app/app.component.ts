@@ -1,26 +1,55 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { UserService } from './user.service';
+import { firestore } from 'firebase/app';
+import { AlertController } from '@ionic/angular';
+import { AngularFireAuth } from '@angular/fire/auth';
+import { AngularFirestore, AngularFirestoreDocument  } from '@angular/fire/firestore';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
+    mainuser: AngularFirestoreDocument
+    
+    username:string
+    firstname:string
+    lastname:string
+    skillType:string
+    skillLevel:string
+    sub
+    
+
+  ngOnInit() {
+    let self = this;
+    this.afAuth.auth.onAuthStateChanged(function(user) {
+      console.log("User",user);
+      if (user) {
+        self.setUserProfileData();
+      } else {
+        
+      }
+    });
+  }
+  
+  setUserProfileData(){
+    this.mainuser = this.afs.doc(`users/${this.afAuth.auth.currentUser.uid}`)
+    this.sub = this.mainuser.valueChanges().subscribe(event => {
+      this.firstname = event.firstName
+      this.lastname = event.lastName
+    })
+  }
   public appPages = [
     {
       title: 'Home',
       url: '/home',
       icon: 'home'
-    },
-    {
-      title: 'List',
-      url: '/list',
-      icon: 'list'
     },
     /*{
       title: 'SignUp',
@@ -60,7 +89,10 @@ export class AppComponent {
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
-    public user: UserService
+    public user: UserService,
+    private afs: AngularFirestore,
+    private router: Router, 
+    private afAuth: AngularFireAuth
   ) {
     this.initializeApp();
   }
@@ -80,4 +112,5 @@ export class AppComponent {
     }
 
   }
+  
 }
