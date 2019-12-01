@@ -185,6 +185,7 @@ export class GroupCreationPage implements OnInit {
   getMatchedSkillUsers(): Observable<any> {
     //return this.afstore.collection<any>('user', ref => ref.
     return this.afstore.collection<any>('users', ref => ref.where('skillType', "array-contains-any",this.selectedSkill)).valueChanges();
+    
   }
 
 

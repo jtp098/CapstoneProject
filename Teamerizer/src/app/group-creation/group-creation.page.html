@@ -52,7 +52,7 @@
           <div>
             <ion-button (click)="getSkillMatchedUser()">Get Users</ion-button>
             <ion-row *ngFor="let user of matchedUsers">
-                <ion-col size="5">{{user.firstName}} {{user.lastName}} ({{skillMatched(user.skillType)}})</ion-col>
+                <ion-item size="5" [href]="'/member-details'+user.firstName" routerDirection="forward">{{user.firstName}} {{user.lastName}} ({{skillMatched(user.skillType)}})</ion-item>
             </ion-row>
             
           </div>

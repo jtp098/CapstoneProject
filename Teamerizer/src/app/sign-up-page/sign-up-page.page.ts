@@ -78,7 +78,8 @@ try {
   const res = await this.afAuth.auth.createUserWithEmailAndPassword(regData.mail, regData.pass)
 
   this.afstore.doc(`users/${res.user.uid}`).set({
-    username: this.regData.name
+    username: this.regData.name,
+    uid: res.user.uid
 
   })
   this.user.setUser({
