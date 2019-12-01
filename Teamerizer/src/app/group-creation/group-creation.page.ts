@@ -7,7 +7,7 @@ import { AlertController } from '@ionic/angular';
 import { Observable } from 'rxjs';
 import {PickerController} from '@ionic/angular';
 import{PickerOptions} from '@ionic/core'
-import { Router } from '@angular/router';
+import { Router,NavigationExtras } from '@angular/router';
 
 
 @Component({
@@ -36,6 +36,10 @@ export class GroupCreationPage implements OnInit {
   selectedLevel = [];
   matchedUsers = [];
 
+  
+
+
+
   constructor( 
     public fb: FormBuilder,
     private navCtrl: NavController, 
@@ -61,6 +65,17 @@ export class GroupCreationPage implements OnInit {
     // this.skillAC = this.selectedSkill['skill'];
     // this.levelAC = this.newFormGroup.controls['level'];
   }
+
+  openDetailsWithState(firstName: string) {
+    let navigationExtras: NavigationExtras = {
+      state: {
+        user: firstName
+      }
+    };
+    this.router.navigate(['/member-details'], navigationExtras);
+  }
+
+
   async presentAlert(title: string, content:string){
     const alert = await this.alertController.create({
       header: title, 

@@ -1,0 +1,32 @@
+.header-style {
+    --background: #062f6f;
+    color: #33A9AC;
+}
+
+.logo {
+    width: 50px;
+    height: 50px;
+  }
+
+ion-content{
+    --ion-background-color: #484b86;
+}
+
+.card-style {
+    --background: white;
+}
+
+img {
+    border-radius: 50%;
+    border: 2px solid #F2884B;
+}
+
+.fullname {
+    font-size: 16px;
+}
+
+.profile-button {
+    z-index: 100;
+    position: absolute;
+    right: 0;
+}

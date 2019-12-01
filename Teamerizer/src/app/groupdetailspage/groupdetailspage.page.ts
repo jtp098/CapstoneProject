@@ -6,7 +6,7 @@ import {AngularFireAuth} from '@angular/fire/auth';
 import {AlertController} from '@ionic/angular';
 import {Observable} from 'rxjs';
 import { UserService } from '../user.service';
-import { Router } from '@angular/router';
+import { Router,NavigationExtras } from '@angular/router';
 
 
 @Component({
@@ -51,10 +51,20 @@ export class GroupdetailspagePage implements OnInit {
 				this.afstore.collection('users').valueChanges().subscribe(userList => {
 					this.userList = userList;
 					this.loadedUserList = userList;
+					console.log("userlist",userList);
 				})
 
 				this.groupUsers = this.userService.getGroupUsers();
 		}
+
+		openDetailsWithState(firstName: string) {
+			let navigationExtras: NavigationExtras = {
+			  state: {
+				user: firstName
+			  }
+			};
+			this.router.navigate(['/member-details'], navigationExtras);
+		  }
 		
 		intializeItems(): void {
 			this.userList = this.loadedUserList;

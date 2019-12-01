@@ -5,6 +5,7 @@ import { firestore } from 'firebase/app';
 import { AlertController } from '@ionic/angular';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/auth';
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-member-details',
@@ -23,17 +24,24 @@ export class MemberDetailsPage implements OnInit {
 
     selectedSkill = [];
     selectedLevel = [];
-
+data: any;
   constructor(private afs: AngularFirestore, private user: UserService, private router: Router, 
-    private afAuth: AngularFireAuth, private route: ActivatedRoute) { }
+    private afAuth: AngularFireAuth, private route: ActivatedRoute,private navCtrl: NavController) {
+      this.route.queryParams.subscribe(params => {
+        if (this.router.getCurrentNavigation().extras.state) {
+          this.data = this.router.getCurrentNavigation().extras.state.user;
+          console.log("passedData",this.data);
+        }
+      });
+      
+     }
 
   ngOnInit() {
-    let self = this.route.snapshot.paramMap.get('uid')
-    console.log("UserID",self);
+    let self = this;
     this.afAuth.auth.onAuthStateChanged(function(user) {
       console.log("User",user);
       if (user) {
-        //self.setUserProfileData();
+        self.setUserProfileData();
       } else {
         
       }
@@ -41,7 +49,7 @@ export class MemberDetailsPage implements OnInit {
   }
 
   setUserProfileData(){
-    this.mainuser = this.afs.doc(`users/${this.afAuth.auth.currentUser.uid}`)
+    this.mainuser = this.afs.doc(`users/${this.data}`)
     this.sub = this.mainuser.valueChanges().subscribe(event => {
       this.username = event.username
       this.firstname = event.firstName
@@ -50,6 +58,14 @@ export class MemberDetailsPage implements OnInit {
       this.selectedLevel = event.skillLevel
       console.log(this.selectedSkill);
     })
+  }
+
+  goBack() {
+    this.navCtrl.back();
+    }
+
+  back(){
+    this.router.navigate(['/group-creation'])
   }
 
 }

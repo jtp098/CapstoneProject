@@ -60,7 +60,7 @@
 
         <ion-card>
           <ion-card-header>
-            <ion-card-title>
+            <ion-card-title (click)="openDetailsWithState(item.uid)">
               {{ item.firstName}} {{ item.lastName }}
             </ion-card-title>
             <ion-card-content>
