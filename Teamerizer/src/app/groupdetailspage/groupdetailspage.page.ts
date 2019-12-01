@@ -5,6 +5,8 @@ import {AngularFirestore} from '@angular/fire/firestore';
 import {AngularFireAuth} from '@angular/fire/auth';
 import {AlertController} from '@ionic/angular';
 import {Observable} from 'rxjs';
+import { UserService } from '../user.service';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -13,6 +15,17 @@ import {Observable} from 'rxjs';
     styleUrls: ['./groupdetailspage.page.scss'],
 })
 export class GroupdetailspagePage implements OnInit {
+		public userList: any[];
+		public loadedUserList: any[];
+
+		groupUsers = [];
+
+		sliderConfig = {
+			spaceBetween: 10,
+			centeredSlides: true,
+			slidesPerView: 1.8
+		}
+
     uid: string;
     selectedName;
     group$;
@@ -21,7 +34,9 @@ export class GroupdetailspagePage implements OnInit {
     constructor(private navCtrl: NavController,
                 public afstore: AngularFirestore,
                 public afAuth: AngularFireAuth,
-                public alertController: AlertController,
+								public alertController: AlertController,
+								private userService: UserService,
+								private router: Router
                 ) {}
 
     ngOnInit() {
@@ -32,9 +47,43 @@ export class GroupdetailspagePage implements OnInit {
                     this.group$ = data;
                 });
             }
-        });
-    }
-    gropudetailsDisplay(event) {
+				});
+				this.afstore.collection('users').valueChanges().subscribe(userList => {
+					this.userList = userList;
+					this.loadedUserList = userList;
+				})
+
+				this.groupUsers = this.userService.getGroupUsers();
+		}
+		
+		intializeItems(): void {
+			this.userList = this.loadedUserList;
+		}
+
+		filterList(evt) {
+			this.intializeItems();
+
+			const searchTerm = evt.srcElement.value;
+
+			if(!searchTerm) {
+				return;
+			}
+
+			this.userList = this.userList.filter(currentUser => {
+				if(currentUser.firstName && searchTerm) {
+					if (currentUser.firstName.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1) {
+						return true;
+					}
+					return false;
+				}
+			});
+		}
+
+		addToGroup(user) {
+			this.userService.addUsers(user);
+		}
+
+    groupDetailsDisplay(event) {
         console.log("selected" + event.target.value)
         this.getDetails(event.target.value).subscribe(data => {
             this.grouponSelectedname$ = data;
@@ -46,5 +95,9 @@ export class GroupdetailspagePage implements OnInit {
     getDetails(grpName): Observable<any> {
         return this.afstore.collection<any>('grouplist', ref => ref.where('groupname', '==', grpName)).valueChanges();
 
-    }
+		}
+		
+		async cancel(){
+			this.router.navigate(['/home'])
+		}
 }
