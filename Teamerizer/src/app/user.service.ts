@@ -20,7 +20,7 @@ export class UserService {
     //private skills: skills
     //private skillLevel: skillLevel
 
-
+    private users = [];
 
 	constructor(private afAuth: AngularFireAuth) {
 
@@ -32,6 +32,14 @@ export class UserService {
 
     setFistName(fname: user){
       this.user = fname
+    }
+
+    getGroupUsers() {
+      return this.users;
+    }
+
+    addUsers(user) {
+      this.users.push(user);
     }
     
     async isAuthenticated() {
