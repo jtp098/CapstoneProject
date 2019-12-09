@@ -7,6 +7,7 @@ import {AlertController} from '@ionic/angular';
 import {Observable} from 'rxjs';
 import { UserService } from '../user.service';
 import { Router,NavigationExtras } from '@angular/router';
+import {forEach} from "@angular-devkit/schematics";
 
 
 @Component({
@@ -17,7 +18,8 @@ import { Router,NavigationExtras } from '@angular/router';
 export class GroupdetailspagePage implements OnInit {
 		public userList: any[];
 		public loadedUserList: any[];
-
+	userinfo$ :any[];
+	selectedGrpName:any;
 		groupUsers = [];
 
 		sliderConfig = {
@@ -90,24 +92,54 @@ export class GroupdetailspagePage implements OnInit {
 		}
 
 		addToGroup(user) {
-			this.userService.addUsers(user);
+			console.log(user+ "Users");
+			//this.userService.addUsers(user);
+			this.afstore.collection('users', ref => ref.where('firstName', '==', user)).valueChanges().subscribe(userList => {
+				this.userinfo$ = userList;
+				console.log("userlist add",this.userinfo$);
+				console.log(this.userinfo$);
+			})
+			for(var userinfoobs$ in this.userinfo$) {
+				this.afstore.collection('adduserstogrp').add({
+					username: this.userinfo$[userinfoobs$].username,
+					skills: this.userinfo$[userinfoobs$].skills,
+					grpname: this.selectedGrpName,
+					addflag: true,
+				})
+			}
 		}
 
     groupDetailsDisplay(event) {
+    	this.selectedGrpName=event.target.value;
         console.log("selected" + event.target.value)
         this.getDetails(event.target.value).subscribe(data => {
             this.grouponSelectedname$ = data;
         });
     }
+	async delay(ms: number) {
+		await new Promise(resolve => setTimeout(()=>resolve(), ms)).then(()=>console.log("fired"));
+	}
+remove(no){
+let size;
+	this.delay(5000).then(any=>{
+		this.afstore.collection('users', ref => ref.where('grpname', '==', this.selectedGrpName)).valueChanges().subscribe(data => {
+			console.log('remove'+this.selectedGrpName);
+			if(data){
+				(this.userList).splice(no, 1);
+			} });
+	});
+    }
+
     getAllGroupsCreatedByCurrentUser(uid): Observable<any> {
         return this.afstore.collection<any>('grouplist', ref => ref.where('createdBy', '==', uid)).valueChanges();
     }
     getDetails(grpName): Observable<any> {
         return this.afstore.collection<any>('grouplist', ref => ref.where('groupname', '==', grpName)).valueChanges();
-
 		}
-		
-		async cancel(){
-			this.router.navigate(['/home'])
+	getUserInfo(firstName): Observable<any> {
+		return this.afstore.collection('users', ref => ref.where('firstName', '==', firstName)).valueChanges();
+	}
+		async cancel() {
+			this.router.navigate(['/home']);
 		}
 }
