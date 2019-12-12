@@ -94,17 +94,19 @@ export class GroupdetailspagePage implements OnInit {
 		addToGroup(user) {
 			console.log(user+ "Users");
 			//this.userService.addUsers(user);
-			this.afstore.collection('users', ref => ref.where('firstName', '==', user)).valueChanges().subscribe(userList => {
+			this.afstore.collection('users', ref => ref.where('uid', '==', user)).valueChanges().subscribe(userList => {
 				this.userinfo$ = userList;
-				console.log("userlist add",this.userinfo$);
-				console.log(this.userinfo$);
+				console.log("user list add",this.userinfo$);
 			})
 			for(var userinfoobs$ in this.userinfo$) {
+				console.log(this.userinfo$[userinfoobs$].firstName+""+this.userinfo$[userinfoobs$].lastName)
 				this.afstore.collection('adduserstogrp').add({
-					username: this.userinfo$[userinfoobs$].username,
-					skills: this.userinfo$[userinfoobs$].skills,
+					firstName: this.userinfo$[userinfoobs$].firstName,
+					lastName: this.userinfo$[userinfoobs$].lastName,
+					//skills: this.userinfo$[userinfoobs$].skills,
 					grpname: this.selectedGrpName,
 					addflag: true,
+					uid: user,
 				})
 			}
 		}
@@ -122,8 +124,9 @@ export class GroupdetailspagePage implements OnInit {
 remove(no){
 let size;
 	this.delay(5000).then(any=>{
-		this.afstore.collection('users', ref => ref.where('grpname', '==', this.selectedGrpName)).valueChanges().subscribe(data => {
+		this.afstore.collection('adduserstogrp', ref => ref.where('grpname', '==', this.selectedGrpName)).valueChanges().subscribe(data => {
 			console.log('remove'+this.selectedGrpName);
+			console.log(data);
 			if(data){
 				(this.userList).splice(no, 1);
 			} });
