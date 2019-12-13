@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar class="header-style">
     <ion-title>GroupCreation</ion-title>
   </ion-toolbar>
 </ion-header>
@@ -49,10 +49,10 @@
               </ion-col>
             </ion-row>
           </div>
-          <div>
-            <ion-button (click)="getSkillMatchedUser()">Get Users</ion-button>
+          <div class="get_users">
+            <ion-button (click)="getSkillMatchedUser()" color="success">Get Users</ion-button>
             <ion-row *ngFor="let user of matchedUsers">
-                <ion-item size="5" (click)="openDetailsWithState(user.uid)">{{user.firstName}} {{user.lastName}} ({{skillMatched(user.skillType)}})</ion-item>
+                <ion-item  size="5" color="white" (click)="openDetailsWithState(user.uid)">{{user.firstName}} {{user.lastName}} ({{skillMatched(user.skillType)}})</ion-item>
             </ion-row>
             
           </div>
