@@ -18,6 +18,7 @@ import {forEach} from "@angular-devkit/schematics";
 export class GroupdetailspagePage implements OnInit {
 		public userList: any[];
 		public loadedUserList: any[];
+		public useridtodel;
 	userinfo$ :any[];
 	selectedGrpName:any;
 		groupUsers = [];
@@ -92,6 +93,7 @@ export class GroupdetailspagePage implements OnInit {
 		}
 
 		addToGroup(user) {
+			this.useridtodel = user;
 			console.log(user+ "Users");
 			//this.userService.addUsers(user);
 			this.afstore.collection('users', ref => ref.where('uid', '==', user)).valueChanges().subscribe(userList => {
@@ -107,7 +109,9 @@ export class GroupdetailspagePage implements OnInit {
 					grpname: this.selectedGrpName,
 					addflag: true,
 					uid: user,
+
 				})
+
 			}
 		}
 
@@ -124,8 +128,8 @@ export class GroupdetailspagePage implements OnInit {
 remove(no){
 let size;
 	this.delay(5000).then(any=>{
-		this.afstore.collection('adduserstogrp', ref => ref.where('grpname', '==', this.selectedGrpName)).valueChanges().subscribe(data => {
-			console.log('remove'+this.selectedGrpName);
+		this.afstore.collection('adduserstogrp', ref => ref.where('uid', '==', this.useridtodel)).valueChanges().subscribe(data => {
+			console.log('remove'+this.useridtodel);
 			console.log(data);
 			if(data){
 				(this.userList).splice(no, 1);
