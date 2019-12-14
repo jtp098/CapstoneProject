@@ -20,8 +20,8 @@
   <ion-item color="light">
     <ion-label>Select Team</ion-label>
     <ion-select [(ngModel)]="selectedName" (ionChange)="groupDetailsDisplay($event)">
-      <ion-select-option *ngFor="let name of group$" [value]="name.groupname">
-          <p class="select">{{name.groupname}}</p>
+      <ion-select-option *ngFor="let grpSelected of group$" [value]="grpSelected.groupname">
+          <p class="select">{{grpSelected.groupname}}</p>
       </ion-select-option>
     </ion-select>
   </ion-item>
@@ -29,9 +29,11 @@
     <ion-card class="card-style">
       <ion-card-header class="shadow-2">
         <ion-card-subtitle>{{grpObserva.desc}}</ion-card-subtitle>
-
         <div id="profile-info">
-          <ion-card-title>{{grpObserva.groupname}}</ion-card-title>
+          <p class="select">{{grpObserva.skillLevel[0].value}}</p>
+          <p class="select">{{grpObserva.skillType[0].value}}</p>
+          <p class="select">{{grpObserva.uid}}</p>
+          <p class="select">{{grpObserva.firstName}}</p>
         </div>
       </ion-card-header>
       <br>
@@ -56,7 +58,7 @@
     <ion-searchbar showCancelButton (ionInput)="filterList($event)" placeholder="Search Users" color="light"></ion-searchbar>
 
     <ion-slides [options]="sliderConfig">
-      <ion-slide *ngFor="let item of userList ; let i = index " (click)="remove(i)">
+      <ion-slide *ngFor="let item of userList ">
         <ion-card>
           <ion-card-header>
             <ion-card-title (click)="openDetailsWithState(item.uid)">
@@ -64,7 +66,8 @@
             </ion-card-title>
             <ion-card-content>
               <img src="https://via.placeholder.com/300x300">
-              <ion-button expand="full" (click)="addToGroup(item.uid)">Add to Group</ion-button>
+              <ion-labela>{{item.uid}}</ion-labela>
+              <ion-button expand="full" (click)="addToGroup(item)  ">Add to Group</ion-button>
             </ion-card-content>
           </ion-card-header>
         </ion-card>
