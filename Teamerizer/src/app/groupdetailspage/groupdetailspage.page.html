@@ -27,13 +27,23 @@
       </ion-select>
     </ion-item>
     
-    <ion-list>
-      <p class="group-title">{{selectedGrpName}}</p>
-      <ion-item class="card-style" *ngFor='let grpObserva of grouponSelectedname$'>
-        <ion-label>{{grpObserva.firstName}} {{grpObserva.lastName}}</ion-label>
-        <p>{{grpObserva.skillType[0].text}} ({{grpObserva.skillLevel[0].text}})</p>
-      </ion-item>
-    </ion-list>
+    <ion-card class="card-style" *ngIf="selectedGrpName">
+        <ion-card-header class="shadow-2">
+          <ion-card-subtitle></ion-card-subtitle>
+  
+          <div id="profile-info">
+            <br>
+            <ion-card-title>{{selectedGrpName}}</ion-card-title>
+          </div>
+        </ion-card-header>
+        <br>
+      <ion-card-content>
+        <div *ngFor='let grpObserva of grouponSelectedname$'><b>{{grpObserva.firstName}} {{grpObserva.lastName}}</b>
+          <p *ngFor="let skillType$ of grpObserva.skillType; let i=index ">  {{grpObserva.skillType[i].text}} ({{grpObserva.skillLevel[i].text}})</p>
+          <br>
+        </div>
+      </ion-card-content>
+    </ion-card>
 
   <br>
   
