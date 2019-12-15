@@ -12,52 +12,44 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
-  <ion-row no-padding class="user-banner">
-    <ion-col text-left button tappable (click)="cat.expanded = !cat.expanded" align-self-center>
-      My Teams
-    </ion-col>
-  </ion-row>
-  <ion-item color="light">
-    <ion-label>Select Team</ion-label>
-    <ion-select [(ngModel)]="selectedName" (ionChange)="groupDetailsDisplay($event)">
-      <ion-select-option *ngFor="let name of group$" [value]="name.groupname">
-          <p class="select">{{name.groupname}}</p>
-      </ion-select-option>
-    </ion-select>
-  </ion-item>
-  <ion-list *ngFor='let grpObserva of grouponSelectedname$'>
-    <ion-card class="card-style">
-      <ion-card-header class="shadow-2">
-        <ion-card-subtitle>{{grpObserva.desc}}</ion-card-subtitle>
-
-        <div id="profile-info">
-          <ion-card-title>{{grpObserva.groupname}}</ion-card-title>
-        </div>
-      </ion-card-header>
-      <br>
-
-      <ion-card-content>
-
-      </ion-card-content>
-    </ion-card>
-
-  </ion-list>
-  <br>
-
-
-  <div class="find-users">
 
     <ion-row no-padding class="user-banner">
       <ion-col text-left button tappable (click)="cat.expanded = !cat.expanded" align-self-center>
-        Users
+        My Teams
+      </ion-col>
+    </ion-row>
+    <ion-item color="light">
+      <ion-label>Select Team</ion-label>
+      <ion-select [(ngModel)]="selectedName" (ionChange)="groupDetailsDisplay($event)">
+        <ion-select-option *ngFor="let grpSelected of group$" [value]="grpSelected.groupname">
+          <p class="select">{{grpSelected.groupname}}</p>
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+    
+    <ion-list>
+      <p class="group-title">{{selectedGrpName}}</p>
+      <ion-item class="card-style" *ngFor='let grpObserva of grouponSelectedname$'>
+        <ion-label>{{grpObserva.firstName}} {{grpObserva.lastName}}</ion-label>
+        <p>{{grpObserva.skillType[0].text}} ({{grpObserva.skillLevel[0].text}})</p>
+      </ion-item>
+    </ion-list>
+
+  <br>
+  
+
+  <div class="backdrop">
+
+    <ion-row no-padding class="user-banner">
+      <ion-col text-left button tappable (click)="cat.expanded = !cat.expanded" align-self-center>
+        Find new members
       </ion-col>
     </ion-row>
 
     <ion-searchbar showCancelButton (ionInput)="filterList($event)" placeholder="Search Users" color="light"></ion-searchbar>
 
     <ion-slides [options]="sliderConfig">
-      <ion-slide *ngFor="let item of userList">
-
+      <ion-slide *ngFor="let item of userList ">
         <ion-card>
           <ion-card-header>
             <ion-card-title (click)="openDetailsWithState(item.uid)">
@@ -65,16 +57,17 @@
             </ion-card-title>
             <ion-card-content>
               <img src="https://via.placeholder.com/300x300">
+
               <ion-button expand="full" size ="small" fill ="solid" (click)="addToGroup(user)">Add to Group</ion-button>
+              <ion-labela>{{item.uid}}</ion-labela>
+              <ion-button expand="full" (click)="addToGroup(item)  ">Add to Group</ion-button>
             </ion-card-content>
           </ion-card-header>
         </ion-card>
-
       </ion-slide>
     </ion-slides>
 
   </div>
-
   <ion-row>
     <ion-col width-50 style="text-align: center">
       <ion-button fill="solid" color="success" shape="round" (click)="cancel()">Cancel</ion-button>

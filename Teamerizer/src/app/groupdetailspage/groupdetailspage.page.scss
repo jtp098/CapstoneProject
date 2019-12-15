@@ -36,8 +36,14 @@ ion-content{
     font-size: 16px;
 }
 
-.find-users {
+.backdrop {
     background: var(--ion-color-light);
+}
+
+.group-title {
+    color: white;
+    font-size: 20px;
+    padding-left: 20px;
 }
 
 .profile-button {
