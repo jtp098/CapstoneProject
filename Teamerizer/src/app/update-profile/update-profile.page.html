@@ -16,10 +16,15 @@
 		  <ion-label position="floating">Last Name</ion-label>
 		  <ion-input type="text" [(ngModel)]="lastname"></ion-input>
 		</ion-item>
+		<ion-item class="items">
+			<ion-label position="floating">Interests</ion-label>
+			<ion-input type="text" [(ngModel)]="interests"></ion-input>
+		  </ion-item>
+	
 
 		<ion-item class="items">
-			<ion-label>Skills</ion-label>
-			<ion-button expand="block" (click)="showAdvancedPicker()" color="success">Add Skill Info</ion-button>
+			<ion-label (click)="showAdvancedPicker()">Skills</ion-label>
+			<!--<ion-button expand="block" (click)="showAdvancedPicker()" color="success">Add Skill Info</ion-button>-->
 		</ion-item>
 
 		<div class="skills">

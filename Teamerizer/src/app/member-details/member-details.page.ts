@@ -20,6 +20,7 @@ export class MemberDetailsPage implements OnInit {
     lastname:string
     skillType:string
     skillLevel:string
+    interests:string
     sub
 
     selectedSkill = [];
@@ -56,6 +57,7 @@ data: any;
       this.lastname = event.lastName
       this.selectedSkill = event.skillType
       this.selectedLevel = event.skillLevel
+      this.interests=event.interests
       console.log(this.selectedSkill);
     })
   }

@@ -19,6 +19,7 @@ export class ProfilePage implements OnInit {
     lastname:string
     skillType:string
     skillLevel:string
+    interests:string
     sub
 
     selectedSkill = [];
@@ -51,6 +52,7 @@ export class ProfilePage implements OnInit {
       this.lastname = event.lastName
       this.selectedSkill = event.skillType
       this.selectedLevel = event.skillLevel
+      this.interests =event.interests
       console.log(this.selectedSkill);
     })
   }

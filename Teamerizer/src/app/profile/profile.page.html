@@ -23,13 +23,12 @@
 
       <ion-card-content>
         <p><b>User Name:</b> {{ username }}</p>
+        <br>
         <p><b>Skills:</b></p>
         <p *ngFor="let skill of selectedSkill; let i = index">  {{ selectedSkill[i].text }}({{ selectedLevel[i].text}})</p>
         <br>
-
-        <p class="fs-12">Description</p>
-
-        Student with development skills in Java, PHP and javascript
+        <p ><b>Interests:</b></p>
+        {{ interests }}
       </ion-card-content>
     </ion-card>
 

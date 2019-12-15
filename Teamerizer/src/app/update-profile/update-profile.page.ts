@@ -28,6 +28,7 @@ export class UpdateProfilePage implements OnInit {
     busy: boolean = false
     password: string
     newpassword: string
+    interests:string
     sub;
     allSkills: any;
     allSkillLevels: any;
@@ -75,6 +76,7 @@ export class UpdateProfilePage implements OnInit {
       this.username = event.username
       this.firstname = event.firstName
       this.lastname = event.lastName
+      this.interests =event.interests
       console.log("event.skillType",event.skillType);
       if (event.skillType !== undefined ) {
         this.selectedSkill = event.skillType
@@ -151,7 +153,8 @@ export class UpdateProfilePage implements OnInit {
         firstName: this.firstname,
         lastName: this.lastname, 
         skillType: this.selectedSkill, 
-        skillLevel:this.selectedLevel
+        skillLevel:this.selectedLevel,
+        interests: this.interests
 			})
 		
       if(this.newpassword){
