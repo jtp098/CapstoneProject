@@ -29,6 +29,10 @@ export class HomePage {
         });
       }
     });
+
+    this.fireStore.collection('grouplist').valueChanges().subscribe(groupList => {
+      this.groupList = groupList;
+    })
   }
 
   getAllGroupsCreatedByCurrentUser(uid): Observable<any> {

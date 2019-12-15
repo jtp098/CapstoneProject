@@ -26,10 +26,21 @@
       </ion-fab-button>
     </ion-fab>
     <ion-list-header>
-      <ion-label class="teams">My teams</ion-label>
+      <ion-label class="teams">My Teams</ion-label>
     </ion-list-header>
     <br>
     <ion-item-sliding *ngFor="let item of group$">
+      <ion-item class="team-list" (click)="groupdetail()">
+        <ion-icon slot="start" color="medium" name="people"></ion-icon>
+        <ion-label class="team-label"> {{item.groupname}}</ion-label>
+      </ion-item>
+    </ion-item-sliding>
+
+    <ion-list-header>
+      <ion-label class="teams">Available Teams</ion-label>
+    </ion-list-header>
+
+    <ion-item-sliding *ngFor="let item of groupList">
       <ion-item class="team-list" (click)="groupdetail()">
         <ion-icon slot="start" color="medium" name="people"></ion-icon>
         <ion-label class="team-label"> {{item.groupname}}</ion-label>
