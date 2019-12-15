@@ -105,7 +105,6 @@ export class GroupdetailspagePage implements OnInit {
 		 } finally {
 			 await this.delay(2000);
 			 console.log("Fianl"+observableUser$);
-			 debugger;
 			 this.afstore.collection('users', ref => ref.where('uid', '==', user.uid)).valueChanges().subscribe((data) => {
 					 observableUser$ = data;
 					 console.log(observableUser$);
