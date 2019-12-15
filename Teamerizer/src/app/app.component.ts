@@ -73,7 +73,7 @@ export class AppComponent implements OnInit {
       icon: 'list'
     },
  {
-      title: 'Group Details',
+      title: 'Team Management',
       url: '/groupdetailspage',
       icon: 'list'
     },
