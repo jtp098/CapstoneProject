@@ -23,14 +23,13 @@
 
       <ion-card-content>
         <p><b>User Name:</b> {{ username }}</p>
-        <p><b>Skills(Levels):</b> {{ skillType }}</p>
+        <p><b>Skills:</b></p>
         <p *ngFor="let skill of selectedSkill; let i = index">  {{ selectedSkill[i].text }}({{ selectedLevel[i].text}})</p>
         <br>
 
         <p class="fs-12">Description</p>
 
-        Keep close to Nature's heart... and break clear away, once in awhile, and
-        climb a mountain or spend a week in the woods. Wash your spirit clean.
+        Student with development skills in Java, PHP and javascript
       </ion-card-content>
     </ion-card>
 

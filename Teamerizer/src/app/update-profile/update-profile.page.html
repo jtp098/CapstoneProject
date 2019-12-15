@@ -22,16 +22,6 @@
 			<ion-button expand="block" (click)="showAdvancedPicker()" color="success">Add Skill Info</ion-button>
 		</ion-item>
 
-		<!--<ion-item class="items">
-		  <ion-label position="fixed">Skill</ion-label>
-		  <ion-input type="text" [(ngModel)]="skillType" disabled="true">{{ selected[0] }}</ion-input>
-		</ion-item>
-
-		<ion-item class="items">
-		  <ion-label position="fixed">Skill Level</ion-label>
-		  <ion-input type="text" [(ngModel)]="skillLevel" disabled="true">{{ selected[1] }}</ion-input>
-		</ion-item>-->
-
 		<div class="skills">
 			<ion-row text-center>
 				<ion-col size="5" class="skills-header">Skill</ion-col>
@@ -46,11 +36,6 @@
 				</ion-col>
 			</ion-row>
 		</div>
-
-		<ion-item class="current-skills">
-			<ion-label>Current Skills</ion-label>
-			<ion-text >{{ skillType }} : {{ skillLevel }}</ion-text>
-		</ion-item>
 
 	</ion-list>
 
