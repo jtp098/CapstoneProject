@@ -56,7 +56,7 @@ export class GroupdetailspagePage implements OnInit {
 			console.log("userlist",userList);
 		})
 
-		this.groupUsers = this.userService.getGroupUsers();
+		//this.groupUsers = this.userService.getGroupUsers();
 	}
 
 	openDetailsWithState(firstName: string) {
@@ -140,6 +140,7 @@ export class GroupdetailspagePage implements OnInit {
 		console.log("selected" + event.target.value)
 		this.getDetails(event.target.value).subscribe(data => {
 			this.grouponSelectedname$ = data;
+			this.groupUsers = data;
 		});
 	}
 
