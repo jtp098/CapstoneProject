@@ -33,8 +33,7 @@
     <ion-item class="card-style" *ngFor='let grpObserva of grouponSelectedname$'>
 
       <ion-label>{{grpObserva.firstName}} {{grpObserva.lastName}}</ion-label>
-      <p *ngFor="let skillType$ of grpObserva.skillType " >{{skillType$.text}} </p>
-      <p *ngFor="let skillLevel$ of grpObserva.skillLevel " >({{skillLevel$.text}})</p>
+      <p *ngFor="let skillType$ of grpObserva.skillType; let i=index " >{{grpObserva.skillType[i].text}} ({{grpObserva.skillLevel[i].text}})</p>
     </ion-item>
   </ion-list>
 
