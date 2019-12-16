@@ -49,14 +49,10 @@ describe('AppComponent', () => {
     await fixture.detectChanges();
     const app = fixture.nativeElement;
     const menuItems = app.querySelectorAll('ion-label');
-    expect(menuItems.length).toEqual(4);
+    expect(menuItems.length).toEqual(3);
     expect(menuItems[0].textContent).toContain('Home');
-    expect(menuItems[1].textContent).toContain('List');
-    expect(menuItems[2].textContent).toContain('SignUp');
-    expect(menuItems[3].textContent).toContain('Update Profile Page');
-    expect(menuItems[4].textContent).toContain('Profile');
-    expect(menuItems[5].textContent).toContain('Group Details');
-    expect(menuItems[6].textContent).toContain('Log Out');
+    expect(menuItems[1].textContent).toContain('Profile');
+    expect(menuItems[2].textContent).toContain('Log Out');
     
     
   });
@@ -66,14 +62,10 @@ describe('AppComponent', () => {
     await fixture.detectChanges();
     const app = fixture.nativeElement;
     const menuItems = app.querySelectorAll('ion-item');
-    expect(menuItems.length).toEqual(4);
+    expect(menuItems.length).toEqual(3);
     expect(menuItems[0].getAttribute('ng-reflect-router-link')).toEqual('/home');
-    expect(menuItems[1].getAttribute('ng-reflect-router-link')).toEqual('/list');
-    expect(menuItems[2].getAttribute('ng-reflect-router-link')).toEqual('/sign-up-page');
-    expect(menuItems[3].getAttribute('ng-reflect-router-link')).toEqual('/update-profile');
-    expect(menuItems[4].getAttribute('ng-reflect-router-link')).toEqual('/profile');
-    expect(menuItems[5].getAttribute('ng-reflect-router-link')).toEqual('/groupdetailspage');
-    expect(menuItems[6].getAttribute('ng-reflect-router-link')).toEqual('/login');
+    expect(menuItems[1].getAttribute('ng-reflect-router-link')).toEqual('/profile');
+    expect(menuItems[2].getAttribute('ng-reflect-router-link')).toEqual('/login');
   });
 
 });
