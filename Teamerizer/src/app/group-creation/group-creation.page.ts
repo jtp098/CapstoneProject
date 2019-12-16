@@ -8,6 +8,7 @@ import { Observable } from 'rxjs';
 import {PickerController} from '@ionic/angular';
 import{PickerOptions} from '@ionic/core'
 import { Router,NavigationExtras } from '@angular/router';
+import { async } from 'q';
 
 
 @Component({
@@ -69,7 +70,8 @@ export class GroupCreationPage implements OnInit {
   openDetailsWithState(firstName: string) {
     let navigationExtras: NavigationExtras = {
       state: {
-        user: firstName
+        user: firstName,
+        groupname:this.newGroupData.groupname
       }
     };
     this.router.navigate(['/member-details'], navigationExtras);
@@ -108,11 +110,13 @@ export class GroupCreationPage implements OnInit {
         {
           text: 'Done',
           cssClass: 'special-done',
-          handler: (value : any): void => {
+          handler:
+          
+          (value : any): void => {
             console.log(value, 'ok');
-
             this.selectedSkill.push(value.skillType);
             this.selectedLevel.push(value.skillLevel);
+      
           } 
         }
       ],
@@ -130,6 +134,15 @@ export class GroupCreationPage implements OnInit {
 
     let picker = await this.pickerCtrl.create(opts);
     picker.present();
+    picker.onDidDismiss().then(async data =>{
+      console.log("Dismissed")
+        this.getMatchedSkillUsers().subscribe( data  => {
+          console.log("Match users",data);
+          this.matchedUsers = data;
+        });
+  
+      
+    });
     
     // picker.onDidDismiss().then(async data => {
     //   let skillType = await picker.getColumn('skillType');
@@ -140,6 +153,20 @@ export class GroupCreationPage implements OnInit {
     // });
 
   }
+
+  ionPickerDidDismiss(){
+    console.log("Dismissed")
+      if (this.selectedSkill.length > 0) {
+        this.getMatchedSkillUsers().subscribe( data  => {
+          console.log("Match users",data);
+          this.matchedUsers = data;
+        });
+  
+      } else {
+        
+      }
+    }
+  
 
   addGroup(){
 
@@ -162,7 +189,7 @@ export class GroupCreationPage implements OnInit {
 
   }
 
-  getSkillMatchedUser(){
+  async getSkillMatchedUser(){
     if (this.selectedSkill.length > 0) {
       this.getMatchedSkillUsers().subscribe( data  => {
         console.log("Match users",data);

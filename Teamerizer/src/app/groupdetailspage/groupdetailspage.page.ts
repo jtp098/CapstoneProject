@@ -6,7 +6,7 @@ import {AngularFireAuth} from '@angular/fire/auth';
 import {AlertController} from '@ionic/angular';
 import {Observable} from 'rxjs';
 import { UserService } from '../user.service';
-import { Router,NavigationExtras } from '@angular/router';
+import { Router,NavigationExtras,ActivatedRoute } from '@angular/router';
 import {forEach} from "@angular-devkit/schematics";
 
 
@@ -38,8 +38,22 @@ export class GroupdetailspagePage implements OnInit {
 				public afAuth: AngularFireAuth,
 				public alertController: AlertController,
 				private userService: UserService,
-				private router: Router
-	) {}
+				private router: Router,
+				private route: ActivatedRoute
+	) {
+		this.route.queryParams.subscribe(params => {
+			if (this.router.getCurrentNavigation().extras.state) {
+			  
+			  this.selectedGrpName = this.router.getCurrentNavigation().extras.state.groupname;
+			  
+			  console.log("passedData",this.selectedGrpName);
+			}else{
+				console.log("no Extras")
+			}
+		  });
+		  
+
+	}
 
 	ngOnInit() {
 		this.afAuth.authState.subscribe(user => {
@@ -57,12 +71,18 @@ export class GroupdetailspagePage implements OnInit {
 		})
 
 		//this.groupUsers = this.userService.getGroupUsers();
+
+		this.getDetails(this.selectedGrpName).subscribe(data => {
+			this.grouponSelectedname$ = data;
+			this.groupUsers = data;
+		});
 	}
 
 	openDetailsWithState(firstName: string) {
 		let navigationExtras: NavigationExtras = {
 			state: {
-				user: firstName
+				user: firstName,
+				groupname:this.selectedGrpName
 			}
 		};
 		this.router.navigate(['/member-details'], navigationExtras);
@@ -99,6 +119,7 @@ export class GroupdetailspagePage implements OnInit {
 		 try {
 			 this.afstore.collection('users', ref => ref.where('uid', '==', user.uid)).valueChanges().subscribe((data) => {
 				 observableUser$ = data;
+				 console.log(data);
 				 this.userinfo$=observableUser$;
 				 console.log(this.userinfo$[0]);
 			 });

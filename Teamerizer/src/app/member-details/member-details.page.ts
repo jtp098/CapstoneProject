@@ -22,16 +22,22 @@ export class MemberDetailsPage implements OnInit {
     skillLevel:string
     interests:string
     sub
+    userinfo$ :any[];
+    
+    uid: string;
 
     selectedSkill = [];
     selectedLevel = [];
 data: any;
+selectedGrpName: any;
   constructor(private afs: AngularFirestore, private user: UserService, private router: Router, 
     private afAuth: AngularFireAuth, private route: ActivatedRoute,private navCtrl: NavController) {
       this.route.queryParams.subscribe(params => {
         if (this.router.getCurrentNavigation().extras.state) {
           this.data = this.router.getCurrentNavigation().extras.state.user;
+          this.selectedGrpName = this.router.getCurrentNavigation().extras.state.groupname;
           console.log("passedData",this.data);
+          console.log("passedData",this.selectedGrpName);
         }
       });
       
@@ -58,9 +64,52 @@ data: any;
       this.selectedSkill = event.skillType
       this.selectedLevel = event.skillLevel
       this.interests=event.interests
+      this.uid=event.uid
       console.log(this.selectedSkill);
     })
   }
+
+  async addToGroup(user) {
+    console.log(user + "Users");
+    let observableUser$ = null;
+    try {
+      this.afs.collection('users', ref => ref.where('uid', '==', user)).valueChanges().subscribe((data) => {
+        observableUser$ = data;
+        this.userinfo$=observableUser$;
+        console.log(this.userinfo$[0]);
+      });
+    } finally {
+      await this.delay(2000);
+      console.log("Fianl"+observableUser$);
+      //debugger;
+      this.afs.collection('users', ref => ref.where('uid', '==', user)).valueChanges().subscribe((data) => {
+          observableUser$ = data;
+          console.log(observableUser$);
+        }
+      );
+    }
+    for(var userinfoobs$ in this.userinfo$) {
+      console.log(this.userinfo$[userinfoobs$].firstName+""+this.userinfo$[userinfoobs$].lastName)
+      this.afs.collection('adduserstogrp').add({
+        firstName: this.userinfo$[userinfoobs$].firstName,
+        lastName: this.userinfo$[userinfoobs$].lastName,
+        skillLevel: this.userinfo$[userinfoobs$].skillLevel,
+        skillType: this.userinfo$[userinfoobs$].skillType,
+        grpname: this.selectedGrpName,
+        addflag: true,
+        uid: user,
+      })
+    }
+    this.afs.collection('adduserstogrp', ref => ref.where('uid', '==', user)).valueChanges().subscribe(data => {
+      console.log(data.length>1);
+   });
+  }
+
+
+
+  delay(ms: number) {
+		return new Promise( resolve => setTimeout(resolve, ms) );
+	}
 
   goBack() {
     this.navCtrl.back();

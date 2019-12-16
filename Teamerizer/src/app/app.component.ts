@@ -55,14 +55,14 @@ export class AppComponent implements OnInit {
       title: 'SignUp',
       url: '/sign-up-page',
       icon: 'list'
-    },*/
+    },
   
     {
       title: 'Update Profile Page',
       url: '/update-profile',
       icon: 'list'
     },
-    /*{
+    {
       title: 'Log in',
       url: '/login',
       icon: 'list'
@@ -71,12 +71,12 @@ export class AppComponent implements OnInit {
       title: 'Profile',
       url: '/profile',
       icon: 'list'
-    },
+    },/*
  {
       title: 'Team Management',
       url: '/groupdetailspage',
       icon: 'list'
-    },
+    },*/
     {
       title: 'Log Out',
       url: '/login',

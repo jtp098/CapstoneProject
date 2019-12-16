@@ -19,8 +19,8 @@
           </ion-item>
           <ion-item  class="items">
               <ion-item class="items">
-                  <ion-label>Skills</ion-label>
-                  <ion-button expand="block" (click)="showAdvancedPicker()" color="success">Add Skill Info</ion-button>
+                  <ion-label (click)="showAdvancedPicker()">Skills</ion-label>
+                  <!--<ion-button expand="block" (click)="showAdvancedPicker()" color="success">Add Skill Info</ion-button>-->
                 </ion-item>
             <!-- <ion-label position="floating">Skill</ion-label>
             <ion-select [(ngModel)]="newGroupData.skill"  [formControl]="skillAC">
@@ -50,7 +50,7 @@
             </ion-row>
           </div>
           <div class="get_users">
-            <ion-button (click)="getSkillMatchedUser()" color="success">Get Users</ion-button>
+            <!--<ion-button (click)="getSkillMatchedUser()" color="success">Get Users</ion-button>-->
             <ion-row *ngFor="let user of matchedUsers">
                 <ion-item  size="5" color="white" (click)="openDetailsWithState(user.uid)">{{user.firstName}} {{user.lastName}} ({{skillMatched(user.skillType)}})</ion-item>
             </ion-row>
@@ -60,7 +60,7 @@
         <ion-button expand="block" color="primary" type="submit" shape="round" [disabled]="!newFormGroup.valid" (click)="addGroup()">Add Group</ion-button>
         <ion-row>
             <ion-col width-50 style="text-align: center">
-              <ion-button fill="solid" color="success" shape="round" (click)="cancel()">Cancel</ion-button>
+              <ion-button expand="block" color="success" shape="round" (click)="cancel()">Cancel</ion-button>
             </ion-col>
           </ion-row>
       </form>

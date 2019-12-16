@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { MenuController } from '@ionic/angular';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { Router } from '@angular/router';
+import { Router,NavigationExtras } from '@angular/router';
 import {Observable} from 'rxjs';
 import {AngularFireAuth} from '@angular/fire/auth';
 @Component({
@@ -13,7 +13,8 @@ export class HomePage {
   public groupList: any[];
   uid: string;
   group$;
-
+  groupname:string;
+  selectedGrpName:any;
   constructor(public menu: MenuController, private fireStore: AngularFirestore,public router: Router, public afAuth: AngularFireAuth ) {
 
   }
@@ -43,8 +44,15 @@ export class HomePage {
     this.router.navigate(['/group-creation'])
   }
 
-  async groupdetail(){
-    this.router.navigate(['/groupdetailspage'])
+  async groupdetail(groupname:string){
+    
+    let navigationExtras: NavigationExtras = {
+      state: {
+        groupname:groupname
+      }
+    };
+
+    this.router.navigate(['/groupdetailspage'],navigationExtras)
   }
 
 }

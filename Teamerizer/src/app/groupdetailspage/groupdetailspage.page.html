@@ -13,7 +13,7 @@
 </ion-header>
 <ion-content>
 
-    <ion-row no-padding class="user-banner">
+    <!--<ion-row no-padding class="user-banner">
       <ion-col text-left button tappable (click)="cat.expanded = !cat.expanded" align-self-center>
         My Teams
       </ion-col>
@@ -25,7 +25,7 @@
           <p class="select">{{grpSelected.groupname}}</p>
         </ion-select-option>
       </ion-select>
-    </ion-item>
+    </ion-item>-->
     
     <ion-card class="card-style" *ngIf="selectedGrpName">
         <ion-card-header class="shadow-2">
@@ -66,18 +66,18 @@
               {{ item.firstName}} {{ item.lastName }}
             </ion-card-title>
             <ion-card-content>
-              <img src="https://via.placeholder.com/300x300">
+              <img src="assets/icon/me.png/">
               <ion-button expand="full" size="small" (click)="addToGroup(item)  ">Add to Group</ion-button>
             </ion-card-content>
           </ion-card-header>
         </ion-card>
       </ion-slide>
     </ion-slides>
-
+    
   </div>
   <ion-row>
     <ion-col width-50 style="text-align: center">
-      <ion-button fill="solid" color="success" shape="round" (click)="cancel()">Cancel</ion-button>
+      <ion-button expand="block" fill="solid" color="success" shape="round" (click)="cancel()">Cancel</ion-button>
     </ion-col>
   </ion-row>
 

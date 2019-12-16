@@ -30,12 +30,13 @@
     </ion-list-header>
     <br>
     <ion-item-sliding *ngFor="let item of group$">
-      <ion-item class="team-list" (click)="groupdetail()">
+      <ion-item class="team-list" (click)="groupdetail(item.groupname)">
         <ion-icon slot="start" color="medium" name="people"></ion-icon>
         <ion-label class="team-label"> {{item.groupname}}</ion-label>
       </ion-item>
     </ion-item-sliding>
 
+    <!-- For use at a later time DO NOT DELETE
     <ion-list-header>
       <ion-label class="teams">Available Teams</ion-label>
     </ion-list-header>
@@ -46,7 +47,7 @@
         <ion-icon slot="start" color="medium" name="people"></ion-icon>
         <ion-label class="team-label"> {{item.groupname}}</ion-label>
       </ion-item>
-    </ion-item-sliding>
+    </ion-item-sliding>-->
   </ion-list>
   
 </ion-content>
