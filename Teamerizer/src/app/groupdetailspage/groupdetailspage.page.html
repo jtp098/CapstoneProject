@@ -38,7 +38,7 @@
               <ion-col size="11">
                 <ion-input [readonly]="!isEditGroupDetail" [(ngModel)]="selectedGroup.desc" id="desc" type="text" #groupDesc required placeholder="Description"></ion-input>
               </ion-col>
-              <ion-col size="1">
+              <ion-col size="1" *ngIf="isAdminUser">
                 <ion-icon name="create" (click)="editGroupDesc()"></ion-icon>
               </ion-col>
             </ion-row>
@@ -95,7 +95,7 @@
   </div>
   <ion-row>
     <ion-col width-50 style="text-align: center">
-      <ion-button expand="block" color="primary" type="submit" shape="round" (click)="updateGroup()">Update Group</ion-button>
+      <ion-button *ngIf="isAdminUser" expand="block" color="primary" type="submit" shape="round" (click)="updateGroup()">Update Group</ion-button>
       <ion-button expand="block" fill="solid" color="success" shape="round" (click)="cancel()">Cancel</ion-button>
     </ion-col>
   </ion-row>
