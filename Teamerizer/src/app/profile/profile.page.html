@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar class="header-style">
     <ion-title>
-        <ion-img class="logo" src="assets/images/teamerizer.png"></ion-img>
+        <ion-img class="logo" src="assets/images/teamerizer2.png"></ion-img>
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -22,24 +22,48 @@
       <br>
 
       <ion-card-content>
-        <p><b>User Name:</b> {{ username }}</p>
+        <p><b><span style="color:#0029FA">User Name:</span></b> {{ username }}</p>
         <br>
-        <p><b>Skills:</b></p>
+        <p><b><span style="color:#0029FA">Skills:</span></b></p>
         <p *ngFor="let skill of selectedSkill; let i = index">  {{ selectedSkill[i].text }}({{ selectedLevel[i].text}})</p>
         <br>
-        <p ><b>Interests:</b></p>
-        {{ interests }}
+        <p><b><span style="color:#0029FA">Interests:</span></b> {{ interests }}</p>
+
+        <br>
+        <p id="other-teams"><b>Other teams you are in:</b></p>
+        <ion-item-sliding *ngFor="let item of team$">
+          <ion-item class="team-list">
+            <ion-icon slot="start" color="medium" name="people"></ion-icon>
+            <ion-label class="team-label"> {{item.grpname}}</ion-label>
+          </ion-item>
+
+        </ion-item-sliding>
+
+        <!--<div *ngFor="let item of zip2$">
+          <ion-item-sliding *ngFor="let subItem of item | keyvalue">
+            <ion-label> {{subItem.key}} {{subItem.value}} </ion-label>
+          </ion-item-sliding>
+        </div>-->
+
+        <br> 
+
+        <div *ngFor="let item of adminUser$">
+          <ion-item-sliding *ngFor="let subItem of item; let i = index">
+            <ion-label> Admin: {{subItem.firstName}} {{subItem.lastName}}</ion-label>
+          </ion-item-sliding>
+        </div>
       </ion-card-content>
+
     </ion-card>
 
     <ion-row>
       <ion-col width-50 style="text-align: center">
-        <ion-button expand="block" fill="solid" color="primary" shape="round"  (click)="updateProfile()">Update</ion-button>
+        <ion-button fill="solid" color="primary" shape="round"  (click)="updateProfile()">Update</ion-button>
       </ion-col>
     </ion-row>
     <ion-row>
       <ion-col width-50 style="text-align: center">
-        <ion-button expand="block" fill="solid" color="success" shape="round" (click)="cancel()">Cancel</ion-button>
+        <ion-button fill="solid" color="success" shape="round" (click)="cancel()">Cancel</ion-button>
       </ion-col>
     </ion-row>
 

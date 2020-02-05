@@ -1,18 +1,19 @@
 .header-style {
-  --background: #062f6f;
+  --background: #230A59;
   color: #33A9AC;
 }
 
 ion-menu-button {
-  --color: #33A9AC;
+  --color: #96F20C;
 }
 .logo {
   width: 50px;
   height: 50px;
+  float: right;
 }
 
 ion-content{
-  --ion-background-color: #484b86;
+  --ion-background-color: #ffffff;
 }
 
 .card-style {
@@ -21,9 +22,7 @@ ion-content{
 
 .teams {
   font-size: 20px;
-  color: rgb(172, 172, 172);
-  text-decoration: underline; 
-  text-decoration-color:#33A9AC;
+  color: rgb(172, 172, 172); 
 }
 
 .team-list {
@@ -31,6 +30,6 @@ ion-content{
 }
 
 .team-label {
-  color: white;
+  color: #0029FA;
 }
 

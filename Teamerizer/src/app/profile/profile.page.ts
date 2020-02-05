@@ -4,6 +4,7 @@ import { UserService } from '../user.service';
 import { firestore } from 'firebase/app';
 import { AlertController } from '@ionic/angular';
 import { Router } from '@angular/router';
+import {Observable} from 'rxjs';
 import { AngularFireAuth } from '@angular/fire/auth';
 
 @Component({
@@ -13,7 +14,15 @@ import { AngularFireAuth } from '@angular/fire/auth';
 })
 export class ProfilePage implements OnInit {
     mainuser: AngularFirestoreDocument
-    
+    team$;
+    teamName$;
+    allGroupListData$;
+    group$;
+    adminId$;
+    adminIds$ = [];
+    adminUser$ = [];
+    zip$ = [];
+    zip2$ = [];
     username:string
     firstname:string
     lastname:string
@@ -42,6 +51,61 @@ export class ProfilePage implements OnInit {
         
       }
     });
+
+    this.afAuth.authState.subscribe(user => {
+      if(user){
+
+        //method uses collection, adduserstogrp
+        this.getAllGroupsUserIsIn(user.uid).subscribe(data => {
+          console.log("Group List Data:", data);
+          this.team$ = data;
+          console.log(data[0].grpname);
+    
+          //method uses collection, groupList
+          this.getAllGroupListData().subscribe(adminData => {
+            this.allGroupListData$ = adminData;
+            for (let i = 0; i < adminData.length; i++) {
+              for(let j = 0; j < this.team$.length; j++) {
+                if(adminData[i].groupname === this.team$[j].grpname) {
+                  this.teamName$ = adminData[i].groupname;
+                  this.adminId$ = adminData[i].createdBy;
+                  console.log("admin id: " + this.adminId$);
+                  this.adminIds$.push(this.adminId$);
+
+                  this.zip2$ = this.allGroupListData$.map(o => {
+                    return { team: o.groupname, admin: o.createdBy};
+                  });
+        
+                    //console.log("Admin Id Map: " + this.zip2$);
+
+                  //method uses collection, users
+                  this.getGroupAdminUser(this.adminId$).subscribe(data => {
+                    this.adminUser$.push(data);
+                    console.log("Admin Users " + this.adminUser$);
+
+                    this.zip$ = this.adminUser$.map((x, i) => {
+                      //for(j = 0; j < this.adminIds$.length; j++) {
+                        //if(this.adminId$ === x[0].uid) {
+                          console.log("true!");
+                          console.log(x[0].firstName);
+                          return  [x[0].firstName, this.team$[i].grpname]
+                        //}
+                      //}
+                    });
+          
+                    //console.log("Admin Id Map: " + this.zip$);
+                  });
+                }
+              }
+            }
+            console.log(this.adminIds$);
+            console.log("Admin Users After " +this.adminUser$);
+
+          });
+
+        });
+      }
+    });
   }
 
   setUserProfileData(){
@@ -60,6 +124,19 @@ export class ProfilePage implements OnInit {
   updateProfile(){
     this.router.navigate(['/update-profile'])
   }
+
+  getAllGroupsUserIsIn(uid): Observable<any> {
+    return this.afs.collection<any>('adduserstogrp', ref => ref.where('uid', '==', uid)).valueChanges()
+  }
+
+  getAllGroupListData(): Observable<any> {
+    return this.afs.collection<any>('grouplist').valueChanges()
+  }
+
+  getGroupAdminUser(adminId): Observable<any> {
+    return this.afs.collection<any>('users', ref => ref.where('uid', '==', adminId)).valueChanges()
+  }
+  
 
   async cancel(){
     this.router.navigate(['/home'])

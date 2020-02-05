@@ -1,15 +1,16 @@
 .header-style {
-    --background: #062f6f;
+    --background: #230A59;
     color: #33A9AC;
 }
 
 .logo {
     width: 50px;
     height: 50px;
+    float: right;
   }
 
 ion-content{
-    --ion-background-color: #484b86;
+    --ion-background-color: #ffffff;
 }
 
 .card-style {
@@ -18,7 +19,7 @@ ion-content{
 
 img {
     border-radius: 50%;
-    border: 2px solid #F2884B;
+    border: 2px solid #96F20C;
 }
 
 .fullname {
@@ -29,4 +30,9 @@ img {
     z-index: 100;
     position: absolute;
     right: 0;
+}
+
+#other-teams {
+    color: #96F20C;
+    font-size: 16px;
 }
