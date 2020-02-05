@@ -5,7 +5,7 @@
     </ion-title>
     <ion-buttons slot="end">
       <ion-button>
-        <ion-badge *ngIf="groupUsers.length > 0" color=success>{{ groupUsers.length }}</ion-badge>
+        <ion-badge *ngIf="grouponSelectedname$?.length > 0" color=success>{{ grouponSelectedname$.length }}</ion-badge>
         <ion-icon name="people" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -34,21 +34,39 @@
           <div id="profile-info">
             <br>
             <ion-card-title>{{selectedGrpName}}</ion-card-title>
+            <ion-row>
+              <ion-col size="11">
+                <ion-input [readonly]="!isEditGroupDetail" [(ngModel)]="selectedGroup.desc" id="desc" type="text" #groupDesc required placeholder="Description"></ion-input>
+              </ion-col>
+              <ion-col size="1">
+                <ion-icon name="create" (click)="editGroupDesc()"></ion-icon>
+              </ion-col>
+            </ion-row>
+             
+         
           </div>
         </ion-card-header>
         <br>
       <ion-card-content>
-        <div *ngFor='let grpObserva of grouponSelectedname$'><b>{{grpObserva.firstName}} {{grpObserva.lastName}}</b>
-          <p *ngFor="let skillType$ of grpObserva.skillType; let i=index ">  {{grpObserva.skillType[i].text}} ({{grpObserva.skillLevel[i].text}})</p>
+        <ion-row *ngFor='let grpObserva of grouponSelectedname$; let j=index'>
+          <ion-col size="11">
+          <b>{{grpObserva.firstName}} {{grpObserva.lastName}}</b>
+          <p *ngFor="let skillType$ of grpObserva.skillType; let i=index ">  
+            {{grpObserva.skillType[i].text}} ({{grpObserva.skillLevel[i].text}})
+          </p>
           <br>
-        </div>
+        </ion-col>
+        <ion-col size="1" text-center *ngIf="isAdminUser">
+          <ion-icon name="trash" (click)="deleteUser(j)"></ion-icon>
+        </ion-col>
+      </ion-row>
       </ion-card-content>
     </ion-card>
 
   <br>
   
 
-  <div class="backdrop">
+  <div class="backdrop" *ngIf="isAdminUser">
 
     <ion-row no-padding class="user-banner">
       <ion-col text-left button tappable (click)="cat.expanded = !cat.expanded" align-self-center>
@@ -77,6 +95,7 @@
   </div>
   <ion-row>
     <ion-col width-50 style="text-align: center">
+      <ion-button expand="block" color="primary" type="submit" shape="round" (click)="updateGroup()">Update Group</ion-button>
       <ion-button expand="block" fill="solid" color="success" shape="round" (click)="cancel()">Cancel</ion-button>
     </ion-col>
   </ion-row>

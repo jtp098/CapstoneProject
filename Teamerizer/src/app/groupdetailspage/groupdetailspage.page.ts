@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {FormGroup, AbstractControl, FormBuilder, Validators} from '@angular/forms';
 import {NavController} from '@ionic/angular';
 import {AngularFirestore} from '@angular/fire/firestore';
@@ -8,6 +8,7 @@ import {Observable} from 'rxjs';
 import { UserService } from '../user.service';
 import { Router,NavigationExtras,ActivatedRoute } from '@angular/router';
 import {forEach} from "@angular-devkit/schematics";
+import { map } from 'rxjs/operators';
 
 
 @Component({
@@ -16,6 +17,7 @@ import {forEach} from "@angular-devkit/schematics";
 	styleUrls: ['./groupdetailspage.page.scss'],
 })
 export class GroupdetailspagePage implements OnInit {
+	@ViewChild('groupDesc') groupDescInput;
 	public userList: any[];
 	public loadedUserList: any[];
 	userinfo$ :any[];
@@ -33,6 +35,9 @@ export class GroupdetailspagePage implements OnInit {
 	group$;
 	grouponSelectedname$;
 	grouplist: any;
+	isAdminUser = false;
+	selectedGroup : any;
+	isEditGroupDetail = false;
 	constructor(private navCtrl: NavController,
 				public afstore: AngularFirestore,
 				public afAuth: AngularFireAuth,
@@ -43,8 +48,8 @@ export class GroupdetailspagePage implements OnInit {
 	) {
 		this.route.queryParams.subscribe(params => {
 			if (this.router.getCurrentNavigation().extras.state) {
-			  
-			  this.selectedGrpName = this.router.getCurrentNavigation().extras.state.groupname;
+			  this.selectedGroup = this.router.getCurrentNavigation().extras.state.group;
+			  this.selectedGrpName = this.selectedGroup.groupname;
 			  
 			  console.log("passedData",this.selectedGrpName);
 			}else{
@@ -58,10 +63,11 @@ export class GroupdetailspagePage implements OnInit {
 	ngOnInit() {
 		this.afAuth.authState.subscribe(user => {
 			if(user){
-				this.getAllGroupsCreatedByCurrentUser(user.uid).subscribe(data => {
-					console.log("Group List Data:", data);
-					this.group$ = data;
-				});
+				if (user.uid === this.selectedGroup.createdBy) {
+					this.isAdminUser = true;
+				} else {
+					this.isAdminUser = false;
+				}
 			}
 		});
 		this.afstore.collection('users').valueChanges().subscribe(userList => {
@@ -74,8 +80,31 @@ export class GroupdetailspagePage implements OnInit {
 
 		this.getDetails(this.selectedGrpName).subscribe(data => {
 			this.grouponSelectedname$ = data;
-			this.groupUsers = data;
 		});
+	}
+
+	editGroupDesc() {
+		this.isEditGroupDetail = !this.isEditGroupDetail;
+		if (this.isEditGroupDetail) {
+			this.groupDescInput.setFocus();
+		}
+	}
+
+	updateGroup() {
+		let updateGroup = this.afstore.doc(`grouplist/${this.selectedGroup.id}`)
+		updateGroup.update({
+			desc:this.selectedGroup.desc
+			
+		});
+		this.router.navigate(['/home']);
+	}
+
+	deleteUser(i) {
+		let selectedUser = this.grouponSelectedname$[i];
+		if (selectedUser) {
+			this.afstore.collection("adduserstogrp").doc(selectedUser.id)
+			.delete();
+		}
 	}
 
 	openDetailsWithState(firstName: string) {
@@ -161,7 +190,6 @@ export class GroupdetailspagePage implements OnInit {
 		console.log("selected" + event.target.value)
 		this.getDetails(event.target.value).subscribe(data => {
 			this.grouponSelectedname$ = data;
-			this.groupUsers = data;
 		});
 	}
 
@@ -169,7 +197,15 @@ export class GroupdetailspagePage implements OnInit {
 		return this.afstore.collection<any>('grouplist', ref => ref.where('createdBy', '==', uid)).valueChanges();
 	}
 	getDetails(grpName): Observable<any> {
-		return this.afstore.collection<any>('adduserstogrp', ref => ref.where('grpname', '==', grpName)).valueChanges();
+		return this.afstore.collection<any>('adduserstogrp', ref => ref.where('grpname', '==', grpName)).snapshotChanges().pipe(
+			map(actions => {
+			return actions.map(a => {
+				const data = a.payload.doc.data();
+				const id = a.payload.doc.id;
+				return { id, ...data };
+			});
+			})
+		);
 	}
 	getUserInfo(firstName): Observable<any> {
 		return this.afstore.collection('users', ref => ref.where('firstName', '==', firstName)).valueChanges();

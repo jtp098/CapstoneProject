@@ -57,7 +57,7 @@ getAllGroup() {
     this.router.navigate(['/group-creation'])
   }
 
-  async groupdetail(group:string){
+  async groupdetail(group){
     
     let navigationExtras: NavigationExtras = {
       state: {
