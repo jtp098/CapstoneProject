@@ -15,6 +15,8 @@ export class HomePage {
   group$;
   groupname:string;
   selectedGrpName:any;
+  grouptf;
+
   constructor(public menu: MenuController, private fireStore: AngularFirestore,public router: Router, public afAuth: AngularFireAuth ) {
 
   }
@@ -27,16 +29,29 @@ export class HomePage {
         this.getAllGroupsCreatedByCurrentUser(user.uid).subscribe(data => {
           console.log("Group List Data:", data);
           this.group$ = data;
+          console.log(this.group$);
+          if (this.group$.length === 0) {
+            console.log('helo');
+            this.grouptf = true;
+          }
+          
         });
       }
     });
 
     this.fireStore.collection('grouplist').valueChanges().subscribe(groupList => {
       this.groupList = groupList;
+      if (groupList.length > 0){
+        this.grouptf = false;
+      }
     })
   }
 
   getAllGroupsCreatedByCurrentUser(uid): Observable<any> {
+    console.log('here');
+    if (this.fireStore.collection<any>('grouplist', ref => ref.where('createdBy', '==', uid)).valueChanges()){
+      console.log('here2');
+    }
     return this.fireStore.collection<any>('grouplist', ref => ref.where('createdBy', '==', uid)).valueChanges()
 }
 

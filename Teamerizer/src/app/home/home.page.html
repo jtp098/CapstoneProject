@@ -26,13 +26,26 @@
       </ion-fab-button>
     </ion-fab>
     <ion-list-header>
-      <ion-label class="teams">My Teams</ion-label>
+      
+      <ion-label class="teams">My Teams </ion-label>
+      
+      
+        
     </ion-list-header>
+   
     <br>
+      <ion-item *ngIf="grouptf">You are not part of any groups</ion-item>
     <ion-item-sliding *ngFor="let item of group$">
-      <ion-item class="team-list" (click)="groupdetail(item.groupname)">
+      
+      <ion-item  class="team-list" (click)="groupdetail(item.groupname)">
+        
         <ion-icon slot="start" color="medium" name="people"></ion-icon>
         <ion-label class="team-label"> {{item.groupname}}</ion-label>
+        <br>
+        <br>
+        <br>
+        <br>
+        
       </ion-item>
     </ion-item-sliding>
 
