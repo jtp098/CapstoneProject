@@ -61,7 +61,7 @@ export class ProfilePage implements OnInit {
           this.team$ = data;
           console.log(data[0].grpname);
     
-          //method uses collection, groupList
+          //method uses collection, groupList to set admin ids
           this.getAllGroupListData().subscribe(adminData => {
             this.allGroupListData$ = adminData;
             for (let i = 0; i < adminData.length; i++) {
@@ -72,13 +72,13 @@ export class ProfilePage implements OnInit {
                   console.log("admin id: " + this.adminId$);
                   this.adminIds$.push(this.adminId$);
 
-                  this.zip2$ = this.allGroupListData$.map(o => {
+                  /*this.zip2$ = this.allGroupListData$.map(o => {
                     return { team: o.groupname, admin: o.createdBy};
-                  });
+                  });*/
         
                     //console.log("Admin Id Map: " + this.zip2$);
 
-                  //method uses collection, users
+                  //method uses collection, users. Call function to get all admin users
                   this.getGroupAdminUser(this.adminId$).subscribe(data => {
                     this.adminUser$.push(data);
                     console.log("Admin Users " + this.adminUser$);
@@ -99,7 +99,6 @@ export class ProfilePage implements OnInit {
               }
             }
             console.log(this.adminIds$);
-            console.log("Admin Users After " +this.adminUser$);
 
           });
 

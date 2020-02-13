@@ -24,8 +24,8 @@
       <ion-card-content>
         <p><b><span style="color:#0029FA">User Name:</span></b> {{ username }}</p>
         <br>
-        <p><b><span style="color:#0029FA">Skills:</span></b></p>
-        <p *ngFor="let skill of selectedSkill; let i = index">  {{ selectedSkill[i].text }}({{ selectedLevel[i].text}})</p>
+        <p style="display: inline;"><b><span style="color:#0029FA">Skills:</span></b></p>
+        <p style="display: inline;" *ngFor="let skill of selectedSkill; let i = index">  {{ selectedSkill[i].text }}({{ selectedLevel[i].text}})<br></p>
         <br>
         <p><b><span style="color:#0029FA">Interests:</span></b> {{ interests }}</p>
 
@@ -38,6 +38,12 @@
           </ion-item>
 
         </ion-item-sliding>
+
+        <div *ngFor="let item of zip$ | keyvalue">
+          <ion-item-sliding>
+            <ion-label> {{item.value}} </ion-label>
+          </ion-item-sliding>
+        </div>
 
         <!--<div *ngFor="let item of zip2$">
           <ion-item-sliding *ngFor="let subItem of item | keyvalue">
