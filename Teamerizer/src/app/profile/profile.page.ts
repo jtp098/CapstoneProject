@@ -23,7 +23,7 @@ export class ProfilePage implements OnInit {
     adminUser$ = [];
     adminInfo$ = [];
     adminInfoMul$ ;
-    admincount= -1;
+    admincount= 0;
     zip$ = [];
     zip2$ = [];
     username:string
@@ -73,35 +73,31 @@ export class ProfilePage implements OnInit {
                                     this.teamName$ = adminData[i].groupname;
                                     this.adminId$ = adminData[i].createdBy;
                                     console.log("admin id: " + this.adminId$);
-                                 this.getAdminGrpById(this.adminId$);
-
                                     this.adminIds$.push(this.adminId$);
                                     this.zip2$ = this.allGroupListData$.map(o => {
                                         return [{ team: o.groupname, admin: o.createdBy}];
                                     });
-
                                     //console.log("Admin Id Map: " + this.zip2$);
                                     //method uses collection, users
+                                    //make sure it executes only one..
+                                    this.getAdminGrpById(this.adminId$);
                                     this.getGroupAdminUser(this.adminId$).subscribe(data => {
-                                      this.adminUser$.push(data);
-                                      console.log("Admin User$" + JSON.stringify(this.adminUser$));
-  
-                                      this.adminUser$.map((x, i) => {
-                                          for ( let k = 0; k < this.adminInfo$.length; k++) {
-                                              console.log("Admin Info " + JSON.stringify(this.adminInfo$));
-                                              if(x[0].uid===this.adminIds$[k]){
-                                                  console.log("Last check " + JSON.stringify([{ firstname: x[0].firstName, lastname: x[0].lastName,  grpname: (this.adminInfo$[k])[0].groupname}]) );
-                                                  
-                                                  /*if(this.zip$.indexOf( [{ firstname: x[0].firstName, lastname: x[0].lastName,  grpname: (this.adminInfo$[k])[0].groupname }]) >=-1){*/
-                                                      this.zip$.push( [{ firstname: x[0].firstName, lastname: x[0].lastName, createdby: (this.adminInfo$[k])[0].createdBy, grpname: (this.adminInfo$[k])[0].groupname }]);
 
-                                                     // this.zip$.filter((v,i,a) => a.findIndex(t => (JSON.stringify(t) === JSON.stringify(v))) === i);
-                                                //}
-                                              }
-                                              console.log(JSON.stringify(this.zip$));
-                                            
-                                          }
-                                      });
+                                        this.adminUser$.push(data);
+                                        console.log();
+                                        this.adminUser$.map((x, i) => {
+                                            for ( let k = 0; k < this.adminInfo$.length; k++) {
+                                                if(x[0].uid===this.adminIds$[k]){
+                                                    //condition  to remove duplicate grpname
+                                                    if(k === this.admincount){
+                                                        this.admincount++;
+                                                        if(this.zip$.indexOf( [{ firstname: x[0].firstName, lastname: x[0].lastName,  grpname: (this.adminInfo$[k])[0].groupname }]) <=-1){
+                                                            this.zip$.push( [{ firstname: x[0].firstName, lastname: x[0].lastName,  grpname: (this.adminInfo$[k])[0].groupname }]);
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        });
                                     });
                                 }
                             }
