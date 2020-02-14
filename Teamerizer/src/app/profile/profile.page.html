@@ -24,8 +24,8 @@
       <ion-card-content>
         <p><b><span style="color:#0029FA">User Name:</span></b> {{ username }}</p>
         <br>
-        <p style="display: inline;"><b><span style="color:#0029FA">Skills:</span></b></p>
-        <p style="display: inline;" *ngFor="let skill of selectedSkill; let i = index">  {{ selectedSkill[i].text }}({{ selectedLevel[i].text}})<br></p>
+        <p><b><span style="color:#0029FA">Skills:</span></b></p>
+        <p *ngFor="let skill of selectedSkill; let i = index">  {{ selectedSkill[i].text }}({{ selectedLevel[i].text}})</p>
         <br>
         <p><b><span style="color:#0029FA">Interests:</span></b> {{ interests }}</p>
 
@@ -36,14 +36,14 @@
             <ion-icon slot="start" color="medium" name="people"></ion-icon>
             <ion-label class="team-label"> {{item.grpname}}</ion-label>
           </ion-item>
-
+            <div *ngFor="let admin of this.zip$">
+                <ion-item-sliding *ngFor="let admindetails of admin">
+                    <div *ngIf="admindetails.grpname===item.grpname">
+                    <ion-label> Admin: {{admindetails.firstname}} {{admindetails.lastname}}</ion-label>
+                    </div>
+                </ion-item-sliding>
+            </div>
         </ion-item-sliding>
-
-        <div *ngFor="let item of zip$ | keyvalue">
-          <ion-item-sliding>
-            <ion-label> {{item.value}} </ion-label>
-          </ion-item-sliding>
-        </div>
 
         <!--<div *ngFor="let item of zip2$">
           <ion-item-sliding *ngFor="let subItem of item | keyvalue">
@@ -53,11 +53,7 @@
 
         <br> 
 
-        <div *ngFor="let item of adminUser$">
-          <ion-item-sliding *ngFor="let subItem of item; let i = index">
-            <ion-label> Admin: {{subItem.firstName}} {{subItem.lastName}}</ion-label>
-          </ion-item-sliding>
-        </div>
+
       </ion-card-content>
 
     </ion-card>
