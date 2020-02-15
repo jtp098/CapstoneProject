@@ -3,12 +3,6 @@
     <ion-title>
       Team Management
     </ion-title>
-    <ion-buttons slot="end">
-      <ion-button>
-        <ion-badge *ngIf="groupUsers.length > 0" color=success>{{ groupUsers.length }}</ion-badge>
-        <ion-icon name="people" slot="icon-only"></ion-icon>
-      </ion-button>
-    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 <ion-content>
@@ -37,9 +31,17 @@
           </div>
         </ion-card-header>
         <br>
+        <ion-card-subtitle>Accepted Members</ion-card-subtitle>
       <ion-card-content>
         <div *ngFor='let grpObserva of grouponSelectedname$'><b>{{grpObserva.firstName}} {{grpObserva.lastName}}</b>
           <p *ngFor="let skillType$ of grpObserva.skillType; let i=index ">  {{grpObserva.skillType[i].text}} ({{grpObserva.skillLevel[i].text}})</p>
+          <br>
+        </div>
+      </ion-card-content>
+      <ion-card-subtitle>Pending Invites</ion-card-subtitle>
+      <ion-card-content>
+        <div *ngFor='let grpObservaPending of grouponSelectednamePending$'><b>{{grpObservaPending.firstName}} {{grpObservaPending.lastName}}</b>
+          <p *ngFor="let skillType$ of grpObservaPending.skillType; let i=index ">  {{grpObservaPending.skillType[i].text}} ({{grpObservaPending.skillLevel[i].text}})</p>
           <br>
         </div>
       </ion-card-content>
@@ -54,7 +56,7 @@
       <ion-col text-left button tappable (click)="cat.expanded = !cat.expanded" align-self-center>
         Find new members
       </ion-col>
-    </ion-row>
+    </ion-row> 
 
     <ion-searchbar showCancelButton (ionInput)="filterList($event)" placeholder="Search Users" color="light"></ion-searchbar>
 
@@ -67,7 +69,7 @@
             </ion-card-title>
             <ion-card-content>
               <img src="assets/icon/me.png/">
-              <ion-button expand="full" size="small" (click)="addToGroup(item)  ">Add to Group</ion-button>
+              <ion-button expand="full" size="small" (click)="addToGroup(item)  ">Invite to Group</ion-button>
             </ion-card-content>
           </ion-card-header>
         </ion-card>

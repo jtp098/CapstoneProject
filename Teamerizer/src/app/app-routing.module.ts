@@ -14,7 +14,8 @@ const routes: Routes = [
   { path: 'member-details', loadChildren: './member-details/member-details.module#MemberDetailsPageModule' },
   { path: 'member-match', loadChildren: './member-match/member-match.module#MemberMatchPageModule' },
   { path: 'update-profile', loadChildren: './update-profile/update-profile.module#UpdateProfilePageModule' },
-  { path: 'groupdetailspage', loadChildren: './groupdetailspage/groupdetailspage.module#GroupdetailspagePageModule' }
+  { path: 'groupdetailspage', loadChildren: './groupdetailspage/groupdetailspage.module#GroupdetailspagePageModule' },  { path: 'pending-invites', loadChildren: './pending-invites/pending-invites.module#PendingInvitesPageModule' }
+
 ];
 
 @NgModule({

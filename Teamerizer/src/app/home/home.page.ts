@@ -15,7 +15,8 @@ export class HomePage {
   group$;
   groupname:string;
   selectedGrpName:any;
-  constructor(public menu: MenuController, private fireStore: AngularFirestore,public router: Router, public afAuth: AngularFireAuth ) {
+  userInvites = [];
+  constructor(public afstore: AngularFirestore,public menu: MenuController, private fireStore: AngularFirestore,public router: Router, public afAuth: AngularFireAuth ) {
 
   }
 
@@ -27,6 +28,16 @@ export class HomePage {
         this.getAllGroupsCreatedByCurrentUser(user.uid).subscribe(data => {
           console.log("Group List Data:", data);
           this.group$ = data;
+          this.uid = user.uid;
+          console.log("UserID1",user.uid);
+
+          this.getPendingInvites(user.uid).subscribe(data => {
+      
+            this.userInvites = data;
+            console.log("Pending",data);
+          });
+
+
         });
       }
     });
@@ -34,8 +45,14 @@ export class HomePage {
     this.fireStore.collection('grouplist').valueChanges().subscribe(groupList => {
       this.groupList = groupList;
     })
+   
+    
+
   }
 
+  getPendingInvites(uid): Observable<any> {
+		return this.afstore.collection<any>('adduserstogrp', ref => ref.where('uid', '==', uid).where( 'status', '==', 'Pending')).valueChanges();
+	}
   getAllGroupsCreatedByCurrentUser(uid): Observable<any> {
     return this.fireStore.collection<any>('grouplist', ref => ref.where('createdBy', '==', uid)).valueChanges()
 }
@@ -54,5 +71,18 @@ export class HomePage {
 
     this.router.navigate(['/groupdetailspage'],navigationExtras)
   }
+
+  async pendingInvites(uid:string){
+    
+    let navigationExtras: NavigationExtras = {
+      state: {
+        uid:uid
+      }
+    };
+
+    this.router.navigate(['/pending-invites'],navigationExtras)
+  }
+
+
 
 }

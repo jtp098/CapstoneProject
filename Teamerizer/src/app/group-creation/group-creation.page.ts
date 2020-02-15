@@ -180,7 +180,7 @@ export class GroupCreationPage implements OnInit {
           });
           console.log(groupNameFound);
           if(groupNameFound){
-            this.presentAlert("Error","Group name already exists!");
+            //this.presentAlert("Error","Group name already exists!");
           } else {
             this.addGroupAfterVerfyingGroupList();
           }

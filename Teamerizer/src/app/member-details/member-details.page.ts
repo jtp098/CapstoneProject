@@ -23,6 +23,7 @@ export class MemberDetailsPage implements OnInit {
     interests:string
     sub
     userinfo$ :any[];
+    status: string
     
     uid: string;
 
@@ -98,6 +99,7 @@ selectedGrpName: any;
         grpname: this.selectedGrpName,
         addflag: true,
         uid: user,
+        status: "Pending"
       })
     }
     this.afs.collection('adduserstogrp', ref => ref.where('uid', '==', user)).valueChanges().subscribe(data => {

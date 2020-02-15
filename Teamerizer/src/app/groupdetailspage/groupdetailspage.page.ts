@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {FormGroup, AbstractControl, FormBuilder, Validators} from '@angular/forms';
 import {NavController} from '@ionic/angular';
-import {AngularFirestore} from '@angular/fire/firestore';
+import {AngularFirestore,AngularFirestoreDocument} from '@angular/fire/firestore';
 import {AngularFireAuth} from '@angular/fire/auth';
 import {AlertController} from '@ionic/angular';
 import {Observable} from 'rxjs';
@@ -21,17 +21,22 @@ export class GroupdetailspagePage implements OnInit {
 	userinfo$ :any[];
 	selectedGrpName:any;
 	groupUsers = [];
+	groupUsersPending = [];
+
 
 	sliderConfig = {
 		spaceBetween: 10,
 		centeredSlides: true,
 		slidesPerView: 1.8
 	}
-
+	mainuser: AngularFirestoreDocument;
+	ref: string;
 	uid: string;
+	groupUserID: string;
 	selectedName;
 	group$;
 	grouponSelectedname$;
+	grouponSelectednamePending$
 	grouplist: any;
 	constructor(private navCtrl: NavController,
 				public afstore: AngularFirestore,
@@ -75,7 +80,14 @@ export class GroupdetailspagePage implements OnInit {
 		this.getDetails(this.selectedGrpName).subscribe(data => {
 			this.grouponSelectedname$ = data;
 			this.groupUsers = data;
+			console.log("Members",data);
 		});
+		this.getPendingDetails(this.selectedGrpName).subscribe(dataPending => {
+			this.grouponSelectednamePending$ = dataPending;
+			this.groupUsersPending = dataPending;
+			console.log("Pending Members",dataPending);
+		});
+
 	}
 
 	openDetailsWithState(firstName: string) {
@@ -134,6 +146,7 @@ export class GroupdetailspagePage implements OnInit {
 			 );
 		 }
 		 for(var userinfoobs$ in this.userinfo$) {
+			 
 			 console.log(this.userinfo$[userinfoobs$].firstName+""+this.userinfo$[userinfoobs$].lastName)
 			 this.afstore.collection('adduserstogrp').add({
 				 firstName: this.userinfo$[userinfoobs$].firstName,
@@ -143,14 +156,21 @@ export class GroupdetailspagePage implements OnInit {
 				 grpname: this.selectedGrpName,
 				 addflag: true,
 				 uid: user.uid,
-			 })
+				 status: "Pending"
+			 }).then( function(docref) {	  
+				 console.log("reference" + docref.id)
+			 });
 		 }
+
+		 
 		 this.afstore.collection('adduserstogrp', ref => ref.where('uid', '==', user.uid)).valueChanges().subscribe(data => {
 			 console.log(data.length>1);
 			 if(data.length>0){
 				this.removeList(user);
 			 } });
 	 }
+
+	 
 	async removeList(user){
 		await this.delay(300);
 		(this.userList).splice(this.userList.indexOf(user), 1);
@@ -169,7 +189,10 @@ export class GroupdetailspagePage implements OnInit {
 		return this.afstore.collection<any>('grouplist', ref => ref.where('createdBy', '==', uid)).valueChanges();
 	}
 	getDetails(grpName): Observable<any> {
-		return this.afstore.collection<any>('adduserstogrp', ref => ref.where('grpname', '==', grpName)).valueChanges();
+		return this.afstore.collection<any>('adduserstogrp', ref => ref.where('grpname', '==', grpName).where( 'status', '==', 'Active')).valueChanges();
+	}
+	getPendingDetails(grpName): Observable<any> {
+		return this.afstore.collection<any>('adduserstogrp', ref => ref.where('grpname', '==', grpName).where( 'status', '==', 'Pending')).valueChanges();
 	}
 	getUserInfo(firstName): Observable<any> {
 		return this.afstore.collection('users', ref => ref.where('firstName', '==', firstName)).valueChanges();
