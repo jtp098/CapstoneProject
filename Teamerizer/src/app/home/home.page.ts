@@ -48,6 +48,9 @@ export class HomePage {
 
     this.fireStore.collection('grouplist').valueChanges().subscribe(groupList => {
       this.groupList = groupList;
+      if (groupList.length > 0){
+        this.grouptf = false;
+      }
     })
    
     
