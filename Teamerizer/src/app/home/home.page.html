@@ -34,6 +34,7 @@
       <ion-label class="teams">My Teams</ion-label>
     </ion-list-header>
     <br>
+    <ion-item *ngIf="grouptf">You are not part of any groups yet.</ion-item>
     <ion-item-sliding *ngFor="let item of group$">
       <ion-item class="team-list" (click)="groupdetail(item.groupname)">
         <ion-icon slot="start" color="medium" name="people"></ion-icon>

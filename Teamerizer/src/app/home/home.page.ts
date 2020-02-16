@@ -15,6 +15,7 @@ export class HomePage {
   group$;
   groupname:string;
   selectedGrpName:any;
+  grouptf;
   userInvites = [];
   constructor(public afstore: AngularFirestore,public menu: MenuController, private fireStore: AngularFirestore,public router: Router, public afAuth: AngularFireAuth ) {
 
@@ -28,6 +29,9 @@ export class HomePage {
         this.getAllGroupsCreatedByCurrentUser(user.uid).subscribe(data => {
           console.log("Group List Data:", data);
           this.group$ = data;
+          if(this.group$.length === 0){
+            this.grouptf = true;
+          }
           this.uid = user.uid;
           console.log("UserID1",user.uid);
 
