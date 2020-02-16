@@ -31,7 +31,7 @@ export class HomePage {
           this.group$ = data;
           console.log(this.group$);
           if (this.group$.length === 0) {
-            console.log('helo');
+            
             this.grouptf = true;
           }
           
@@ -48,9 +48,9 @@ export class HomePage {
   }
 
   getAllGroupsCreatedByCurrentUser(uid): Observable<any> {
-    console.log('here');
+    
     if (this.fireStore.collection<any>('grouplist', ref => ref.where('createdBy', '==', uid)).valueChanges()){
-      console.log('here2');
+      
     }
     return this.fireStore.collection<any>('grouplist', ref => ref.where('createdBy', '==', uid)).valueChanges()
 }
