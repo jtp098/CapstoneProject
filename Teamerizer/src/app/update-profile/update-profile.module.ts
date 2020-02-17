@@ -2,11 +2,13 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { Routes, RouterModule } from '@angular/router';
-import { FormsModule,ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
 import { UpdateProfilePage } from './update-profile.page';
+
+import { FileSizeFormatPipe } from './file-size-format.pipe';
 
 const routes: Routes = [
   {
@@ -19,10 +21,10 @@ const routes: Routes = [
   imports: [
     CommonModule,
     FormsModule,
-    ReactiveFormsModule,    
+    ReactiveFormsModule,
     IonicModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [UpdateProfilePage]
+  declarations: [UpdateProfilePage, FileSizeFormatPipe]
 })
 export class UpdateProfilePageModule {}

@@ -3,21 +3,24 @@
     <ion-menu type="overlay">
       <ion-header>
         <ion-toolbar class="header-style">
-            <div id="profile-info" *ngIf="firstname">
-                <ion-title>{{firstname}} {{lastname}}</ion-title>
-              </div>
-            <!-- <ion-title>{{firstname}} {{lastname}}</ion-title> -->
+          <div id="profile-info" *ngIf="firstname">
+            <ion-title>{{ firstname }} {{ lastname }}</ion-title>
+          </div>
+          <!-- <ion-title>{{firstname}} {{lastname}}</ion-title> -->
           <!-- <ion-title>Menu</ion-title> -->
         </ion-toolbar>
       </ion-header>
       <ion-content>
         <ion-list>
           <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages">
-              <ion-item [routerDirection]="'root'" [routerLink]="[p.url]" (click)="menuClicked(p)">
-            
+            <ion-item
+              [routerDirection]="'root'"
+              [routerLink]="[p.url]"
+              (click)="menuClicked(p)"
+            >
               <ion-icon slot="start" color="medium" [name]="p.icon"></ion-icon>
               <ion-label class="menu-items">
-                {{p.title}}
+                {{ p.title }}
               </ion-label>
             </ion-item>
           </ion-menu-toggle>
