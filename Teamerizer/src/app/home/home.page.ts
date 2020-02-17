@@ -58,7 +58,7 @@ getAllGroup() {
   }
 
   async groupdetail(group){
-    
+    console.log("selected group:",group);
     let navigationExtras: NavigationExtras = {
       state: {
         group:group

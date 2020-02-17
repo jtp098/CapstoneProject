@@ -38,6 +38,8 @@ export class GroupdetailspagePage implements OnInit {
 	isAdminUser = false;
 	selectedGroup : any;
 	isEditGroupDetail = false;
+	newAddedUsers = [];
+	deletedUsers = [];
 	constructor(private navCtrl: NavController,
 				public afstore: AngularFirestore,
 				public afAuth: AngularFireAuth,
@@ -50,8 +52,8 @@ export class GroupdetailspagePage implements OnInit {
 			if (this.router.getCurrentNavigation().extras.state) {
 			  this.selectedGroup = this.router.getCurrentNavigation().extras.state.group;
 			  this.selectedGrpName = this.selectedGroup.groupname;
-			  
-			  console.log("passedData",this.selectedGrpName);
+			  this.selectedGroup.desc = this.selectedGroup["desc"];
+			  console.log("passedData",this.selectedGroup);
 			}else{
 				console.log("no Extras")
 			}
@@ -94,17 +96,38 @@ export class GroupdetailspagePage implements OnInit {
 		let updateGroup = this.afstore.doc(`grouplist/${this.selectedGroup.id}`)
 		updateGroup.update({
 			desc:this.selectedGroup.desc
-			
 		});
+
+		//Newly added user adding in group on firebase
+		 for(var newUserIndex in this.newAddedUsers) {
+			 this.afstore.collection('adduserstogrp').add(this.newAddedUsers[newUserIndex]);
+		 }
+
+		 //What ever user deleted from array which is alreay added on firebase we need to delete from firebase
+		 for(const deleteUserIndex in this.deletedUsers){
+		 	this.afstore.collection("adduserstogrp").doc(this.deletedUsers[deleteUserIndex]["id"])
+			.delete();
+		 }
+
 		this.router.navigate(['/home']);
 	}
 
 	deleteUser(i) {
 		let selectedUser = this.grouponSelectedname$[i];
-		if (selectedUser) {
-			this.afstore.collection("adduserstogrp").doc(selectedUser.id)
-			.delete();
+
+		if (selectedUser.id !== undefined) {
+			this.deletedUsers.push(selectedUser);
+			this.grouponSelectedname$.splice(i,1);
+		} else {
+			//Find Index of selected user for delete from Newly added array
+			let foundIndex = this.newAddedUsers.findIndex(item => { return item.uid === selectedUser.uid});
+			this.newAddedUsers.splice(foundIndex,1);
+			this.grouponSelectedname$.splice(i,1);
 		}
+		// if (selectedUser) {
+		// 	this.afstore.collection("adduserstogrp").doc(selectedUser.id)
+		// 	.delete();
+		// }
 	}
 
 	openDetailsWithState(firstName: string) {
@@ -143,42 +166,33 @@ export class GroupdetailspagePage implements OnInit {
 		return new Promise( resolve => setTimeout(resolve, ms) );
 	}
 	 async addToGroup(user) {
-		 console.log(user + "Users");
-		 let observableUser$ = null;
-		 try {
-			 this.afstore.collection('users', ref => ref.where('uid', '==', user.uid)).valueChanges().subscribe((data) => {
-				 observableUser$ = data;
-				 console.log(data);
-				 this.userinfo$=observableUser$;
-				 console.log(this.userinfo$[0]);
-			 });
-		 } finally {
-			 await this.delay(2000);
-			 console.log("Fianl"+observableUser$);
-			 //debugger;
-			 this.afstore.collection('users', ref => ref.where('uid', '==', user.uid)).valueChanges().subscribe((data) => {
-					 observableUser$ = data;
-					 console.log(observableUser$);
-				 }
-			 );
-		 }
-		 for(var userinfoobs$ in this.userinfo$) {
-			 console.log(this.userinfo$[userinfoobs$].firstName+""+this.userinfo$[userinfoobs$].lastName)
-			 this.afstore.collection('adduserstogrp').add({
-				 firstName: this.userinfo$[userinfoobs$].firstName,
-				 lastName: this.userinfo$[userinfoobs$].lastName,
-				 skillLevel: this.userinfo$[userinfoobs$].skillLevel,
-				 skillType: this.userinfo$[userinfoobs$].skillType,
-				 grpname: this.selectedGrpName,
-				 addflag: true,
-				 uid: user.uid,
-			 })
-		 }
-		 this.afstore.collection('adduserstogrp', ref => ref.where('uid', '==', user.uid)).valueChanges().subscribe(data => {
-			 console.log(data.length>1);
-			 if(data.length>0){
-				this.removeList(user);
-			 } });
+
+		let newUser = {
+			firstName: user.firstName,
+			lastName:user.lastName,
+			skillLevel: user.skillLevel,
+			skillType: user.skillType,
+			grpname: this.selectedGrpName,
+			addflag: true,
+			uid: user.uid,
+		};
+
+		this.grouponSelectedname$.push(newUser);
+		this.newAddedUsers.push(newUser);
+		
+		//  for(var userinfoobs$ in this.userinfo$) {
+		// 	 console.log(this.userinfo$[userinfoobs$].firstName+""+this.userinfo$[userinfoobs$].lastName)
+		// 	 this.afstore.collection('adduserstogrp').add({
+		// 		 firstName: this.userinfo$[userinfoobs$].firstName,
+		// 		 lastName: this.userinfo$[userinfoobs$].lastName,
+		// 		 skillLevel: this.userinfo$[userinfoobs$].skillLevel,
+		// 		 skillType: this.userinfo$[userinfoobs$].skillType,
+		// 		 grpname: this.selectedGrpName,
+		// 		 addflag: true,
+		// 		 uid: user.uid,
+		// 	 })
+		//  }
+		
 	 }
 	async removeList(user){
 		await this.delay(300);
