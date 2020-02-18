@@ -22,7 +22,7 @@ export interface MyData {
   templateUrl: './update-profile.page.html',
   styleUrls: ['./update-profile.page.scss']
 })
-export class UpdateProfilePage {
+export class UpdateProfileComponent {
   // Upload Task
   task: AngularFireUploadTask;
 

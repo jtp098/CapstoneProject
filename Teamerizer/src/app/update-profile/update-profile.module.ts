@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { Routes, RouterModule } from '@angular/router';
@@ -10,10 +10,12 @@ import { UpdateProfilePage } from './update-profile.page';
 
 import { FileSizeFormatPipe } from './file-size-format.pipe';
 
+import { UpdateProfileComponent } from './update-profile.component';
+
 const routes: Routes = [
   {
     path: '',
-    component: UpdateProfilePage
+    component: UpdateProfileComponent
   }
 ];
 
@@ -25,6 +27,6 @@ const routes: Routes = [
     IonicModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [UpdateProfilePage, FileSizeFormatPipe]
+  declarations: [UpdateProfilePage, UpdateProfileComponent, FileSizeFormatPipe]
 })
 export class UpdateProfilePageModule {}
