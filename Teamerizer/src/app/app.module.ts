@@ -16,32 +16,32 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AuthService } from './auth.service';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AngularFireStorageModule } from '@angular/fire/storage';
+
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
-  exports: [
-    FormsModule,
-    ReactiveFormsModule
-  ],
+  exports: [FormsModule, ReactiveFormsModule],
   imports: [
     BrowserModule,
     IonicModule.forRoot(),
-    AppRoutingModule, 
-    AngularFireModule.initializeApp(firebaseConfig), 
+    AppRoutingModule,
+    AngularFireModule.initializeApp(firebaseConfig, environment.firebase),
     AngularFireAuthModule,
-    AngularFireModule, 
+    AngularFireModule,
     AngularFirestoreModule,
-    FormsModule, 
+    AngularFireStorageModule,
+    FormsModule,
     ReactiveFormsModule
   ],
   providers: [
     StatusBar,
     SplashScreen,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, 
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     UserService,
-    AuthService 
-    
+    AuthService
   ],
   bootstrap: [AppComponent]
 })

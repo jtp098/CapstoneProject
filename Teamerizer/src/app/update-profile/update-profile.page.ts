@@ -1,10 +1,18 @@
 import { Component, OnInit } from '@angular/core';
-import { AngularFirestore,AngularFirestoreDocument  } from '@angular/fire/firestore';
+import {
+  AngularFirestore,
+  AngularFirestoreDocument
+} from '@angular/fire/firestore';
 import { UserService } from '../user.service';
 import { firestore } from 'firebase/app';
 import { AlertController } from '@ionic/angular';
 import { Router } from '@angular/router';
-import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  AbstractControl
+} from '@angular/forms';
 import { PickerController } from '@ionic/angular';
 import { PickerOptions } from '@ionic/core';
 import { AngularFireAuth } from '@angular/fire/auth';
@@ -13,83 +21,78 @@ import { FireStoreFetchService } from '../fire-store-fetch.service';
 @Component({
   selector: 'app-update-profile',
   templateUrl: './update-profile.page.html',
-  styleUrls: ['./update-profile.page.scss'],
+  styleUrls: ['./update-profile.page.scss']
 })
 export class UpdateProfilePage implements OnInit {
-  
+  mainuser: AngularFirestoreDocument;
 
-  mainuser: AngularFirestoreDocument
-
-    firstname: string
-    lastname: string
-    skillType: string
-    skillLevel: string
-    username: string
-    busy: boolean = false
-    password: string
-    newpassword: string
-    interests:string
-    sub;
-    allSkills: any;
-    allSkillLevels: any;
-    skill = '';
-    selectedSkill = [];
-    selectedLevel = [];
+  firstname: string;
+  lastname: string;
+  skillType: string;
+  skillLevel: string;
+  username: string;
+  busy: boolean = false;
+  password: string;
+  newpassword: string;
+  interests: string;
+  sub;
+  allSkills: any;
+  allSkillLevels: any;
+  skill = '';
+  selectedSkill = [];
+  selectedLevel = [];
 
   constructor(
     public afstore: AngularFirestore,
     private afs: AngularFirestore,
-		private alertController: AlertController,
+    private alertController: AlertController,
     private router: Router,
     public user: UserService,
     private pickerCtrl: PickerController,
     private afAuth: AngularFireAuth,
-    public firestoreFetchService: FireStoreFetchService) { 
-      
-
-    }
+    public firestoreFetchService: FireStoreFetchService
+  ) {}
 
   ngOnInit() {
     let self = this;
     this.afAuth.auth.onAuthStateChanged(function(user) {
-      console.log("User",user);
+      console.log('User', user);
       if (user) {
         self.setUserProfileData();
       } else {
-        
-      }});
+      }
+    });
 
-    this.firestoreFetchService.getSkills().subscribe((data) => {
-      console.log("All Skills :",data);
+    this.firestoreFetchService.getSkills().subscribe(data => {
+      console.log('All Skills :', data);
       this.allSkills = data;
     });
 
-    this.firestoreFetchService.getSkillLevels().subscribe((data) => {
-      console.log("All Levels :",data);
+    this.firestoreFetchService.getSkillLevels().subscribe(data => {
+      console.log('All Levels :', data);
       this.allSkillLevels = data;
     });
   }
 
-  setUserProfileData(){
-    this.mainuser = this.afs.doc(`users/${this.afAuth.auth.currentUser.uid}`)
+  setUserProfileData() {
+    this.mainuser = this.afs.doc(`users/${this.afAuth.auth.currentUser.uid}`);
     this.sub = this.mainuser.valueChanges().subscribe(event => {
-      this.username = event.username
-      this.firstname = event.firstName
-      this.lastname = event.lastName
-      this.interests =event.interests
-      console.log("event.skillType",event.skillType);
-      if (event.skillType !== undefined ) {
-        this.selectedSkill = event.skillType
-      } 
-      if( event.skillLevel !== undefined){
-        this.selectedLevel = event.skillLevel
-
+      this.username = event.username;
+      this.firstname = event.firstName;
+      this.lastname = event.lastName;
+      this.interests = event.interests;
+      console.log('event.skillType', event.skillType);
+      if (event.skillType !== undefined) {
+        this.selectedSkill = event.skillType;
       }
-    })
+      if (event.skillLevel !== undefined) {
+        this.selectedLevel = event.skillLevel;
+      }
+    });
   }
 
   ngOnDestroy() {
-		//this.sub.unsubscribe()
+    //this.sub.unsubscribe()
   }
 
   async showAdvancedPicker() {
@@ -103,15 +106,15 @@ export class UpdateProfilePage implements OnInit {
         {
           text: 'Done',
           cssClass: 'special-done',
-          handler: (value : any): void => {
+          handler: (value: any): void => {
             console.log(value, 'ok');
 
             this.selectedSkill.push(value.skillType);
             this.selectedLevel.push(value.skillLevel);
-          } 
+          }
         }
       ],
-      columns: [ 
+      columns: [
         {
           name: 'skillType',
           options: this.allSkills
@@ -125,7 +128,7 @@ export class UpdateProfilePage implements OnInit {
 
     let picker = await this.pickerCtrl.create(opts);
     picker.present();
-    
+
     // picker.onDidDismiss().then(async data => {
     //   let skillType = await picker.getColumn('skillType');
     //   let skillLevel = await picker.getColumn('skillLevel');
@@ -133,51 +136,48 @@ export class UpdateProfilePage implements OnInit {
     //   this.selectedSkill.push(skillType.options[skillType.selectedIndex]);
     //   this.selectedLevel.push(skillLevel.options[skillLevel.selectedIndex]);
     // });
-
   }
 
   async presentAlert(title: string, content: string) {
-		const alert = await this.alertController.create({
-			header: title,
-			message: content,
-			buttons: ['OK']
-		})
+    const alert = await this.alertController.create({
+      header: title,
+      message: content,
+      buttons: ['OK']
+    });
 
-		await alert.present()
-	}
+    await alert.present();
+  }
 
-  async updateProfile(){
-    this.busy = true
-			//await this.user.updatefirstName(this.firstName)
-			this.mainuser.update({
-        firstName: this.firstname,
-        lastName: this.lastname, 
-        skillType: this.selectedSkill, 
-        skillLevel:this.selectedLevel,
-        interests: this.interests
-			})
-		
-      if(this.newpassword){
-        await this.user.updatePassword(this.newpassword)
+  async updateProfile() {
+    this.busy = true;
+    //await this.user.updatefirstName(this.firstName)
+    this.mainuser.update({
+      firstName: this.firstname,
+      lastName: this.lastname,
+      skillType: this.selectedSkill,
+      skillLevel: this.selectedLevel,
+      interests: this.interests
+    });
+
+    if (this.newpassword) {
+      await this.user.updatePassword(this.newpassword);
     }
 
-    this.password = ""
-    this.newpassword = ""
-		this.busy = false
+    this.password = '';
+    this.newpassword = '';
+    this.busy = false;
 
-		await this.presentAlert('Done!', 'Your profile was updated!')
+    await this.presentAlert('Done!', 'Your profile was updated!');
 
-		this.router.navigate(['/home'])
-
+    this.router.navigate(['/home']);
   }
 
-  deleteSkill(i){
-    this.selectedSkill.splice(i,1);
-    this.selectedLevel.splice(i,1);
+  deleteSkill(i) {
+    this.selectedSkill.splice(i, 1);
+    this.selectedLevel.splice(i, 1);
   }
 
-  async cancel(){
-    this.router.navigate(['/home'])
+  async cancel() {
+    this.router.navigate(['/home']);
   }
-
 }
