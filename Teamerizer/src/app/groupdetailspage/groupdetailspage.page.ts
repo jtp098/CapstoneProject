@@ -218,7 +218,7 @@ export class GroupdetailspagePage implements OnInit {
 	getUserInfo(firstName): Observable<any> {
 		return this.afstore.collection('users', ref => ref.where('firstName', '==', firstName)).valueChanges();
 	}
-
+	// This section is used to verify is the current user created the group
 	isAdmin(uid,grpName): Observable<any> {
 		
 		return this.afstore.collection<any>('grouplist', ref => ref.where('groupname', '==', grpName).where( 'createdBy', '==', uid)).valueChanges();
