@@ -41,6 +41,9 @@ export class GroupdetailspagePage implements OnInit {
 	grouplist: any;
 	adminCheck$;
 	isadmin;
+	inGroupData$;
+	isInGroup;
+	docID;
 	constructor(private navCtrl: NavController,
 				public afstore: AngularFirestore,
 				public afAuth: AngularFireAuth,
@@ -87,27 +90,38 @@ export class GroupdetailspagePage implements OnInit {
 			this.groupUsersPending = dataPending;
 			console.log("Pending Members",dataPending);
 		});
-		//Checking is the current user created the group, if they did they can add members
+		//CP-25-JP-2/23/2020:Checking is the current user created the group, if they did they can add members
 		this.isAdmin(this.uidPassed, this.selectedGrpName).subscribe(data =>{
 			console.log("Admin Data:", data);
 			this.adminCheck$=data;
 			if(this.adminCheck$.length === 0){
 				this.isadmin = false;
 			}else{
+		//CP-25-JP-2/23/2020:If the user is the admin, isadmin is set to true, this will display the adding people section and the below will populate with users.
 				this.isadmin = true;
 				this.afstore.collection('users').valueChanges().subscribe(userList => {
 					this.userList = userList;
 					this.loadedUserList = userList;
 					console.log("userlist",userList);
-				})
-
+				});
 			}
-
-
-
-
-
 		});
+		//CP-25-JP-2/23/2020:Checking if the current user is in the group
+		this.isUserInGroup(this.uidPassed, this.selectedGrpName).subscribe(data =>{
+			console.log("Is user in group:", data);
+			this.inGroupData$=data;
+			if(this.inGroupData$.length === 0){
+				this.isInGroup = false;
+			}else{
+		//CP-25-JP-2/23/2020:If the user is in the group, this is used to display the leave group button.
+		//CP-25-JP-2/23/2020:Doc.ID is the document ID from FireBase, it can be used to delte a document. 
+				this.isInGroup = true;
+				this.docID = this.inGroupData$[0].DocID;
+				console.log("DocID", this.docID);
+			}
+		});
+
+
 
 	}
 
@@ -218,10 +232,20 @@ export class GroupdetailspagePage implements OnInit {
 	getUserInfo(firstName): Observable<any> {
 		return this.afstore.collection('users', ref => ref.where('firstName', '==', firstName)).valueChanges();
 	}
-	// This section is used to verify is the current user created the group
+	//CP-25-JP-2/23/2020:This section is used to verify is the current user created the group
 	isAdmin(uid,grpName): Observable<any> {
 		
 		return this.afstore.collection<any>('grouplist', ref => ref.where('groupname', '==', grpName).where( 'createdBy', '==', uid)).valueChanges();
+	}
+	//CP-25-JP-2/23/2020:Checking if current user is in the group so that they can leave the group. 
+	isUserInGroup(uid,grpName): Observable<any>{
+		return this.afstore.collection<any>('adduserstogrp', ref => ref.where('grpname', '==', grpName).where( 'status', '==', 'Active').where('uid','==',uid)).valueChanges({idField:'DocID'});
+	}
+	//CP-25-JP-2/23/2020:This method is used to delte users from the group
+	async leaveGroup(docID){
+		this.afstore.doc("adduserstogrp/"+docID).delete();
+		console.log("Left Group Executed" ,docID);
+		this.router.navigate(['/home']);
 	}
 	async cancel() {
 		this.router.navigate(['/home']);

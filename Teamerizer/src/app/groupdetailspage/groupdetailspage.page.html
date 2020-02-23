@@ -78,7 +78,8 @@
     
   </div>
   <ion-row>
-    <ion-col width-50 style="text-align: center">
+    <ion-col width-50 style="text-align: center" *ngFor="let item of inGroupData$ ">
+      <ion-button *ngIf="isInGroup"  expand="block" fill="solid" color="success" shape="round" (click)="leaveGroup(item.DocID)">Leave Group</ion-button>
       <ion-button expand="block" fill="solid" color="success" shape="round" (click)="cancel()">Cancel</ion-button>
     </ion-col>
   </ion-row>
