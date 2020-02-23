@@ -17,10 +17,11 @@ export class HomePage {
   selectedGrpName:any;
   grouptf;
   userInvites = [];
+  userGroups$;
   constructor(public afstore: AngularFirestore,public menu: MenuController, private fireStore: AngularFirestore,public router: Router, public afAuth: AngularFireAuth ) {
 
   }
-
+ 
   ngOnInit() {
     this.menu.enable(true);
 
@@ -36,12 +37,16 @@ export class HomePage {
           console.log("UserID1",user.uid);
 
           this.getPendingInvites(user.uid).subscribe(data => {
-      
             this.userInvites = data;
             console.log("Pending",data);
           });
 
 
+        });
+        //Getting all groups that user is part of
+        this.getAllGroupsCurrentUserIsIn(user.uid).subscribe(data => {
+          this.userGroups$ = data;
+          console.log("Active",data);
         });
       }
     });
@@ -63,6 +68,13 @@ export class HomePage {
   getAllGroupsCreatedByCurrentUser(uid): Observable<any> {
     return this.fireStore.collection<any>('grouplist', ref => ref.where('createdBy', '==', uid)).valueChanges()
 }
+
+getAllGroupsCurrentUserIsIn(uid): Observable<any> {
+  return this.fireStore.collection<any>('adduserstogrp', ref => ref.where('uid', '==', uid).where( 'status', '==', 'Active')).valueChanges();
+}
+
+
+
 
   async createGroup(){
     this.router.navigate(['/group-creation'])

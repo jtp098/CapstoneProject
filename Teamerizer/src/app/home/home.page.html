@@ -41,6 +41,17 @@
         <ion-label class="team-label"> {{item.groupname}}</ion-label>
       </ion-item>
     </ion-item-sliding>
+    
+    <ion-list-header>
+      <ion-label class="teams">Team Projects</ion-label>
+    </ion-list-header>
+    <ion-item-sliding *ngFor="let groups of userGroups$">
+      <ion-item class="team-list" (click)="groupdetail(groups.grpname)">
+        <ion-icon slot="start" color="medium" name="people"></ion-icon>
+        <ion-label class="team-label"> {{groups.grpname}}</ion-label>
+      </ion-item>
+    </ion-item-sliding>
+    
 
     <!-- For use at a later time DO NOT DELETE
     <ion-list-header>
