@@ -50,7 +50,7 @@
   <br>
   
 
-  <div class="backdrop">
+  <div class="backdrop" *ngIf="isadmin">
 
     <ion-row no-padding class="user-banner">
       <ion-col text-left button tappable (click)="cat.expanded = !cat.expanded" align-self-center>

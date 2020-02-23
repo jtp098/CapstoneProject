@@ -20,6 +20,7 @@ export class GroupdetailspagePage implements OnInit {
 	public loadedUserList: any[];
 	userinfo$ :any[];
 	selectedGrpName:any;
+	uidPassed:any;
 	groupUsers = [];
 	groupUsersPending = [];
 
@@ -38,6 +39,8 @@ export class GroupdetailspagePage implements OnInit {
 	grouponSelectedname$;
 	grouponSelectednamePending$
 	grouplist: any;
+	adminCheck$;
+	isadmin;
 	constructor(private navCtrl: NavController,
 				public afstore: AngularFirestore,
 				public afAuth: AngularFireAuth,
@@ -50,8 +53,9 @@ export class GroupdetailspagePage implements OnInit {
 			if (this.router.getCurrentNavigation().extras.state) {
 			  
 			  this.selectedGrpName = this.router.getCurrentNavigation().extras.state.groupname;
+			  this.uidPassed = this.router.getCurrentNavigation().extras.state.uid;
 			  
-			  console.log("passedData",this.selectedGrpName);
+			  console.log("passedData",this.selectedGrpName, this.uidPassed);
 			}else{
 				console.log("no Extras")
 			}
@@ -69,11 +73,7 @@ export class GroupdetailspagePage implements OnInit {
 				});
 			}
 		});
-		this.afstore.collection('users').valueChanges().subscribe(userList => {
-			this.userList = userList;
-			this.loadedUserList = userList;
-			console.log("userlist",userList);
-		})
+		
 
 		//this.groupUsers = this.userService.getGroupUsers();
 
@@ -86,6 +86,27 @@ export class GroupdetailspagePage implements OnInit {
 			this.grouponSelectednamePending$ = dataPending;
 			this.groupUsersPending = dataPending;
 			console.log("Pending Members",dataPending);
+		});
+		//Checking is the current user created the group, if they did they can add members
+		this.isAdmin(this.uidPassed, this.selectedGrpName).subscribe(data =>{
+			console.log("Admin Data:", data);
+			this.adminCheck$=data;
+			if(this.adminCheck$.length === 0){
+				this.isadmin = false;
+			}else{
+				this.isadmin = true;
+				this.afstore.collection('users').valueChanges().subscribe(userList => {
+					this.userList = userList;
+					this.loadedUserList = userList;
+					console.log("userlist",userList);
+				})
+
+			}
+
+
+
+
+
 		});
 
 	}
@@ -196,6 +217,11 @@ export class GroupdetailspagePage implements OnInit {
 	}
 	getUserInfo(firstName): Observable<any> {
 		return this.afstore.collection('users', ref => ref.where('firstName', '==', firstName)).valueChanges();
+	}
+
+	isAdmin(uid,grpName): Observable<any> {
+		
+		return this.afstore.collection<any>('grouplist', ref => ref.where('groupname', '==', grpName).where( 'createdBy', '==', uid)).valueChanges();
 	}
 	async cancel() {
 		this.router.navigate(['/home']);

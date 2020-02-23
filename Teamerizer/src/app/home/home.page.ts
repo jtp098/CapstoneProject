@@ -73,18 +73,19 @@ getAllGroupsCurrentUserIsIn(uid): Observable<any> {
   return this.fireStore.collection<any>('adduserstogrp', ref => ref.where('uid', '==', uid).where( 'status', '==', 'Active')).valueChanges();
 }
 
-
+ 
 
 
   async createGroup(){
     this.router.navigate(['/group-creation'])
   }
 
-  async groupdetail(groupname:string){
+  async groupdetail(groupname:string,uid:string){
     
     let navigationExtras: NavigationExtras = {
       state: {
-        groupname:groupname
+        groupname:groupname,
+        uid:uid
       }
     };
 
