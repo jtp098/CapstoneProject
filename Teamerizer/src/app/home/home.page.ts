@@ -35,6 +35,7 @@ export class HomePage {
           }
           this.uid = user.uid;
           console.log("UserID1",user.uid);
+          console.log("User UID",this.uid);
 
           this.getPendingInvites(user.uid).subscribe(data => {
             this.userInvites = data;
@@ -85,7 +86,7 @@ getAllGroupsCurrentUserIsIn(uid): Observable<any> {
     let navigationExtras: NavigationExtras = {
       state: {
         groupname:groupname,
-        uid:uid
+        uid:this.uid
       }
     };
 
