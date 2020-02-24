@@ -36,7 +36,7 @@
     <br>
     <ion-item *ngIf="grouptf">You have not started any teams yet.</ion-item>
     <ion-item-sliding *ngFor="let item of group$">
-      <ion-item class="team-list" (click)="groupdetail(item.groupname)">
+      <ion-item class="team-list" (click)="groupdetail(item.groupname,item.desc,item.DocID)">
         <ion-icon slot="start" color="medium" name="people"></ion-icon>
         <ion-label class="team-label"> {{item.groupname}}</ion-label>
       </ion-item>
