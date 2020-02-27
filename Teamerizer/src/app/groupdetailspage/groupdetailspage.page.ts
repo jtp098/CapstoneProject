@@ -130,14 +130,15 @@ export class GroupdetailspagePage implements OnInit {
 
 
 	}
-
+	//CP-45-RH- now you can press on icon "create(pencil)" and it converts the description to edit mode
+	//and then if you want to remove editing just press on "done-all (checkmarks)."
 	editGroupDesc() {
 		this.isEditGroupDetail = !this.isEditGroupDetail;
 		if (this.isEditGroupDetail) {
 			this.groupDescInput.setFocus();
-			this.editIcon = "create";
+			this.editIcon = "done-all";
 		} else {
-			this.editIcon = "checkmark-done-outline";
+			this.editIcon = "create";
 			let updateGroup = this.afstore.doc(`grouplist/${this.selectedGrpDocID}`)
 			updateGroup.update({
 				desc:this.selectedGrpDesc
@@ -266,7 +267,7 @@ export class GroupdetailspagePage implements OnInit {
 		.where( 'status', '==', 'Active')
 		.where('uid','==',uid)).valueChanges({idField:'DocID'});
 	}
-
+	//CP-45-RH-delete user document and delete user in general from the group
 	async removeFromGroup(docID){
 		this.afstore.doc("adduserstogrp/"+docID).delete();
 		console.log("Removed From Group" ,docID);
