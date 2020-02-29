@@ -62,7 +62,13 @@ export class ProfilePage implements OnInit {
                 this.getAllGroupsUserIsIn(user.uid).subscribe(data => {
                     console.log("Group List Data:", data);
                     this.team$ = data;
-                    console.log(data[0].grpname);
+                    //Bug Fix - CP-77 - JP- 2/24/2019 - Checking the length of the data before executing the code
+                    if(this.team$.length === 0)
+                    {
+                        console.log("no group");
+                    }else
+                    {
+                        console.log(data[0].grpname);
 
                     //method uses collection, groupList
                     this.getAllGroupListData().subscribe(adminData => {
@@ -104,6 +110,9 @@ export class ProfilePage implements OnInit {
                         }
 
                     });
+
+                    }
+                    
 
                 });
 
