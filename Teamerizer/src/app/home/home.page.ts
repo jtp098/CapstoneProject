@@ -35,6 +35,7 @@ export class HomePage {
           }
           this.uid = user.uid;
           console.log("UserID1",user.uid);
+          console.log("User UID",this.uid);
 
           this.getPendingInvites(user.uid).subscribe(data => {
             this.userInvites = data;
@@ -66,7 +67,7 @@ export class HomePage {
 		return this.afstore.collection<any>('adduserstogrp', ref => ref.where('uid', '==', uid).where( 'status', '==', 'Pending')).valueChanges();
 	}
   getAllGroupsCreatedByCurrentUser(uid): Observable<any> {
-    return this.fireStore.collection<any>('grouplist', ref => ref.where('createdBy', '==', uid)).valueChanges()
+    return this.fireStore.collection<any>('grouplist', ref => ref.where('createdBy', '==', uid)).valueChanges({idField:'DocID'});
 }
 
 getAllGroupsCurrentUserIsIn(uid): Observable<any> {
@@ -80,12 +81,14 @@ getAllGroupsCurrentUserIsIn(uid): Observable<any> {
     this.router.navigate(['/group-creation'])
   }
 
-  async groupdetail(groupname:string,uid:string){
+  async groupdetail(groupname:string,desc:string,DocID:string){
     
     let navigationExtras: NavigationExtras = {
       state: {
         groupname:groupname,
-        uid:uid
+        desc: desc,
+        DocID : DocID,
+        uid:this.uid
       }
     };
 
