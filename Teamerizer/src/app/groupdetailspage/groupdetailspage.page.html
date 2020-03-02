@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar class="header-style">
     <ion-title>
-      Team Management
+      <ion-img class="logo" src="assets/images/teamerizer2.png"></ion-img>
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -33,13 +33,14 @@
         <br>
         <ion-row>
           <ion-col size="11">
-            <ion-input [readonly]="!isEditGroupDetail" [(ngModel)]="selectedGrpDesc" id="desc" type="text" #groupDesc required placeholder="Description"></ion-input>
+            <ion-label position="floating">Description</ion-label>
+            <ion-textarea [readonly]="!isEditGroupDetail" [(ngModel)]="selectedGrpDesc" id="desc" type="text" #groupDesc required placeholder="Description"></ion-textarea>
           </ion-col>
           <ion-col size="1" *ngIf="isadmin">
             <ion-icon [name]="editIcon" (click)="editGroupDesc()"></ion-icon>
           </ion-col>
         </ion-row>
-        <ion-card-subtitle>Accepted Members</ion-card-subtitle>
+        <ion-card-subtitle class="invites"><b><span style="color:#0029FA">Accepted Members </span></b>({{grouponSelectedname$.length}})</ion-card-subtitle>
       <ion-card-content>
         <ion-row *ngFor='let grpObserva of grouponSelectedname$'>
           <ion-col size="11">
@@ -54,7 +55,7 @@
         </ion-row>
         
       </ion-card-content>
-      <ion-card-subtitle>Pending Invites</ion-card-subtitle>
+      <ion-card-subtitle class="invites"><b><span style="color:#0029FA">Pending Invites </span></b>({{grouponSelectednamePending$.length}})</ion-card-subtitle>
       <ion-card-content>
         <div *ngFor='let grpObservaPending of grouponSelectednamePending$'><b>{{grpObservaPending.firstName}} {{grpObservaPending.lastName}}</b>
           <p *ngFor="let skillType$ of grpObservaPending.skillType; let i=index ">  {{grpObservaPending.skillType[i].text}} ({{grpObservaPending.skillLevel[i].text}})</p>
@@ -95,10 +96,10 @@
   </div>
   <ion-row>
     <ion-col width-50 style="text-align: center" *ngFor="let item of inGroupData$ ">
-      <ion-button *ngIf="isInGroup"  expand="block" fill="solid" color="success" shape="round" (click)="leaveGroup(item.DocID)">Leave Group</ion-button>
+      <ion-button *ngIf="isInGroup" fill="solid" color="primary" shape="round" (click)="leaveGroup(item.DocID)">Leave Group</ion-button>
     </ion-col>
     <ion-col width-50 style="text-align: center">
-      <ion-button expand="block" fill="solid" color="success" shape="round" (click)="cancel()">Cancel</ion-button>  
+      <ion-button fill="solid" color="success" shape="round" (click)="cancel()">Cancel</ion-button>  
     </ion-col>
     
   </ion-row>

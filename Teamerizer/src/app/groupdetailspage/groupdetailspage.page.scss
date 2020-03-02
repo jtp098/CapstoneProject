@@ -15,21 +15,28 @@ ion-badge {
 }
 
 .header-style {
-    --background: #062f6f;
-    color: #33A9AC;
+    --background: #230A59;
+    color: #ffffff;
 }
 
 .logo {
     width: 50px;
     height: 50px;
+    float: right;
 }
 
 ion-content{
-    --ion-background-color: #484b86;
+    --ion-background-color:  #ffffff;
 }
 
 .card-style {
     --background: white;
+}
+
+.invites {
+    padding-left: 15px;
+    padding-top: 15px;
+    font-size: 12px;
 }
 
 .fullname {

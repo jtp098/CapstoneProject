@@ -39,8 +39,8 @@ export class GroupdetailspagePage implements OnInit {
 	groupUserID: string;
 	selectedName;
 	group$;
-	grouponSelectedname$;
-	grouponSelectednamePending$
+	grouponSelectedname$ = [];
+	grouponSelectednamePending$ = [];
 	grouplist: any;
 	adminCheck$;
 	isadmin;
