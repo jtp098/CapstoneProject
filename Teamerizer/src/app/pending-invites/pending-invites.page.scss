@@ -1,0 +1,42 @@
+.header-style {
+    --background: #230A59;
+    color: #33A9AC;
+  }
+
+  .logo {
+    width: 50px;
+    height: 50px;
+    float: right;
+  }
+
+  .invites {
+      padding-left: 20px;
+      padding-top: 20px;
+      font-size: 18px;
+  }
+
+  .group-list {
+      font-size: 15px;
+      padding-top: 0px;
+  }
+
+  .accept-decline {
+    float: right;
+  }
+
+  .accept {
+      width: 40px;
+      height: 40px;
+      padding-left: 25px;
+      padding-top: 25px;
+      color: #96F20C;
+  }
+
+  .decline {
+    width: 40px;
+    height: 40px;
+    padding-left: 25px;
+    padding-top: 25px;
+    color: #230A59;
+  }
+

@@ -22,7 +22,7 @@ export class PendingInvitesPage implements OnInit {
 	selectedGrpName:any;
 	groupUsers = [];
   groupUsersPending = [];
-  pendingList$
+  pendingList$ = [];
 
 
 	sliderConfig = {
@@ -35,7 +35,7 @@ export class PendingInvitesPage implements OnInit {
 	selectedName;
 	group$;
 	grouponSelectedname$;
-	grouponSelectednamePending$
+	grouponSelectednamePending$;
   grouplist: any;
   userInvites = [];
   mainuser: AngularFirestoreDocument
