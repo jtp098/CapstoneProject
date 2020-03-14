@@ -67,7 +67,7 @@ export class ProfilePage implements OnInit {
     this.getAllGroupsUserIsIn(uid).subscribe(data => {
     console.log("Group List Data:", data);
     this.team$ = data;
-    console.log(data[0].grpname);
+    //console.log(data[0].grpname);
 
     //method uses collection, groupList
     this.getAllGroupListData().subscribe(adminData => {
