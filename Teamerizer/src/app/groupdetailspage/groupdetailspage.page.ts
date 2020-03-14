@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {FormGroup, AbstractControl, FormBuilder, Validators} from '@angular/forms';
 import {NavController} from '@ionic/angular';
 import {AngularFirestore,AngularFirestoreDocument} from '@angular/fire/firestore';
@@ -16,13 +16,10 @@ import {forEach} from "@angular-devkit/schematics";
 	styleUrls: ['./groupdetailspage.page.scss'],
 })
 export class GroupdetailspagePage implements OnInit {
-	@ViewChild('groupDesc') groupDescInput;
 	public userList: any[];
 	public loadedUserList: any[];
 	userinfo$ :any[];
 	selectedGrpName:any;
-	selectedGrpDesc:any;
-	selectedGrpDocID:any;
 	uidPassed:any;
 	groupUsers = [];
 	groupUsersPending = [];
@@ -39,16 +36,14 @@ export class GroupdetailspagePage implements OnInit {
 	groupUserID: string;
 	selectedName;
 	group$;
-	grouponSelectedname$ = [];
-	grouponSelectednamePending$ = [];
+	grouponSelectedname$;
+	grouponSelectednamePending$
 	grouplist: any;
 	adminCheck$;
 	isadmin;
 	inGroupData$;
 	isInGroup;
 	docID;
-	isEditGroupDetail = false;
-	editIcon = 'create';
 	constructor(private navCtrl: NavController,
 				public afstore: AngularFirestore,
 				public afAuth: AngularFireAuth,
@@ -62,8 +57,7 @@ export class GroupdetailspagePage implements OnInit {
 			  
 			  this.selectedGrpName = this.router.getCurrentNavigation().extras.state.groupname;
 			  this.uidPassed = this.router.getCurrentNavigation().extras.state.uid;
-			  this.selectedGrpDesc = this.router.getCurrentNavigation().extras.state.desc;
-			  this.selectedGrpDocID = this.router.getCurrentNavigation().extras.state.DocID;
+			  
 			  console.log("passedData",this.selectedGrpName, this.uidPassed);
 			}else{
 				console.log("no Extras")
@@ -129,21 +123,6 @@ export class GroupdetailspagePage implements OnInit {
 
 
 
-	}
-	//CP-45-RH- now you can press on icon "create(pencil)" and it converts the description to edit mode
-	//and then if you want to remove editing just press on "done-all (checkmarks)."
-	editGroupDesc() {
-		this.isEditGroupDetail = !this.isEditGroupDetail;
-		if (this.isEditGroupDetail) {
-			this.groupDescInput.setFocus();
-			this.editIcon = "done-all";
-		} else {
-			this.editIcon = "create";
-			let updateGroup = this.afstore.doc(`grouplist/${this.selectedGrpDocID}`)
-			updateGroup.update({
-				desc:this.selectedGrpDesc
-			});
-		}
 	}
 
 	openDetailsWithState(firstName: string) {
@@ -245,9 +224,7 @@ export class GroupdetailspagePage implements OnInit {
 		return this.afstore.collection<any>('grouplist', ref => ref.where('createdBy', '==', uid)).valueChanges();
 	}
 	getDetails(grpName): Observable<any> {
-		return this.afstore.collection<any>('adduserstogrp', ref => ref
-		.where('grpname', '==', grpName)
-		.where( 'status', '==', 'Active')).valueChanges({idField:'DocID'});
+		return this.afstore.collection<any>('adduserstogrp', ref => ref.where('grpname', '==', grpName).where( 'status', '==', 'Active')).valueChanges();
 	}
 	getPendingDetails(grpName): Observable<any> {
 		return this.afstore.collection<any>('adduserstogrp', ref => ref.where('grpname', '==', grpName).where( 'status', '==', 'Pending')).valueChanges();
@@ -262,15 +239,7 @@ export class GroupdetailspagePage implements OnInit {
 	}
 	//CP-25-JP-2/23/2020:Checking if current user is in the group so that they can leave the group. 
 	isUserInGroup(uid,grpName): Observable<any>{
-		return this.afstore.collection<any>('adduserstogrp', ref => ref
-		.where('grpname', '==', grpName)
-		.where( 'status', '==', 'Active')
-		.where('uid','==',uid)).valueChanges({idField:'DocID'});
-	}
-	//CP-45-RH-delete user document and delete user in general from the group
-	async removeFromGroup(docID){
-		this.afstore.doc("adduserstogrp/"+docID).delete();
-		console.log("Removed From Group" ,docID);
+		return this.afstore.collection<any>('adduserstogrp', ref => ref.where('grpname', '==', grpName).where( 'status', '==', 'Active').where('uid','==',uid)).valueChanges({idField:'DocID'});
 	}
 	//CP-25-JP-2/23/2020:This method is used to delte users from the group
 	async leaveGroup(docID){

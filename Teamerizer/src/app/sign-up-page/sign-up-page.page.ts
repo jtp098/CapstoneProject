@@ -5,7 +5,7 @@ import {AngularFirestore} from '@angular/fire/firestore';
 import { UserService } from '../user.service';
 import { AlertController, MenuController } from '@ionic/angular';
 import { Router } from '@angular/router';
-import { FormBuilder, FormGroup, Validators, AbstractControl, FormControl } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 
 @Component({
   selector: 'app-sign-up-page',
@@ -28,7 +28,6 @@ export class SignUpPagePage implements OnInit {
   cnfpasseye:string='eye';
   passeye:string ='eye';
 
-
   constructor(public afAuth: AngularFireAuth, public fb: FormBuilder,
     public afstore: AngularFirestore,
     public user: UserService,
@@ -36,17 +35,11 @@ export class SignUpPagePage implements OnInit {
     public router: Router, 
     public menu: MenuController
     ) {
-      
       this.authForm = this.fb.group({
         'username' : [null, Validators.compose([Validators.required])],
-        /*'email': [null, Validators.compose([Validators.required])], */
-        'email': new FormControl('', Validators.compose([
-          Validators.required,
-          Validators.pattern('^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@pace.edu$')
-        ])),
+        'email': [null, Validators.compose([Validators.required])],
         'password': [null, Validators.compose([Validators.required])],
         'cnfpass': [null, Validators.compose([Validators.required])]
-        
     });
 
       this.username2 = this.authForm.controls['username'];
@@ -79,11 +72,11 @@ export class SignUpPagePage implements OnInit {
     const { username} = this
     if(regData.pass == regData.cnfpass){
       
-      
-      
+    
+
 try {
-  const res = await this.afAuth.auth.createUserWithEmailAndPassword(regData.mail, regData.pass);
-  
+  const res = await this.afAuth.auth.createUserWithEmailAndPassword(regData.mail, regData.pass)
+
   this.afstore.doc(`users/${res.user.uid}`).set({
     username: this.regData.name,
     uid: res.user.uid

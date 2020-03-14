@@ -1,20 +1,17 @@
 <ion-header>
   <ion-toolbar class="header-style">
     <ion-title>
-      <ion-img class="logo" src="assets/images/teamerizer2.png"></ion-img>
+      Pending Invites
     </ion-title>
   
   </ion-toolbar>
 </ion-header>
 <ion-content>    
     <ion-card class="card-style" *ngIf="uid">
-      <ion-card-subtitle class="invites">Pending Invites ({{pendingList$.length}})</ion-card-subtitle>
+      <ion-card-subtitle>Pending Invites</ion-card-subtitle>
       <ion-card-content>
-        <div *ngFor='let grpObservaPending of pendingList$' class="group-list"><b>{{grpObservaPending.grpname}}</b>
-          <div class="accept-decline">
-             <ion-icon class="accept" name="checkmark-circle-outline" (click)="Accept(uid, grpObservaPending.grpname)"></ion-icon>
-             <ion-icon class="decline" name="close-circle-outline"></ion-icon>
-          </div>
+        <div *ngFor='let grpObservaPending of pendingList$'><b>{{grpObservaPending.grpname}}</b>
+             <button (click)="Accept(uid, grpObservaPending.grpname)  ">Accept</button>
             <br>
         </div>
       </ion-card-content>
@@ -22,7 +19,7 @@
   <br>
   <ion-row>
     <ion-col width-50 style="text-align: center">
-      <ion-button fill="solid" color="success" shape="round" (click)="cancel()">Cancel</ion-button>
+      <ion-button expand="block" fill="solid" color="success" shape="round" (click)="cancel()">Cancel</ion-button>
     </ion-col>
   </ion-row>
 </ion-content>

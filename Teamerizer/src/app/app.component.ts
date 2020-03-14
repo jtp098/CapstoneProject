@@ -70,7 +70,7 @@ export class AppComponent implements OnInit {
     {
       title: 'Profile',
       url: '/profile',
-      icon: 'person'
+      icon: 'list'
     },/*
  {
       title: 'Team Management',
@@ -80,7 +80,7 @@ export class AppComponent implements OnInit {
     {
       title: 'Log Out',
       url: '/login',
-      icon: 'exit'
+      icon: 'list'
     },    
 
   ];
