@@ -6,6 +6,7 @@ import { AlertController } from '@ionic/angular';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { NavController } from '@ionic/angular';
+import { ProfilePage } from "../profile/profile.page";
 
 @Component({
   selector: 'app-member-details',
@@ -14,7 +15,7 @@ import { NavController } from '@ionic/angular';
 })
 export class MemberDetailsPage implements OnInit {
   mainuser: AngularFirestoreDocument
-    
+
     username:string
     firstname:string
     lastname:string
@@ -24,15 +25,15 @@ export class MemberDetailsPage implements OnInit {
     sub
     userinfo$ :any[];
     status: string
-    
+  profilePage: any
     uid: string;
-
     selectedSkill = [];
     selectedLevel = [];
 data: any;
 selectedGrpName: any;
-  constructor(private afs: AngularFirestore, private user: UserService, private router: Router, 
-    private afAuth: AngularFireAuth, private route: ActivatedRoute,private navCtrl: NavController) {
+ grpsPartOf$: any [ ];
+  constructor(private afs: AngularFirestore, private user: UserService, private router: Router, private afAuth: AngularFireAuth, private route: ActivatedRoute,private navCtrl: NavController) {
+    this.profilePage = new ProfilePage(afs, user , router , afAuth );
       this.route.queryParams.subscribe(params => {
         if (this.router.getCurrentNavigation().extras.state) {
           this.data = this.router.getCurrentNavigation().extras.state.user;
@@ -65,8 +66,11 @@ selectedGrpName: any;
       this.selectedSkill = event.skillType
       this.selectedLevel = event.skillLevel
       this.interests=event.interests
-      this.uid=event.uid
+      this.uid= event.uid
       console.log(this.selectedSkill);
+      console.log(this.uid, this.profilePage)
+      this.profilePage.getUserPartOfOther(this.uid);
+      console.log( this.profilePage.zip$);
     })
   }
 
@@ -89,6 +93,7 @@ selectedGrpName: any;
         }
       );
     }
+
     for(var userinfoobs$ in this.userinfo$) {
       console.log(this.userinfo$[userinfoobs$].firstName+""+this.userinfo$[userinfoobs$].lastName)
       this.afs.collection('adduserstogrp').add({
@@ -102,12 +107,11 @@ selectedGrpName: any;
         status: "Pending"
       })
     }
+
     this.afs.collection('adduserstogrp', ref => ref.where('uid', '==', user)).valueChanges().subscribe(data => {
       console.log(data.length>1);
    });
   }
-
-
 
   delay(ms: number) {
 		return new Promise( resolve => setTimeout(resolve, ms) );
@@ -120,5 +124,4 @@ selectedGrpName: any;
   back(){
     this.router.navigate(['/group-creation'])
   }
-
 }

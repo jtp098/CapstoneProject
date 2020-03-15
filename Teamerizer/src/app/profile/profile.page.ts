@@ -57,8 +57,8 @@ export class ProfilePage implements OnInit {
 
         this.afAuth.authState.subscribe(user => {
             if(user){
-
                 //method uses collection, adduserstogrp
+                this.getUserPartOfOther(user.uid);
                 this.getAllGroupsUserIsIn(user.uid).subscribe(data => {
                     console.log("Group List Data:", data);
                     this.team$ = data;
@@ -120,6 +120,55 @@ export class ProfilePage implements OnInit {
         });
     }
     //methods
+    getUserPartOfOther(uid) {
+    this.getAllGroupsUserIsIn(uid).subscribe(data => {
+    console.log("Group List Data:", data);
+    this.team$ = data;
+    //console.log(data[0].grpname);
+
+    //method uses collection, groupList
+    this.getAllGroupListData().subscribe(adminData => {
+    this.allGroupListData$ = adminData;
+    for (let i = 0; i < adminData.length; i++) {
+    for(let j = 0; j < this.team$.length; j++) {
+    if(adminData[i].groupname === this.team$[j].grpname) {
+    this.teamName$ = adminData[i].groupname;
+    this.adminId$ = adminData[i].createdBy;
+    console.log("admin id: " + this.adminId$);
+    this.adminIds$.push(this.adminId$);
+    this.zip2$ = this.allGroupListData$.map(o => {
+        return [{ team: o.groupname, admin: o.createdBy}];
+    });
+    //console.log("Admin Id Map: " + this.zip2$);
+    //method uses collection, users
+    //make sure it executes only one..
+    this.getAdminGrpById(this.adminId$);
+    this.getGroupAdminUser(this.adminId$).subscribe(data => {
+
+    this.adminUser$.push(data);
+    console.log();
+    this.adminUser$.map((x, i) => {
+    for ( let k = 0; k < this.adminInfo$.length; k++) {
+    if(x[0].uid===this.adminIds$[k]){
+    //condition  to remove duplicate grpname
+    if(k === this.admincount){
+    this.admincount++;
+    if(this.zip$.indexOf( [{ firstname: x[0].firstName, lastname: x[0].lastName,  grpname: (this.adminInfo$[k])[0].groupname }]) <=-1){
+    this.zip$.push( [{ firstname: x[0].firstName, lastname: x[0].lastName,  grpname: (this.adminInfo$[k])[0].groupname }]);
+}
+}
+}
+}
+});
+});
+}
+}
+}
+
+});
+
+});
+}
     getAdminGrpById(uid): any[] {
         this.getAdminGrpName(uid).subscribe(data  => {
             this.adminInfoMul$ = data ;
