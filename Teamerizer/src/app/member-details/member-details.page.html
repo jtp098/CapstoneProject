@@ -22,33 +22,45 @@
       <br>
 
       <ion-card-content>
-        <p><b>User Name:</b> {{ username }}</p>
+        <p><b><span style="color:#0029FA">User Name:</span></b> {{ username }}</p>
         <br>
-        <p><b>Skills(Levels):</b> {{ skillType }}</p>
+        <p><b><span style="color:#0029FA">Skills(Levels):</span></b> {{ skillType }}</p>
         <p *ngFor="let skill of selectedSkill; let i = index">  {{ selectedSkill[i].text }}({{ selectedLevel[i].text}})</p>
         <br>
-        <p ><b>Interests:</b></p>
-        {{ interests }}
+        <p><b><span style="color:#0029FA">Interests:</span></b> {{ interests }}</p>
+
+        <br>
+      
+        <p id="other-teams"><b>Other teams member is in:</b></p>
+        <ion-item-sliding *ngFor="let item of this.profilePage.team$">
+          <ion-item class="team-list">
+            <ion-icon slot="start" color="medium" name="people"></ion-icon>
+            <ion-label class="team-label"> {{item.grpname}}</ion-label>
+          </ion-item>
+          <div *ngFor="let admin of this.profilePage.zip$">
+            <ion-item-sliding *ngFor="let admindetails of admin">
+              <div *ngIf="admindetails.grpname===item.grpname">
+                <ion-label> Admin: {{admindetails.firstname}} {{admindetails.lastname}}</ion-label>
+              </div>
+            </ion-item-sliding>
+          </div>
+        </ion-item-sliding>
+        
+        <br>
+
       </ion-card-content>
-      <p id="other-teams"><b>Other teams member is in:</b></p>
-      <ion-item-sliding *ngFor="let item of this.profilePage.team$">
-        <ion-item class="team-list">
-          <ion-icon slot="start" color="medium" name="people"></ion-icon>
-          <ion-label class="team-label"> {{item.grpname}}</ion-label>
-        </ion-item>
-        <div *ngFor="let admin of this.profilePage.zip$">
-          <ion-item-sliding *ngFor="let admindetails of admin">
-            <div *ngIf="admindetails.grpname===item.grpname">
-              <ion-label> Admin: {{admindetails.firstname}} {{admindetails.lastname}}</ion-label>
-            </div>
-          </ion-item-sliding>
-        </div>
-      </ion-item-sliding>
+
     </ion-card>
+
+    
     <ion-row>
       <ion-col width-50 style="text-align: center">
-        <ion-button expand="block" shape="round" color="primary" (click)="addToGroup(uid)  ">Invite to Group</ion-button>
-        <ion-button expand="block" fill="solid" color="success" shape="round" (click)="goBack()">Back</ion-button>
+        <ion-button shape="round" color="primary" (click)="addToGroup(uid)  ">Invite to Group</ion-button>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col width-50 style="text-align: center">
+        <ion-button fill="solid" color="success" shape="round" (click)="goBack()">Back</ion-button>
       </ion-col>
     </ion-row>
    
