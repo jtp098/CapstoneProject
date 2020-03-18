@@ -86,7 +86,7 @@
             </ion-card-title>
             <ion-card-content>
               <img src="assets/icon/me.png/">
-              <ion-button expand="full" size="small" (click)="addToGroup(item)  ">Invite to Group</ion-button>
+              <ion-button class="add-to-group" expand="full" size="small" (click)="addToGroup(item)  ">Invite to Group</ion-button>
             </ion-card-content>
           </ion-card-header>
         </ion-card>
@@ -94,14 +94,16 @@
     </ion-slides>
     
   </div>
+  
   <ion-row>
     <ion-col width-50 style="text-align: center" *ngFor="let item of inGroupData$ ">
       <ion-button *ngIf="isInGroup" fill="solid" color="primary" shape="round" (click)="leaveGroup(item.DocID)">Leave Group</ion-button>
     </ion-col>
+  </ion-row>
+  <ion-row>
     <ion-col width-50 style="text-align: center">
       <ion-button fill="solid" color="success" shape="round" (click)="cancel()">Cancel</ion-button>  
     </ion-col>
-    
   </ion-row>
 
 </ion-content>
