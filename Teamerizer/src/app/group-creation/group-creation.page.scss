@@ -1,21 +1,40 @@
 .header-style {
-    --background: #062f6f;
-    color: #33A9AC;
+  --background: #230A59;
+  color: #33A9AC;
+}
+
+.logo {
+  width: 50px;
+  height: 50px;
+  float: right;
 }
 
 ion-content{
-    --ion-background-color: #484b86;
+  --ion-background-color: #ffffff;
+}
+
+.card-style {
+  --background: white;
 }
 
 .items {
     --background: white!important;
-  }
+}
 
 .skills {
     background: white;
-  }
+}
+
+.user-banner {
+  border-left: 8px solid var(--ion-color-success);
+  background: var(--ion-color-light-shade);
+  height: 40px;
+  padding: 10px;
+  font-weight: 500;
+}
 
 .get_users{
     background: white;
+    margin-top: 20px;
 }
 
