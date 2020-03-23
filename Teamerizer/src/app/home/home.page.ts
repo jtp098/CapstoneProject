@@ -17,7 +17,9 @@ export class HomePage {
   selectedGrpName:any;
   grouptf;
   userInvites = [];
+  pendingUserInvites = [];
   userGroups$;
+  public loadedTeamList: any[];
   constructor(public afstore: AngularFirestore,public menu: MenuController, private fireStore: AngularFirestore,public router: Router, public afAuth: AngularFireAuth ) {
 
   }
@@ -36,10 +38,12 @@ export class HomePage {
           this.uid = user.uid;
           console.log("UserID1",user.uid);
           console.log("User UID",this.uid);
-
+          //Gets A list of pending inivtes for the user so this can be used for the notifications 
           this.getPendingInvites(user.uid).subscribe(data => {
             this.userInvites = data;
+            this.pendingUserInvites[0] = data[0];
             console.log("Pending",data);
+            console.log("Pending invites",this.pendingUserInvites);
           });
 
 
@@ -54,6 +58,7 @@ export class HomePage {
 
     this.fireStore.collection('grouplist').valueChanges().subscribe(groupList => {
       this.groupList = groupList;
+      this.loadedTeamList =groupList
       if (groupList.length > 0){
         this.grouptf = false;
       }
@@ -106,6 +111,29 @@ getAllGroupsCurrentUserIsIn(uid): Observable<any> {
     this.router.navigate(['/pending-invites'],navigationExtras)
   }
 
+  //CP-55 - Search Teams
+	intializeItems(): void {
+		this.groupList = this.loadedTeamList;
 
+	}
+
+	filterList(evt) {
+		this.intializeItems();
+
+		const searchTerm = evt.srcElement.value;
+
+		if (!searchTerm) {
+			return;
+		}
+
+		this.groupList = this.groupList.filter(currentUser => {
+			if (currentUser.groupname && searchTerm) {
+				if (currentUser.groupname.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1) {
+					return true;
+				}
+				return false;
+			}
+    });
+  }
 
 }

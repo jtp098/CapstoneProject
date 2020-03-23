@@ -6,17 +6,17 @@
   
   </ion-toolbar>
 </ion-header>
-<ion-content>    
+<ion-content class="ion-no-padding">    
     <ion-card class="card-style" *ngIf="uid">
       <ion-card-subtitle class="invites">Pending Invites ({{pendingList$.length}})</ion-card-subtitle>
-      <ion-card-content>
-        <div *ngFor='let grpObservaPending of pendingList$' class="group-list"><b>{{grpObservaPending.grpname}}</b>
-          <div class="accept-decline">
+      <ion-card-content class="ion-no-padding">
+        <span *ngFor='let grpObservaPending of pendingList$' class="group-list"><b>{{grpObservaPending.grpname}}</b>
+          
              <ion-icon class="accept" name="checkmark-circle-outline" (click)="Accept(uid, grpObservaPending.grpname)"></ion-icon>
              <ion-icon class="decline" name="close-circle-outline"></ion-icon>
-          </div>
+          
             <br>
-        </div>
+        </span>
       </ion-card-content>
     </ion-card>
   <br>
