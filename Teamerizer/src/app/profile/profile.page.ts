@@ -195,7 +195,7 @@ export class ProfilePage implements OnInit {
     }
 
     getAllGroupsUserIsIn(uid): Observable<any> {
-        return this.afs.collection<any>('adduserstogrp', ref => ref.where('uid', '==', uid)).valueChanges()
+        return this.afs.collection<any>('adduserstogrp', ref => ref.where('uid', '==', uid).where('status','==', 'Active')).valueChanges()
     }
 
     getAllGroupListData(): Observable<any> {
