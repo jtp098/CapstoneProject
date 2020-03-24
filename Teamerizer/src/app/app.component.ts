@@ -7,7 +7,7 @@ import { UserService } from './user.service';
 import { firestore } from 'firebase/app';
 import { AlertController } from '@ionic/angular';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { AngularFirestore, AngularFirestoreDocument  } from '@angular/fire/firestore';
+import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 
 @Component({
@@ -16,35 +16,26 @@ import { Router } from '@angular/router';
   styleUrls: ['app.component.scss']
 })
 export class AppComponent implements OnInit {
-    mainuser: AngularFirestoreDocument
-    
-    username:string
-    firstname:string
-    lastname:string
-    skillType:string
-    skillLevel:string
-    sub
-    
 
-  ngOnInit() {
-    let self = this;
-    this.afAuth.auth.onAuthStateChanged(function(user) {
-      console.log("User",user);
-      if (user) {
-        self.setUserProfileData();
-      } else {
-        
-      }
-    });
+  constructor(
+    private platform: Platform,
+    private splashScreen: SplashScreen,
+    private statusBar: StatusBar,
+    public user: UserService,
+    private afs: AngularFirestore,
+    private router: Router,
+    private afAuth: AngularFireAuth
+  ) {
+    this.initializeApp();
   }
-  
-  setUserProfileData(){
-    this.mainuser = this.afs.doc(`users/${this.afAuth.auth.currentUser.uid}`)
-    this.sub = this.mainuser.valueChanges().subscribe(event => {
-      this.firstname = event.firstName
-      this.lastname = event.lastName
-    })
-  }
+  mainuser: AngularFirestoreDocument;
+
+  username: string;
+  firstname: string;
+  lastname: string;
+  skillType: string;
+  skillLevel: string;
+  sub;
   public appPages = [
     {
       title: 'Home',
@@ -56,7 +47,7 @@ export class AppComponent implements OnInit {
       url: '/sign-up-page',
       icon: 'list'
     },
-  
+
     {
       title: 'Update Profile Page',
       url: '/update-profile',
@@ -71,7 +62,12 @@ export class AppComponent implements OnInit {
       title: 'Profile',
       url: '/profile',
       icon: 'person'
-    },/*
+    },
+    {
+      title: 'Profile-Pic',
+      url: '/img-uploader',
+      icon: 'list'
+    }, /*
  {
       title: 'Team Management',
       url: '/groupdetailspage',
@@ -81,22 +77,31 @@ export class AppComponent implements OnInit {
       title: 'Log Out',
       url: '/login',
       icon: 'exit'
-    },    
+    },
 
   ];
 
-  constructor(
-    private platform: Platform,
-    private splashScreen: SplashScreen,
-    private statusBar: StatusBar,
-    public user: UserService,
-    private afs: AngularFirestore,
-    private router: Router, 
-    private afAuth: AngularFireAuth
-  ) {
-    this.initializeApp();
+
+  ngOnInit() {
+    const self = this;
+    this.afAuth.auth.onAuthStateChanged(function (user) {
+      console.log('User', user);
+      if (user) {
+        self.setUserProfileData();
+      } else {
+
+      }
+    });
   }
-  
+
+  setUserProfileData() {
+    this.mainuser = this.afs.doc(`users/${this.afAuth.auth.currentUser.uid}`);
+    this.sub = this.mainuser.valueChanges().subscribe(event => {
+      this.firstname = event.firstName;
+      this.lastname = event.lastName;
+    });
+  }
+
 
   initializeApp() {
     this.platform.ready().then(() => {
@@ -105,12 +110,12 @@ export class AppComponent implements OnInit {
     });
   }
 
-  menuClicked(item){
-    console.log("Menu Clicked",item.title);
-    if (item.title === "Log Out") {
+  menuClicked(item) {
+    console.log('Menu Clicked', item.title);
+    if (item.title === 'Log Out') {
       this.user.logout();
     }
 
   }
-  
+
 }
