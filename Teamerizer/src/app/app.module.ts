@@ -27,22 +27,21 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
   imports: [
     BrowserModule,
     IonicModule.forRoot(),
-    AppRoutingModule, 
-    AngularFireModule.initializeApp(firebaseConfig), 
+    AppRoutingModule,
+    AngularFireModule.initializeApp(firebaseConfig),
     AngularFireAuthModule,
-    AngularFireModule, 
+    AngularFireModule,
     AngularFirestoreModule,
-    FormsModule, 
+    FormsModule,
     ReactiveFormsModule
   ],
   providers: [
     StatusBar,
     SplashScreen,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, 
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     UserService,
-    AuthService 
-    
+    AuthService
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }
