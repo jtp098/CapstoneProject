@@ -193,7 +193,7 @@ export class ProfilePage implements OnInit {
     updateProfile(){
         this.router.navigate(['/update-profile'])
     }
-
+//3/23/2020 - Updated to pull on active groups back
     getAllGroupsUserIsIn(uid): Observable<any> {
         return this.afs.collection<any>('adduserstogrp', ref => ref.where('uid', '==', uid).where('status','==', 'Active')).valueChanges()
     }
