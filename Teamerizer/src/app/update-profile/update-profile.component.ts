@@ -35,14 +35,14 @@ export class UpdateProfileComponent {
   // Uploaded File URL
   UploadedFileURL: Observable<string>;
 
-  //Uploaded Image List
+  // Uploaded Image List
   images: Observable<MyData[]>;
 
-  //File details
+  // File details
   fileName: string;
   fileSize: number;
 
-  //Status check
+  // Status check
   isUploading: boolean;
   isUploaded: boolean;
 
@@ -53,7 +53,7 @@ export class UpdateProfileComponent {
   ) {
     this.isUploading = false;
     this.isUploaded = false;
-    //Set collection where our documents/ images info will save
+    // Set collection where our documents/ images info will save
     this.imageCollection = database.collection<MyData>('freakyImages');
     this.images = this.imageCollection.valueChanges();
   }
@@ -77,9 +77,9 @@ export class UpdateProfileComponent {
     const path = `freakyStorage/${new Date().getTime()}_${file.name}`;
 
     // Totally optional metadata
-    const customMetadata = { app: 'Freaky Image Upload Demo' };
+    const customMetadata = { app: 'Teamerizer' };
 
-    //File reference
+    // File reference
     const fileRef = this.storage.ref(path);
 
     // The main task
@@ -114,10 +114,10 @@ export class UpdateProfileComponent {
   }
 
   addImagetoDB(image: MyData) {
-    //Create an ID for document
+    // Create an ID for document
     const id = this.database.createId();
 
-    //Set document id with value in database
+    // Set document id with value in database
     this.imageCollection
       .doc(id)
       .set(image)
