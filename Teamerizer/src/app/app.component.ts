@@ -66,7 +66,7 @@ export class AppComponent implements OnInit {
     {
       title: 'Profile-Pic',
       url: '/img-uploader',
-      icon: 'list'
+      icon: 'person'
     }, /*
  {
       title: 'Team Management',

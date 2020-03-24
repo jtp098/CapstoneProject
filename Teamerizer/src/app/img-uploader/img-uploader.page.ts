@@ -69,7 +69,7 @@ export class ImgUploaderPage {
     this.fileName = file.name;
 
     // The storage path
-    const path = `freakyStorage/${new Date().getTime()}_${file.name}`;
+    const path = `Teamerizer-Storage/${new Date().getTime()}_${file.name}`;
 
     // Totally optional metadata
     const customMetadata = { app: 'Freaky Image Upload Demo' };
