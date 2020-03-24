@@ -72,7 +72,7 @@ export class ImgUploaderPage {
     const path = `Teamerizer-Storage/${new Date().getTime()}_${file.name}`;
 
     // Totally optional metadata
-    const customMetadata = { app: 'Freaky Image Upload Demo' };
+    const customMetadata = { app: 'Teamerizer' };
 
     // File reference
     const fileRef = this.storage.ref(path);
