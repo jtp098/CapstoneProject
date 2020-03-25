@@ -292,6 +292,7 @@ export class GroupdetailspagePage implements OnInit {
 					skillLevel: this.userinfo$[userinfoobs$].skillLevel,
 					skillType: this.userinfo$[userinfoobs$].skillType,
 					grpname: this.selectedGrpName,
+					desc: this.selectedGrpDesc,
 					addflag: true,
 					uid: user.uid,
 					status: "Pending"
