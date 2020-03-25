@@ -2,12 +2,14 @@ import { Component } from '@angular/core';
 import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/storage';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
-import { finalize, tap } from 'rxjs/operators';
+import { finalize, tap, delay } from 'rxjs/operators';
+import { Router, NavigationExtras, ActivatedRoute } from '@angular/router';
 
 export interface MyData {
   name: string;
   filepath: string;
   size: number;
+  uid:string;
 }
 
 @Component({
@@ -40,17 +42,80 @@ export class ImgUploaderPage {
   isUploading: boolean;
   isUploaded: boolean;
 
+  uidPassed: any;
+  userHasImage;
+  ImageData$ = [];
+  docID;
+  
+
+
   private imageCollection: AngularFirestoreCollection<MyData>;
-  constructor(private storage: AngularFireStorage, private database: AngularFirestore) {
+  constructor(private storage: AngularFireStorage, private database: AngularFirestore,private router: Router,
+		private route: ActivatedRoute) {
     this.isUploading = false;
     this.isUploaded = false;
     // Set collection where our documents/ images info will save
     this.imageCollection = database.collection<MyData>('TeamerizerImages');
     this.images = this.imageCollection.valueChanges();
+
+    this.route.queryParams.subscribe(params => {
+			if (this.router.getCurrentNavigation().extras.state) {
+
+			
+				this.uidPassed = this.router.getCurrentNavigation().extras.state.uid;
+			
+				console.log("passedData", this.uidPassed);
+			} else {
+				console.log("no Extras")
+			}
+		});
+  }
+  ngOnInit() {
+delay(2000);
+    this.GetCurrentImage(this.uidPassed).subscribe(data => {
+      delay(2000);
+      console.log("user image data:", data);
+      this.ImageData$ = data;
+      if (this.ImageData$.length === 0) {
+        console.log("no matching images");
+        this.userHasImage = false;
+        console.log("userHasImage set to false", this.userHasImage);
+      }else{
+        this.docID = this.ImageData$[0].DocID;
+        console.log("DocID", this.docID);
+        console.log("Length", this.ImageData$.length);
+        this.userHasImage = true;
+          console.log("userHasImage set to true", this.userHasImage);
+        
+
+      }
+      
+        
+    });
+
+    
+
   }
 
 
+
   uploadFile(event: FileList) {
+
+    
+
+    
+    
+    if(this.userHasImage)
+    {
+
+      this.removeImage(this.docID);
+      this.userHasImage = false;
+
+
+    }
+
+    if(this.userHasImage == false)
+    {
 
 
     // The File object
@@ -87,12 +152,14 @@ export class ImgUploaderPage {
       finalize(() => {
         // Get uploaded file storage path
         this.UploadedFileURL = fileRef.getDownloadURL();
+        console.log("UploadedFileURL");
 
         this.UploadedFileURL.subscribe(resp => {
           this.addImagetoDB({
             name: file.name,
             filepath: resp,
-            size: this.fileSize
+            size: this.fileSize,
+            uid: this.uidPassed
           });
           this.isUploading = false;
           this.isUploaded = true;
@@ -104,6 +171,8 @@ export class ImgUploaderPage {
         this.fileSize = snap.totalBytes;
       })
     );
+    }
+    this.back();
   }
 
   addImagetoDB(image: MyData) {
@@ -118,5 +187,18 @@ export class ImgUploaderPage {
     });
   }
 
+  GetCurrentImage(uid): Observable<any> {
+		return this.database.collection<any>('TeamerizerImages', ref => ref
+            .where('uid', '==', uid)).valueChanges({ idField: 'DocID' });
+            
+    }
 
+    async removeImage(docID) {
+      this.database.doc("TeamerizerImages/" + docID).delete();
+      console.log("Image Deleted", docID);
+    }
+
+    async back(){
+      this.router.navigate(['/profile'])
+  }
 }

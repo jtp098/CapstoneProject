@@ -3,9 +3,10 @@ import { AngularFirestore, AngularFirestoreDocument  } from '@angular/fire/fires
 import { UserService } from '../user.service';
 import { firestore } from 'firebase/app';
 import { AlertController } from '@ionic/angular';
-import { Router } from '@angular/router';
+import { Router,NavigationExtras } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/auth';
 import {Observable} from "rxjs";
+import { underline } from '@angular-devkit/core/src/terminal';
 
 @Component({
     selector: 'app-profile',
@@ -33,6 +34,10 @@ export class ProfilePage implements OnInit {
     skillLevel:string
     interests:string
     sub
+    uid;
+    groupname;
+    ImageData$;
+    hasImage;
 
     selectedSkill = [];
     selectedLevel = [];
@@ -50,6 +55,8 @@ export class ProfilePage implements OnInit {
             console.log("User",user);
             if (user) {
                 self.setUserProfileData();
+                
+
             } else {
 
             }
@@ -57,11 +64,22 @@ export class ProfilePage implements OnInit {
 
         this.afAuth.authState.subscribe(user => {
             if(user){
+                console.log("user image data:", user.uid);
+                this.getUserImage(user.uid).subscribe(data => {
+					console.log("user image data:", data);
+                    this.ImageData$ = data;
+                    if (this.ImageData$.length === 0) {
+                        this.hasImage = true;
+                    } else{
+                        this.hasImage = false;
+                    }
+				});
                 //method uses collection, adduserstogrp
                 this.getUserPartOfOther(user.uid);
                 this.getAllGroupsUserIsIn(user.uid).subscribe(data => {
                     console.log("Group List Data:", data);
                     this.team$ = data;
+                    this.uid = user.uid;
                     //Bug Fix - CP-77 - JP- 2/24/2019 - Checking the length of the data before executing the code
                     if(this.team$.length === 0)
                     {
@@ -211,8 +229,29 @@ export class ProfilePage implements OnInit {
     getGroupAdminUserDetails(adminId): Observable<any> {
         return this.afs.collection<any>('adduserstogrp', ref => ref.where('uid', '==', adminId)).valueChanges()
     }
+
+
+    async UpdateProfilePicture(uid:string){
+    
+        let navigationExtras: NavigationExtras = {
+          state: {
+            uid:this.uid
+          }
+        };
+    
+        this.router.navigate(['/img-uploader'],navigationExtras) 
+      }
+      //JP - 3/24/2020 - Pulls back images by user
+      getUserImage(uid): Observable<any> {
+        return this.afs.collection<any>('TeamerizerImages', ref => ref.where('uid', '==', uid)).valueChanges()
+    }
+
+    
+
     async cancel(){
         this.router.navigate(['/home'])
     }
+
+
 
 }

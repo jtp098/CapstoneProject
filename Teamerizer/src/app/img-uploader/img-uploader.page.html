@@ -23,6 +23,12 @@
       </div>
     </ion-card-content>
   </ion-card>
+  <ion-button
+        expand="full"
+        color="success"
+        (click)="back()"
+        >Cancel</ion-button>
+  
   <ion-card text-center *ngIf="isUploading && !isUploaded">
     <ion-card-header>
       <ion-card-title>Selected File:<b>{{ fileName }}</b></ion-card-title>
@@ -75,13 +81,13 @@
       <ion-button
         expand="full"
         color="success"
-        (click)="isUploading = isUploaded = false"
-        >Upload More</ion-button
+        (click)="back()"
+        >Go Back</ion-button
       >
     </ion-card-content>
   </ion-card>
 
-  <h2 text-center>Uploaded Teamerizer Images</h2>
+  <!-- <h2 text-center>Uploaded Teamerizer Images</h2>
 
   <ion-card color="light" text-center *ngFor="let item of images | async">
     <ion-card-header>
@@ -94,5 +100,5 @@
       <img [src]="item.filepath" />
       <a [href]="item.filepath" target="_blank" rel="noopener">Download</a>
     </ion-card-content>
-  </ion-card>
+  </ion-card> -->
 </ion-content>

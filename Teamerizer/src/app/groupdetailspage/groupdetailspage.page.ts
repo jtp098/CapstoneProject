@@ -49,7 +49,7 @@ export class GroupdetailspagePage implements OnInit {
 	inGroupData$;
 	isInGroup;
 	docID;
-	isEditGroupDetail = false;
+	isEditGroupDetail = false; 
 	editIcon = 'create';
 
 
