@@ -161,7 +161,7 @@ delay(2000);
       })
     );
     }
-    this.back();
+    //this.back();
   }
 
   addImagetoDB(image: MyData) {
