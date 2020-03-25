@@ -99,25 +99,14 @@ delay(2000);
 
 
 
-  uploadFile(event: FileList) {
-
-    
-
-    
-    
+  uploadFile(event: FileList) { 
     if(this.userHasImage)
     {
-
       this.removeImage(this.docID);
       this.userHasImage = false;
-
-
     }
-
     if(this.userHasImage == false)
     {
-
-
     // The File object
     const file = event.item(0);
 
@@ -186,13 +175,13 @@ delay(2000);
       console.log('error ' + error);
     });
   }
-
+//JP-3/25/2020 - Gets the current images and DOCID
   GetCurrentImage(uid): Observable<any> {
 		return this.database.collection<any>('TeamerizerImages', ref => ref
             .where('uid', '==', uid)).valueChanges({ idField: 'DocID' });
             
     }
-
+    //JP-3/25/2020 - This deletes any document before adding a new one
     async removeImage(docID) {
       this.database.doc("TeamerizerImages/" + docID).delete();
       console.log("Image Deleted", docID);
