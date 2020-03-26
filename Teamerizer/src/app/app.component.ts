@@ -63,11 +63,11 @@ export class AppComponent implements OnInit {
       url: '/profile',
       icon: 'person'
     },
-    {
-      title: 'Profile-Pic',
-      url: '/img-uploader',
-      icon: 'person'
-    }, /*
+    // {
+    //   title: 'Profile-Pic',
+    //   url: '/img-uploader',
+    //   icon: 'person'}
+     /*
  {
       title: 'Team Management',
       url: '/groupdetailspage',
