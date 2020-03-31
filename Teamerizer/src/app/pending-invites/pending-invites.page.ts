@@ -23,6 +23,7 @@ export class PendingInvitesPage implements OnInit {
 	groupUsers = [];
   groupUsersPending = [];
   pendingList$ = [];
+  selectedGrpDocID: any;
 
 
 	sliderConfig = {
@@ -38,6 +39,7 @@ export class PendingInvitesPage implements OnInit {
 	grouponSelectednamePending$;
   grouplist: any;
   userInvites = [];
+  docID;
   mainuser: AngularFirestoreDocument
 	constructor(private navCtrl: NavController,
 				public afstore: AngularFirestore,
@@ -51,6 +53,7 @@ export class PendingInvitesPage implements OnInit {
 			if (this.router.getCurrentNavigation().extras.state) {
 			  
 			  this.uid = this.router.getCurrentNavigation().extras.state.uid;
+			  this.selectedGrpDocID = this.router.getCurrentNavigation().extras.state.DocID;
 			  
 			  console.log("passedData",this.uid);
 			}else{
@@ -90,6 +93,11 @@ export class PendingInvitesPage implements OnInit {
 	 delay(ms: number) {
 		return new Promise( resolve => setTimeout(resolve, ms) );
   }
+  deleteDocument(uid:string){
+	this.afstore.doc("adduserstogrp/" + docID).delete();
+	console.log("Removed From Group", docID);
+
+}
   //user accepts and this sets the status to active
 	 async Accept(uid, grpName) {
      console.log(uid + "Users");
@@ -144,4 +152,5 @@ export class PendingInvitesPage implements OnInit {
 	async cancel() {
 		this.router.navigate(['/home']);
 	}
+	
 }
