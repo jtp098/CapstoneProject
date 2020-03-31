@@ -77,7 +77,7 @@ export class PendingInvitesPage implements OnInit {
   }
   getPendingInvites(uid): Observable<any> {
     console.log("UID",uid);
-		return this.afstore.collection<any>('adduserstogrp', ref => ref.where('uid', '==', uid).where( 'status', '==', 'Pending')).valueChanges();
+		return this.afstore.collection<any>('adduserstogrp', ref => ref.where('uid', '==', uid).where( 'status', '==', 'Pending')).valueChanges({ idField: 'DocID' });
 	}
 
 	openDetailsWithState(firstName: string) {
@@ -92,45 +92,20 @@ export class PendingInvitesPage implements OnInit {
 
 	 delay(ms: number) {
 		return new Promise( resolve => setTimeout(resolve, ms) );
-  }
-  deleteDocument(uid:string){
-	this.afstore.doc("adduserstogrp/" + docID).delete();
-	console.log("Removed From Group", docID);
+  }  
+  
+	//CP-80-RH-3/31/2020 Accept function cleaned up to 3 lines of code.
+	async accept(DocID) {
+		var db = this.afstore.firestore;
+		db.collection("adduserstogrp").doc(DocID).update({status: "Active"});
+	}
 
-}
-  //user accepts and this sets the status to active
-	 async Accept(uid, grpName) {
-     console.log(uid + "Users");
-     console.log(grpName + "group name");
-		 let observableUser$ = null;
-		 try {
-			 this.afstore.collection('users', ref => ref.where('uid', '==', uid)).valueChanges().subscribe((data) => {
-				 observableUser$ = data;
-				 console.log(data);
-				 this.userinfo$=observableUser$;
-				 console.log(this.userinfo$[0]);
-			 });
-		 } finally {
-			 await this.delay(2000);
-			 console.log("Fianl"+observableUser$);
-			 //debugger;
-			 this.afstore.collection('users', ref => ref.where('uid', '==', uid)).valueChanges().subscribe((data) => {
-					 observableUser$ = data;
-					 console.log(observableUser$);
-				 }
-			 );
-		 }
-		      this.afstore.collection('adduserstogrp', ref => ref.where('grpname', '==', grpName).where( 'uid', '==', uid)).get()
-       
-      var db = this.afstore.firestore; 
-      db.collection("adduserstogrp").where('grpname', '==', grpName).where( 'uid', '==', uid).get()
-      .then(function(ref) {
-        ref.forEach(function (doc) {
-          console.log("adduserstogrp "+ doc.id)
-          db.collection("adduserstogrp").doc(doc.id).update({status: "Active"});    
-        })
-      })
+	//CP-80-RH-3/31/2020 Decline/delete function is completed
+	 async decline(DocID) {
+		var db = this.afstore.firestore;
+		db.collection("adduserstogrp").doc(DocID).delete();
 	 }
+
   async groupdetail(groupname:string){
     
     let navigationExtras: NavigationExtras = {

@@ -12,8 +12,8 @@
       <ion-card-content class="ion-no-padding">
         <span *ngFor='let grpObservaPending of pendingList$' class="group-list"><b>{{grpObservaPending.grpname}}</b>
           
-             <ion-icon class="accept" name="checkmark-circle-outline" (click)="Accept(uid, grpObservaPending.grpname)"></ion-icon>
-             <ion-icon class="decline" name="close-circle-outline"></ion-icon>
+             <ion-icon class="accept" name="checkmark-circle-outline" (click)="accept(grpObservaPending.DocID)"></ion-icon>
+             <ion-icon class="decline" name="close-circle-outline" (click)="decline(grpObservaPending.DocID)"></ion-icon>
           
             <br>
         </span>
