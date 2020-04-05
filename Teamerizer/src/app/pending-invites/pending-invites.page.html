@@ -10,13 +10,17 @@
     <ion-card class="card-style" *ngIf="uid">
       <ion-card-subtitle class="invites">Pending Invites ({{pendingList$.length}})</ion-card-subtitle>
       <ion-card-content class="ion-no-padding">
-        <span *ngFor='let grpObservaPending of pendingList$' class="group-list"><b>{{grpObservaPending.grpname}}</b>
-          
+<ion-grid>
+       <ion-row *ngFor='let grpObservaPending of pendingList$' class="group-list"> 
+<ion-col col-10><b>{{grpObservaPending.grpname}}</b>
+</ion-col>
+          <ion-col col-2 class="accept-decline">
              <ion-icon class="accept" name="checkmark-circle-outline" (click)="Accept(uid, grpObservaPending.grpname)"></ion-icon>
              <ion-icon class="decline" name="close-circle-outline"></ion-icon>
-          
-            <br>
-        </span>
+          </ion-col>
+</ion-row>
+</ion-grid>       
+
       </ion-card-content>
     </ion-card>
   <br>
