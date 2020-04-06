@@ -51,6 +51,7 @@ export class GroupdetailspagePage implements OnInit {
 	docID;
 	isEditGroupDetail = false; 
 	editIcon = 'create';
+	groupDataforGroupSkills$ = [];
 
 
 	constructor(private navCtrl: NavController,
@@ -140,6 +141,12 @@ export class GroupdetailspagePage implements OnInit {
 				console.log("DocID", this.docID);
 			}
 		});
+
+		//CP-23-JM-4/5/2020:Used to get all group data for skills
+		this.getGroupSkills(this.selectedGrpName).subscribe(data => {
+			console.log("This group data: ", data);
+			this.groupDataforGroupSkills$ = data;		
+		})
 	}
 	//CP-45-RH- now you can press on icon "create(pencil)" and it converts the description to edit mode
 	//and then if you want to remove editing just press on "done-all (checkmarks)."
@@ -358,7 +365,6 @@ export class GroupdetailspagePage implements OnInit {
 	}
 	//CP-25-JP-2/23/2020:This section is used to verify is the current user created the group
 	isAdmin(uid, grpName): Observable<any> {
-
 		return this.afstore.collection<any>('grouplist', ref => ref.where('groupname', '==', grpName).where('createdBy', '==', uid)).valueChanges();
 	}
 	//CP-25-JP-2/23/2020:Checking if current user is in the group so that they can leave the group. 
@@ -367,6 +373,11 @@ export class GroupdetailspagePage implements OnInit {
 			.where('grpname', '==', grpName)
 			.where('status', '==', 'Active')
 			.where('uid', '==', uid)).valueChanges({ idField: 'DocID' });
+	}
+
+	//CP-23-JM-4/5/2020:Getting required skills for group
+	getGroupSkills(grpName): Observable<any> {
+		return this.afstore.collection<any>('grouplist', ref => ref.where('groupname', '==', grpName)).valueChanges();
 	}
 	//CP-45-RH-delete user document and delete user in general from the group
 	async removeFromGroup(docID) {
