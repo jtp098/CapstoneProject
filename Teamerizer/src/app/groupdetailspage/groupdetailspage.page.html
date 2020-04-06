@@ -91,13 +91,18 @@
           </ion-card-header>
         </ion-card>
       </ion-slide>
-    </ion-slides>
+    </ion-slides> 
     
   </div>
   
   <ion-row>
     <ion-col width-50 style="text-align: center" *ngFor="let item of inGroupData$ ">
       <ion-button *ngIf="isInGroup" fill="solid" color="primary" shape="round" (click)="leaveGroup(item.DocID)">Leave Group</ion-button>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col width-50 style="text-align: center" *ngFor="let item of currentuser "  >
+      <ion-button *ngIf="isInNotGroup" fill="solid" color="primary" shape="round" (click)="RequestToBeInGroup(item)">Request to be in Group</ion-button>
     </ion-col>
   </ion-row>
   <ion-row>
