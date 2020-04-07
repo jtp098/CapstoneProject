@@ -38,6 +38,7 @@ export class PendingInvitesPage implements OnInit {
 	grouponSelectednamePending$;
   grouplist: any;
   userInvites = [];
+  userRequests = [];
   mainuser: AngularFirestoreDocument
 	constructor(private navCtrl: NavController,
 				public afstore: AngularFirestore,
@@ -65,12 +66,24 @@ export class PendingInvitesPage implements OnInit {
 		this.afAuth.authState.subscribe(user => {
 			if(user){
 				this.getPendingInvites(user.uid).subscribe(data => {
-          this.userInvites = data;
-          this.pendingList$ =data;
-          console.log("Pending",data);
+         		this.userInvites = data;
+          		this.pendingList$ =data;
+          		console.log("Pending",data);
 				});
+
+
+				this.getRequests(user.uid).subscribe(data => {
+					this.userRequests = data;
+				
+					console.log("requested",data);
+					console.log("Pending with Requested added",this.userRequests);
+			 
+				  }); 
+
 			}
 		});
+		
+
   }
   getPendingInvites(uid): Observable<any> {
     console.log("UID",uid);
@@ -144,4 +157,10 @@ export class PendingInvitesPage implements OnInit {
 	async cancel() {
 		this.router.navigate(['/home']);
 	}
+
+	//cp-81 - 4/5/2020 - Request to be in group - Get requests
+	getRequests(uid): Observable<any> {
+		return this.afstore.collection<any>('adduserstogrp', ref => ref.where('groupCreator', '==', uid).where( 'status', '==', 'Requested')).valueChanges();
+		
+	  }
 }

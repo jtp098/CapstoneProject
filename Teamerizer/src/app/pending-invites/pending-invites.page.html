@@ -23,6 +23,24 @@
 
       </ion-card-content>
     </ion-card>
+
+    <ion-card class="card-style" *ngIf="uid">
+      <ion-card-subtitle class="invites">Requests ({{userRequests.length}})</ion-card-subtitle>
+      <ion-card-content class="ion-no-padding">
+<ion-grid>
+       <ion-row *ngFor='let grpObservaRequests of userRequests' class="group-list"> 
+<ion-col col-10><b>{{grpObservaRequests.grpname}} </b> {{grpObservaRequests.firstName}} 
+
+</ion-col>
+          <ion-col col-2 class="accept-decline">
+             <ion-icon class="accept" name="checkmark-circle-outline" (click)="Accept(grpObservaRequests.uid, grpObservaRequests.grpname)"></ion-icon>
+             <ion-icon class="decline" name="close-circle-outline"></ion-icon>
+          </ion-col>
+</ion-row>
+</ion-grid>       
+
+      </ion-card-content>
+    </ion-card>
   <br>
   <ion-row>
     <ion-col width-50 style="text-align: center">
