@@ -163,4 +163,15 @@ export class PendingInvitesPage implements OnInit {
 		return this.afstore.collection<any>('adduserstogrp', ref => ref.where('groupCreator', '==', uid).where( 'status', '==', 'Requested')).valueChanges();
 		
 	  }
+	  async pendingToGroupDetail(uid:string, groupname:string){
+    
+		let navigationExtras: NavigationExtras = {
+		  state: {
+			groupname:groupname,
+			uid:uid
+		  }
+		};
+	
+		this.router.navigate(['/groupdetailspage'],navigationExtras)
+	  }
 }
