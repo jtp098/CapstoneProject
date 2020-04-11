@@ -33,13 +33,27 @@
         <br>
         <ion-row>
           <ion-col size="11">
-            <ion-label position="floating">Description</ion-label>
+            <ion-label position="floating" style="color:#000">Description</ion-label>
             <ion-textarea [readonly]="!isEditGroupDetail" [(ngModel)]="selectedGrpDesc" id="desc" type="text" #groupDesc required placeholder="Description"></ion-textarea>
           </ion-col>
           <ion-col size="1" *ngIf="isadmin">
             <ion-icon [name]="editIcon" (click)="editGroupDesc()"></ion-icon>
           </ion-col>
         </ion-row>
+        <!--Required Skills for groups-->
+        <ion-row>
+          <ion-col size="11">
+            <ion-label position="floating" style="color:#000">Required Skills</ion-label>
+            <ion-row *ngFor='let grp of groupDataforGroupSkills$'>
+              <ion-col size="11">
+                <div>
+                  <p *ngFor="let skillType$ of grp.selectedSkill; let i=index">  {{grp.selectedSkill[i].text}} ({{grp.selectedLevel[i].text}})</p>
+                </div>
+              </ion-col>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+        <!--Accepted Members Info-->
         <ion-card-subtitle class="invites"><b><span style="color:#0029FA">Accepted Members </span></b>({{grouponSelectedname$.length}})</ion-card-subtitle>
       <ion-card-content>
         <ion-row *ngFor='let grpObserva of grouponSelectedname$'>
