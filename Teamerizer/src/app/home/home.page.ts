@@ -13,15 +13,16 @@ import { delay } from 'rxjs/operators';
 export class HomePage {
   public groupList: any[];
   uid: string;
-  group$;
+  group$ = [];
   groupname:string;
   selectedGrpName:any;
   grouptf;
   userInvites = [];
   userRequests = [];
   pendingUserInvites = [];
-  userGroups$;
+  userGroups$ = [];
   notification = 0;
+  filtered = false;
   public loadedTeamList: any[];
   constructor(public afstore: AngularFirestore,public menu: MenuController, private fireStore: AngularFirestore,public router: Router, public afAuth: AngularFireAuth ) {
 
@@ -87,14 +88,15 @@ export class HomePage {
   getPendingInvites(uid): Observable<any> {
     return this.afstore.collection<any>('adduserstogrp', ref => ref.where('uid', '==', uid).where( 'status', '==', 'Pending')).valueChanges();
     //where( 'status', '==', 'Pending')
-	}
+  }
+  
   getAllGroupsCreatedByCurrentUser(uid): Observable<any> {
     return this.fireStore.collection<any>('grouplist', ref => ref.where('createdBy', '==', uid)).valueChanges({idField:'DocID'});
-}
+  }
 
-getAllGroupsCurrentUserIsIn(uid): Observable<any> {
-  return this.fireStore.collection<any>('adduserstogrp', ref => ref.where('uid', '==', uid).where( 'status', '==', 'Active')).valueChanges();
-}
+  getAllGroupsCurrentUserIsIn(uid): Observable<any> {
+    return this.fireStore.collection<any>('adduserstogrp', ref => ref.where('uid', '==', uid).where( 'status', '==', 'Active')).valueChanges();
+  }
 
  
 
@@ -140,23 +142,25 @@ getAllGroupsCurrentUserIsIn(uid): Observable<any> {
 		const searchTerm = evt.srcElement.value;
 
 		if (!searchTerm) {
+      this.filtered = false;
 			return;
 		}
 
 		this.groupList = this.groupList.filter(currentUser => {
+      this.filtered = true;
 			if (currentUser.groupname && searchTerm) {
 				if (currentUser.groupname.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1) {
 					return true;
-				}
-				return false;
-			}
+        }
+        return false; 
+      }
     });
   }
 
-//CP-81 - 4/5/2020
-getRequests(uid): Observable<any> {
-  return this.afstore.collection<any>('adduserstogrp', ref => ref.where('groupCreator', '==', uid).where( 'status', '==', 'Requested')).valueChanges();
-  
-}
+  //CP-81 - 4/5/2020
+  getRequests(uid): Observable<any> {
+    return this.afstore.collection<any>('adduserstogrp', ref => ref.where('groupCreator', '==', uid).where( 'status', '==', 'Requested')).valueChanges();
+    
+  }
 
 }
