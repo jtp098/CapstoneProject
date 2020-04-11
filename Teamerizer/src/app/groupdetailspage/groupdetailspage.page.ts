@@ -19,6 +19,7 @@ export class GroupdetailspagePage implements OnInit {
 	@ViewChild('groupDesc') groupDescInput;
 	public userList: any[];
 	public loadedUserList: any[];
+	currentuser;
 	userinfo$: any[];
 	selectedGrpName: any;
 	selectedGrpDesc: any;
@@ -48,6 +49,9 @@ export class GroupdetailspagePage implements OnInit {
 	isadmin;
 	inGroupData$;
 	isInGroup;
+	isInNotGroup = true;
+
+
 	docID;
 	isEditGroupDetail = false; 
 	editIcon = 'create';
@@ -110,6 +114,7 @@ export class GroupdetailspagePage implements OnInit {
 			} else {
 				//CP-25-JP-2/23/2020:If the user is the admin, isadmin is set to true, this will display the adding people section and the below will populate with users.
 				this.isadmin = true;
+				this.isInNotGroup = false;
 				this.afstore.collection('users').valueChanges().subscribe(userList => {
 					this.userList = userList;
 					this.loadedUserList = userList;
@@ -137,6 +142,7 @@ export class GroupdetailspagePage implements OnInit {
 				//CP-25-JP-2/23/2020:If the user is in the group, this is used to display the leave group button.
 				//CP-25-JP-2/23/2020:Doc.ID is the document ID from FireBase, it can be used to delte a document. 
 				this.isInGroup = true;
+				this.isInNotGroup = false;
 				this.docID = this.inGroupData$[0].DocID;
 				console.log("DocID", this.docID);
 			}
@@ -147,6 +153,14 @@ export class GroupdetailspagePage implements OnInit {
 			console.log("This group data: ", data);
 			this.groupDataforGroupSkills$ = data;		
 		})
+		//CP-81 - 4/5/2020 - Member can request to be in group
+		this.afstore.collection('users', ref => ref.where('uid', '==', this.uidPassed)).valueChanges().subscribe(currentuser => {
+			this.currentuser = currentuser;
+			
+			console.log("currentuser", currentuser);
+		
+
+		});
 	}
 	//CP-45-RH- now you can press on icon "create(pencil)" and it converts the description to edit mode
 	//and then if you want to remove editing just press on "done-all (checkmarks)."
@@ -399,6 +413,173 @@ export class GroupdetailspagePage implements OnInit {
 		})
 		await alert.present();
 	}
+	//CP-81 - 4/5/2020 - Member can request to be in group
+	async RequestToBeInGroup(user) {
+		console.log(user + "Users");
+		let observableUser$ = null;
+		let inPendingGroupData$ = null;
+		let inActiveGroupData$ = null;
+		let inAdminInGroupData$ = null;
+		let isPendingInGroup;
+		let isActiveInGroup;
+		let isInAdminInGroup;
+		let isRequestedInGroup;
+		let groupCreator;
+	
+		//await this.delay(2000);
+		try {
+			this.afstore.collection('users', ref => ref.where('uid', '==', user.uid)).valueChanges().subscribe((data) => {
+				observableUser$ = data;
+				console.log(data);
+				this.userinfo$ = observableUser$;
+				console.log(this.userinfo$[0]);
+			});
+			//CP-78-JP-3/19/2020:This method is used to check if user is pending
+			this.afstore.collection('adduserstogrp', ref => ref
+				.where('grpname', '==', this.selectedGrpName)
+				.where('uid', '==', user.uid)
+				.where('status', '==', 'Pending')
+			).valueChanges().subscribe((data) => {
+				console.log("Is user in pending group:", data);
+				inPendingGroupData$ = data;
+				console.log("Is user in pending group:", inPendingGroupData$[0]);
+				if (inPendingGroupData$.length === 0) {
+					isPendingInGroup = false;
+				} else {
+					isPendingInGroup = true;
+
+				}
+				console.log("Is pending boolen value" + isPendingInGroup)
+			});
+
+			//CP-81 - 4/5/2020This checks if user has already requested to be in group
+			this.afstore.collection('adduserstogrp', ref => ref
+				.where('grpname', '==', this.selectedGrpName)
+				.where('uid', '==', user.uid)
+				.where('status', '==', 'Requested')
+			).valueChanges().subscribe((data) => {
+				console.log("Is user in pending group:", data);
+				inPendingGroupData$ = data;
+				console.log("Is user in pending group:", inPendingGroupData$[0]);
+				if (inPendingGroupData$.length === 0) {
+					isRequestedInGroup = false;
+				} else {
+					isRequestedInGroup = true;
+
+				}
+				console.log("Is pending boolen value" + isPendingInGroup)
+			});
+
+			//CP-78-JP-3/19/2020:This method is used to check if user is active in group
+			this.afstore.collection('adduserstogrp', ref => ref
+				.where('grpname', '==', this.selectedGrpName)
+				.where('uid', '==', user.uid)
+				.where('status', '==', 'Active')
+			).valueChanges().subscribe((data) => {
+				console.log("Is user in active group:", data);
+				inActiveGroupData$ = data;
+				console.log("Is user in active group:", inActiveGroupData$[0]);
+				if (inActiveGroupData$.length === 0) {
+					isActiveInGroup = false;
+				} else {
+					isActiveInGroup = true;
+
+				}
+				console.log("Is pending boolen value" + isActiveInGroup)
+			});
+			//CP-78-JP-3/19/2020:This method is used to check if user is admin
+			this.afstore.collection('grouplist', ref => ref
+				.where('groupname', '==', this.selectedGrpName)
+				.where('createdBy', '==', user.uid)
+			).valueChanges().subscribe((data) => {
+				console.log("Is user in admin group:", data);
+				inAdminInGroupData$ = data;
+				console.log("Is user in admin group:", inAdminInGroupData$[0]);
+				if (inAdminInGroupData$.length === 0) {
+					isInAdminInGroup = false;
+				} else {
+					isInAdminInGroup = true;
+
+				}
+				console.log("Is pending boolen value" + isActiveInGroup)
+
+			});
+
+			//CP-81 - 4/5/2020 - This gets the group creator
+			this.afstore.collection('grouplist', ref => ref
+			.where('groupname', '==', this.selectedGrpName)
+			//.where('createdBy', '==', user.uid)
+		).valueChanges().subscribe((data) => {
+			//console.log("Is user in admin group:", data);
+			groupCreator = data;
+			console.log("Group Creator", groupCreator);
+			groupCreator = groupCreator[0].createdBy;
+			console.log("Group Creator", groupCreator);
+
+			
+			
+
+		});
+
+		} finally {
+			await this.delay(200);
+			console.log("Fianl" + observableUser$);
+			//debugger;
+			this.afstore.collection('users', ref => ref.where('uid', '==', user.uid)).valueChanges().subscribe((data) => {
+				observableUser$ = data;
+				console.log(observableUser$);
+			}
+			);
+		}
+		for (var userinfoobs$ in this.userinfo$) {
+			if (isPendingInGroup) {
+				this.presentAlert('Opps', 'Looks like this user is already invited')
+				console.log("User is pending IF");
+			} 
+			// else if (isActiveInGroup) {
+			// 	this.presentAlert('Opps', 'Looks like this user is already in the group')
+			// 	console.log("User is  in group IF");
+			// } 
+			else if (isInAdminInGroup) {
+				this.presentAlert('Opps', 'You can not invite yourself')
+				console.log("User is  in admin in group IF");
+			}
+			else if(isRequestedInGroup)
+			{
+				this.presentAlert('Opps', 'You already requested to be in the group')
+				
+			}
+			else {
+				console.log(this.userinfo$[userinfoobs$].firstName + "" + this.userinfo$[userinfoobs$].lastName)
+				this.afstore.collection('adduserstogrp').add({
+					firstName: this.userinfo$[userinfoobs$].firstName,
+					lastName: this.userinfo$[userinfoobs$].lastName,
+					skillLevel: this.userinfo$[userinfoobs$].skillLevel,
+					skillType: this.userinfo$[userinfoobs$].skillType,
+					grpname: this.selectedGrpName,
+					desc: this.selectedGrpDesc,
+					addflag: true,
+					uid: user.uid,
+					status: "Requested",
+					groupCreator: groupCreator
+				}).then(function (docref) {
+					console.log("reference" + docref.id)
+				});
+
+			}
+
+
+		}
+
+		// this.afstore.collection('adduserstogrp', ref => ref.where('uid', '==', user.uid)).valueChanges().subscribe(data => {
+		// 	console.log(data.length > 1);
+		// 	if (data.length > 0) {
+		// 		this.removeList(user);
+		// 		console.log("user removed" + user)
+		// 	}
+		// });
+	}
+
 	async cancel() {
 		this.router.navigate(['/home']);
 	}

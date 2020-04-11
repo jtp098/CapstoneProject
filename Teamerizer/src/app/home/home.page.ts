@@ -4,6 +4,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { Router,NavigationExtras } from '@angular/router';
 import {Observable} from 'rxjs';
 import {AngularFireAuth} from '@angular/fire/auth';
+import { delay } from 'rxjs/operators';
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
@@ -17,8 +18,10 @@ export class HomePage {
   selectedGrpName:any;
   grouptf;
   userInvites = [];
+  userRequests = [];
   pendingUserInvites = [];
   userGroups$;
+  notification = 0;
   public loadedTeamList: any[];
   constructor(public afstore: AngularFirestore,public menu: MenuController, private fireStore: AngularFirestore,public router: Router, public afAuth: AngularFireAuth ) {
 
@@ -40,9 +43,10 @@ export class HomePage {
           console.log("User UID",this.uid);
           //Gets A list of pending inivtes for the user so this can be used for the notifications 
           this.getPendingInvites(user.uid).subscribe(data => {
-            this.userInvites = data;
-            this.pendingUserInvites[0] = data[0];
-            console.log("Pending",data);
+           this.userInvites = data;
+            this.pendingUserInvites[0] = this.userInvites[0];
+            console.log("Pending",this.userInvites);
+            this.notification = this.notification + this.userInvites.length;
             console.log("Pending invites",this.pendingUserInvites);
           });
 
@@ -53,6 +57,18 @@ export class HomePage {
           this.userGroups$ = data;
           console.log("Active",data);
         });
+
+        //CP-81 - Amending User invite list with requested invites
+        
+      this.getRequests(user.uid).subscribe(data => {
+        this.userRequests = data;
+        console.log("requested",this.userRequests);
+        this.notification = this.notification + this.userRequests.length;
+        console.log("Notification Length",this.notification);
+      }); 
+
+     
+     
       }
     });
 
@@ -69,7 +85,8 @@ export class HomePage {
   }
 
   getPendingInvites(uid): Observable<any> {
-		return this.afstore.collection<any>('adduserstogrp', ref => ref.where('uid', '==', uid).where( 'status', '==', 'Pending')).valueChanges();
+    return this.afstore.collection<any>('adduserstogrp', ref => ref.where('uid', '==', uid).where( 'status', '==', 'Pending')).valueChanges();
+    //where( 'status', '==', 'Pending')
 	}
   getAllGroupsCreatedByCurrentUser(uid): Observable<any> {
     return this.fireStore.collection<any>('grouplist', ref => ref.where('createdBy', '==', uid)).valueChanges({idField:'DocID'});
@@ -135,5 +152,11 @@ getAllGroupsCurrentUserIsIn(uid): Observable<any> {
 			}
     });
   }
+
+//CP-81 - 4/5/2020
+getRequests(uid): Observable<any> {
+  return this.afstore.collection<any>('adduserstogrp', ref => ref.where('groupCreator', '==', uid).where( 'status', '==', 'Requested')).valueChanges();
+  
+}
 
 }
