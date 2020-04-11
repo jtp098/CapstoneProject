@@ -19,12 +19,10 @@
         <ion-label><ion-icon name="folder-open"></ion-icon></ion-label>
         <ion-input [(ngModel)]="newGroupData.desc" [formControl]="descAC" id="desc" type="text" required placeholder="Description"></ion-input>
       </ion-item>
-      <ion-item  class="items">
         <ion-item class="items">
           <ion-label>Skills &nbsp;&nbsp;&nbsp;&nbsp;</ion-label>
           <ion-icon name="add-circle" (click)="showAdvancedPicker()"></ion-icon>
         </ion-item>
-      </ion-item>
     </ion-list>
 
     <div class="skills">

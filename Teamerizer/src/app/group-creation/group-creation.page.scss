@@ -18,11 +18,16 @@ ion-content{
 }
 
 .items {
-    --background: white!important;
+  --background: white!important;
 }
 
 .skills {
-    background: white;
+  background: white;
+}
+
+.skills-header {
+  font-weight: bold;
+  font-size: 20px;
 }
 
 .user-banner {
@@ -34,7 +39,7 @@ ion-content{
 }
 
 .get_users{
-    background: white;
-    margin-top: 20px;
+  background: white;
+  margin-top: 20px;
 }
 
