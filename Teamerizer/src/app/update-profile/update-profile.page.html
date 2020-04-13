@@ -8,27 +8,27 @@
 	<ion-list>
 
 		<ion-item class="items">
-		  <ion-label position="floating">First Name</ion-label>
+		  <ion-label position="floating"><span style="color:#0029FA">First Name</span></ion-label>
 		  <ion-input type="text" [(ngModel)]="firstname" ></ion-input>
 		</ion-item>
 	  
 		<ion-item class="items">
-		  <ion-label position="floating">Last Name</ion-label>
+		  <ion-label position="floating"><span style="color:#0029FA">Last Name</span></ion-label>
 		  <ion-input type="text" [(ngModel)]="lastname"></ion-input>
 		</ion-item>
-		<ion-item class="items">
-			<ion-label position="floating">Interests</ion-label>
-			<ion-input type="text" [(ngModel)]="interests"></ion-input>
-		  </ion-item>
-	
 
 		<ion-item class="items">
-			<ion-label (click)="showAdvancedPicker()">Skills</ion-label>
-			<!--<ion-button expand="block" (click)="showAdvancedPicker()" color="success">Add Skill Info</ion-button>-->
+			<ion-label position="floating"><span style="color:#0029FA">Interests</span></ion-label>
+			<ion-input type="text" [(ngModel)]="interests"></ion-input>
+		</ion-item>
+	
+		<ion-item class="items">
+			<ion-label><span style="color:#0029FA">Skills &nbsp;&nbsp;&nbsp;&nbsp;</span></ion-label>
+			<ion-icon name="add-circle" (click)="showAdvancedPicker()"></ion-icon>
 		</ion-item>
 
 		<div class="skills">
-			<ion-row text-center>
+			<ion-row text-center *ngIf="selectedSkill.length > 0">
 				<ion-col size="5" class="skills-header">Skill</ion-col>
 				<ion-col size="5" class="skills-header">Level</ion-col>
 			</ion-row>
@@ -65,29 +65,19 @@
 		  </ion-item-options>
 	 
 		</ion-item-sliding>
-	  </ion-list>
-
-	  <ion-button fill="clear" expand="full" color="light" (click)="selectMedia()"></ion-button>
+	</ion-list>
 
 	<ion-row>
-    <ion-col width-50 style="text-align: center">
-			<ion-button expand="block" fill="solid" color="primary" shape="round"  (click)="updateProfile()">Update</ion-button>
+		<ion-col width-50 style="text-align: center">
+			<ion-button  fill="solid" color="primary" shape="round"  (click)="updateProfile()">Update</ion-button>
     </ion-col>
-  </ion-row>
+	</ion-row>
+	
   <ion-row>
     <ion-col width-50 style="text-align: center">
-      <ion-button expand="block"fill="solid" color="success" shape="round" (click)="cancel()">Cancel</ion-button>
+      <ion-button fill="solid" color="success" shape="round" (click)="cancel()">Cancel</ion-button>
     </ion-col>
   </ion-row>
-
-  <ion-footer>
-	<ion-toolbar color="primary">
-	  <ion-button fill="clear" expand="full" color="light" (click)="selectMedia()">
-		<ion-icon slot="start" name="document"></ion-icon>
-		Select Media
-	  </ion-button>
-	</ion-toolbar>
-  </ion-footer>
 
 	   
 </ion-content>

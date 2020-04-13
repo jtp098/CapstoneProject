@@ -7,14 +7,35 @@ ion-menu-button {
   --color: #96F20C;
 }
 
+.invites {
+  display: flex;
+  margin-left: 20px;
+}
+
 ion-badge {
-  padding-right: 15px;
+  padding-right: 20px;
   
 }
+
 .logo {
   width: 50px;
   height: 50px;
   float: right;
+}
+
+.title {
+  text-align: center;
+}
+
+.teams-list-container {
+  padding-top: 0;
+}
+
+
+.title img {
+  width: 20%;
+  height: 80%;
+  margin: auto;
 }
 
 .button-inner {
@@ -22,7 +43,6 @@ ion-badge {
   flex-shrink: 0;
   align-items: center;
   justify-content: center;
-  width: 35px;
   height: 100%;
   flex-flow: row nowrap;
 }
@@ -33,6 +53,22 @@ ion-content{
 
 .card-style {
   --background: white;
+}
+
+.teams-banner {
+  border-left: 8px solid var(--ion-color-secondary);
+  background: var(--ion-color-light-shade);
+  height: 40px;
+  padding: 10px;
+  font-weight: 500;
+}
+
+.available-teams-banner {
+  border-left: 8px solid var(--ion-color-success);
+  background: var(--ion-color-light-shade);
+  height: 40px;
+  padding: 10px;
+  font-weight: 500;
 }
 
 .teams {
