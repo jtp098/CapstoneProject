@@ -7,6 +7,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { NavController } from '@ionic/angular';
 import { ProfilePage } from "../profile/profile.page";
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-member-details',
@@ -32,7 +33,7 @@ export class MemberDetailsPage implements OnInit {
 data: any;
 selectedGrpName: any;
  grpsPartOf$: any [ ];
-  constructor(private afs: AngularFirestore, private user: UserService, private router: Router, private afAuth: AngularFireAuth, private route: ActivatedRoute,private navCtrl: NavController) {
+  constructor(private afs: AngularFirestore, private user: UserService, private router: Router, private afAuth: AngularFireAuth, private route: ActivatedRoute,private navCtrl: NavController,public alertController: AlertController,) {
     this.profilePage = new ProfilePage(afs, user , router , afAuth );
       this.route.queryParams.subscribe(params => {
         if (this.router.getCurrentNavigation().extras.state) {
@@ -55,6 +56,8 @@ selectedGrpName: any;
         
       }
     });
+
+
   }
 
   setUserProfileData(){
@@ -77,12 +80,72 @@ selectedGrpName: any;
   async addToGroup(user) {
     console.log(user + "Users");
     let observableUser$ = null;
+    let inPendingGroupData$ = null;
+		let inActiveGroupData$ = null;
+		let inAdminInGroupData$ = null;
+		let isPendingInGroup;
+		let isActiveInGroup;
+		let isInAdminInGroup;
     try {
       this.afs.collection('users', ref => ref.where('uid', '==', user)).valueChanges().subscribe((data) => {
         observableUser$ = data;
         this.userinfo$=observableUser$;
         console.log(this.userinfo$[0]);
       });
+      //CP-78-JP-3/19/2020:This method is used to check if user is pending
+			this.afs.collection('adduserstogrp', ref => ref
+      .where('grpname', '==', this.selectedGrpName)
+      .where('uid', '==', user)
+      .where('status', '==', 'Pending')
+    ).valueChanges().subscribe((data) => {
+      console.log("Is user in pending group:", data);
+      inPendingGroupData$ = data;
+      console.log("Is user in pending group:", inPendingGroupData$[0]);
+      if (inPendingGroupData$.length === 0) {
+        isPendingInGroup = false;
+      } else {
+        isPendingInGroup = true;
+
+      }
+      console.log("Is pending boolen value" + isPendingInGroup)
+    });
+
+    //CP-78-JP-3/19/2020:This method is used to check if user is active in group
+    this.afs.collection('adduserstogrp', ref => ref
+      .where('grpname', '==', this.selectedGrpName)
+      .where('uid', '==', user)
+      .where('status', '==', 'Active')
+    ).valueChanges().subscribe((data) => {
+      console.log("Is user in active group:", data);
+      inActiveGroupData$ = data;
+      console.log("Is user in active group:", inActiveGroupData$[0]);
+      if (inActiveGroupData$.length === 0) {
+        isActiveInGroup = false;
+      } else {
+        isActiveInGroup = true;
+
+      }
+      console.log("Is pending boolen value" + isActiveInGroup)
+    });
+    //CP-78-JP-3/19/2020:This method is used to check if user is admin
+    this.afs.collection('grouplist', ref => ref
+      .where('groupname', '==', this.selectedGrpName)
+      .where('createdBy', '==', user)
+    ).valueChanges().subscribe((data) => {
+      console.log("Is user in admin group:", data);
+      inAdminInGroupData$ = data;
+      console.log("Is user in admin group:", inAdminInGroupData$[0]);
+      if (inAdminInGroupData$.length === 0) {
+        isInAdminInGroup = false;
+      } else {
+        isInAdminInGroup = true;
+
+      }
+      console.log("Is pending boolen value" + isActiveInGroup)
+
+    });
+
+
     } finally {
       await this.delay(2000);
       console.log("Fianl"+observableUser$);
@@ -95,6 +158,17 @@ selectedGrpName: any;
     }
 
     for(var userinfoobs$ in this.userinfo$) {
+      if (isPendingInGroup) {
+				this.presentAlert('Opps', 'Looks like this user is already invited')
+				console.log("User is pending IF");
+			} else if (isActiveInGroup) {
+				this.presentAlert('Opps', 'Looks like this user is already in the group')
+				console.log("User is  in group IF");
+			} else if (isInAdminInGroup) {
+				this.presentAlert('Opps', 'You can not invite yourself')
+				console.log("User is  in admin in group IF");
+			}
+			else {
       console.log(this.userinfo$[userinfoobs$].firstName+""+this.userinfo$[userinfoobs$].lastName)
       this.afs.collection('adduserstogrp').add({
         firstName: this.userinfo$[userinfoobs$].firstName,
@@ -106,6 +180,7 @@ selectedGrpName: any;
         uid: user,
         status: "Pending"
       })
+    }
     }
 
     this.afs.collection('adduserstogrp', ref => ref.where('uid', '==', user)).valueChanges().subscribe(data => {
@@ -124,4 +199,24 @@ selectedGrpName: any;
   back(){
     this.router.navigate(['/group-creation'])
   }
+
+  //CP-25-JP-2/23/2020:Checking if current user is in the group so that they can leave the group. 
+	isUserInGroup(uid, grpName): Observable<any> {
+		return this.afs.collection<any>('adduserstogrp', ref => ref
+			.where('grpname', '==', grpName)
+			.where('status', '==', 'Active')
+			.where('uid', '==', uid)).valueChanges({ idField: 'DocID' });
+  }
+
+  //CP-78 - 3/21/2020 - Alert for members already in group 
+	async presentAlert(title: string, content: string) {
+		const alert = await this.alertController.create({
+			header: title,
+			message: content,
+			buttons: ['Ok']
+		})
+		await alert.present();
+	}
+  
+  
 }

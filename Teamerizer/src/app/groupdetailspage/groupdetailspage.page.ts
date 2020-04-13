@@ -178,7 +178,7 @@ export class GroupdetailspagePage implements OnInit {
 		}
 	}
 
-	openDetailsWithState(firstName: string) {
+	openDetailsWithState(firstName: string) { 
 		let navigationExtras: NavigationExtras = {
 			state: {
 				user: firstName,
