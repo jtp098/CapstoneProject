@@ -1,3 +1,4 @@
+import { element } from 'protractor';
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, AbstractControl, FormBuilder, Validators } from '@angular/forms';
 import { NavController } from '@ionic/angular';
@@ -25,7 +26,7 @@ export class GroupdetailspagePage implements OnInit {
 	selectedGrpDesc: any;
 	selectedGrpDocID: any;
 	uidPassed: any;
-	ImageData$;
+	ImageData$: any[];
 	hasImage;
 	groupUsers = [];
 	groupUsersPending = [];
@@ -95,11 +96,16 @@ export class GroupdetailspagePage implements OnInit {
 			}
 		});
 
+		// this.afstore.collection('users').valueChanges().subscribe(userList => {
+		// 	this.ImageData$ = userList;
+		// 	console.log('HEllo sir', this.ImageData$);
+		// });
+
+
 		this.afAuth.authState.subscribe(user => {
 			if (user) {
-				console.log('user image data:', user.uid);
 				this.getUserImage(user.uid).subscribe(data => {
-					console.log('user image data:', data);
+					console.log('Ninad:', data);
 					this.ImageData$ = data;
 					if (this.ImageData$.length === 0) {
 						this.hasImage = true;
@@ -107,7 +113,7 @@ export class GroupdetailspagePage implements OnInit {
 						this.hasImage = false;
 					}
 				});
-				// method uses collection, adduserstogrp
+				// method; uses; collection, adduserstogrp;
 				// this.getUserPartOfOther(user.uid);
 			}
 		});
@@ -139,6 +145,13 @@ export class GroupdetailspagePage implements OnInit {
 				this.isInNotGroup = false;
 				this.afstore.collection('users').valueChanges().subscribe(userList => {
 					this.userList = userList;
+					this.userList.forEach(element => {
+						console.log('ELement image : ', element.uid);
+						this.getUserImage(element.uid).subscribe(data => {
+							this.ImageData$ = data;
+							console.log('element image', this.ImageData$);
+						});
+					});
 					this.loadedUserList = userList;
 					console.log('userlist', userList);
 					this.getAdminDetails(this.uidPassed).subscribe(dataPending => {
@@ -204,6 +217,12 @@ export class GroupdetailspagePage implements OnInit {
 	getUserImage(uid): Observable<any> {
 		return this.afs.collection<any>('TeamerizerImages', ref => ref.where('uid', '==', uid)).valueChanges();
 	}
+
+	// getPlusUltra(): Observable<any> {
+	// 	this.afstore.collection('users').valueChanges().subscribe(userList => {
+	// 		console.log('plus ultra', userList[2]);
+	// 	});
+	// }
 
 	openDetailsWithState(firstName: string) {
 		const navigationExtras: NavigationExtras = {

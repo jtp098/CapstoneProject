@@ -131,7 +131,6 @@
       placeholder="Search Users"
       color="light"
     ></ion-searchbar>
-
     <ion-slides [options]="sliderConfig">
       <ion-slide *ngFor="let item of userList ">
         <ion-card>
@@ -140,10 +139,9 @@
               {{ item.firstName}} {{ item.lastName }}
             </ion-card-title>
             <ion-card-content>
-              <ion-avatar *ngFor="let image of ImageData$">
-                <img src="{{image.filepath}}" alt="profile picture" />
+              <ion-avatar *ngFor="let data of ImageData$">
+                <img src="{{ data.filepath }}" alt="profile picture" />
               </ion-avatar>
-
               <ion-avatar *ngIf="hasImage">
                 <img src="assets/icon/me.png" alt="profile picture" />
               </ion-avatar>
