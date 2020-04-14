@@ -145,6 +145,9 @@ export class GroupdetailspagePage implements OnInit {
 				this.isInNotGroup = false;
 				this.afstore.collection('users').valueChanges().subscribe(userList => {
 					this.userList = userList;
+
+
+					// CP-82-NC-4/14/2020: Image data is been stored in "ImageData$" and been accessed in form of array.
 					this.userList.forEach(element => {
 						console.log('ELement image : ', element.uid);
 						this.getUserImage(element.uid).subscribe(data => {
