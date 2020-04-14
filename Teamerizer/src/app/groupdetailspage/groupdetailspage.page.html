@@ -58,7 +58,7 @@
       <ion-card-content>
         <ion-row *ngFor='let grpObserva of grouponSelectedname$'>
           <ion-col size="11">
-            <div><b>{{grpObserva.firstName}} {{grpObserva.lastName}}</b>
+            <div (click)="openDetailsWithState(grpObserva.uid)"><b>{{grpObserva.firstName}} {{grpObserva.lastName}}</b>
               <p *ngFor="let skillType$ of grpObserva.skillType; let i=index ">  {{grpObserva.skillType[i].text}} ({{grpObserva.skillLevel[i].text}})</p>
               <br>
             </div>
@@ -71,7 +71,7 @@
       </ion-card-content>
       <ion-card-subtitle class="invites"><b><span style="color:#0029FA">Pending Invites </span></b>({{grouponSelectednamePending$.length}})</ion-card-subtitle>
       <ion-card-content>
-        <div *ngFor='let grpObservaPending of grouponSelectednamePending$'><b>{{grpObservaPending.firstName}} {{grpObservaPending.lastName}}</b>
+        <div *ngFor='let grpObservaPending of grouponSelectednamePending$' (click)="openDetailsWithState(grpObservaPending.uid)"><b>{{grpObservaPending.firstName}} {{grpObservaPending.lastName}}</b>
           <p *ngFor="let skillType$ of grpObservaPending.skillType; let i=index ">  {{grpObservaPending.skillType[i].text}} ({{grpObservaPending.skillLevel[i].text}})</p>
           <br>
         </div>

@@ -12,7 +12,7 @@
       <ion-card-content class="ion-no-padding">
 <ion-grid>
        <ion-row *ngFor='let grpObservaPending of pendingList$' class="group-list"> 
-<ion-col col-10><b>{{grpObservaPending.grpname}}</b>
+<ion-col col-10 (click)="groupdetail(grpObservaPending.grpname,uid)"><b>{{grpObservaPending.grpname}}</b>
 </ion-col>
           <ion-col col-2 class="accept-decline">
              <ion-icon class="accept" name="checkmark-circle-outline" (click)="Accept(uid, grpObservaPending.DocID)"></ion-icon>
@@ -29,7 +29,7 @@
       <ion-card-content class="ion-no-padding">
 <ion-grid>
        <ion-row *ngFor='let grpObservaRequests of userRequests' class="group-list"> 
-<ion-col col-10><b>{{grpObservaRequests.grpname}} </b> {{grpObservaRequests.firstName}} 
+<ion-col col-10 (click)="groupdetail(grpObservaRequests.grpname,uid)"><b>{{grpObservaRequests.grpname}} </b> {{grpObservaRequests.firstName}} 
 
 </ion-col>
           <ion-col col-2 class="accept-decline">

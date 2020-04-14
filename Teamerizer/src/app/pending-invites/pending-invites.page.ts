@@ -108,11 +108,12 @@ export class PendingInvitesPage implements OnInit {
 		var db = this.afstore.firestore;
 		db.collection("adduserstogrp").doc(DocID).update({status: "Active"});
 	 }
-  async groupdetail(groupname:string){
+  async groupdetail(groupname:string,uid:string){
     
     let navigationExtras: NavigationExtras = {
       state: {
-        groupname:groupname
+		groupname:groupname,
+		uid:uid
       }
     };
 
