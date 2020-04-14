@@ -21,13 +21,14 @@
           (change)="uploadFile($event.target.files)"
         />
       </div>
-    </ion-card-content>
-  </ion-card>
-  <ion-button
+      <ion-button
         expand="full"
         color="success"
         (click)="back()"
-        >Cancel</ion-button>
+        >Go Back</ion-button
+      >
+    </ion-card-content>
+  </ion-card>
   
   <ion-card text-center *ngIf="isUploading && !isUploaded">
     <ion-card-header>
@@ -78,6 +79,11 @@
         <a [href]="url" target="_blank" rel="noopener">Download</a>
       </div>
       File Size: {{ fileSize | fileSizePipe }}
+      <ion-button
+        expand="full"
+        color="danger"
+        (click)="back()"
+        >Cancel</ion-button>
       <ion-button
         expand="full"
         color="success"

@@ -15,8 +15,8 @@
 <ion-col col-10><b>{{grpObservaPending.grpname}}</b>
 </ion-col>
           <ion-col col-2 class="accept-decline">
-             <ion-icon class="accept" name="checkmark-circle-outline" (click)="Accept(uid, grpObservaPending.grpname)"></ion-icon>
-             <ion-icon class="decline" name="close-circle-outline"></ion-icon>
+             <ion-icon class="accept" name="checkmark-circle-outline" (click)="Accept(uid, grpObservaPending.DocID)"></ion-icon>
+             <ion-icon class="decline" name="close-circle-outline" (click)="decline(grpObservaPending.DocID)"></ion-icon>
           </ion-col>
 </ion-row>
 </ion-grid>       
@@ -34,7 +34,7 @@
 </ion-col>
           <ion-col col-2 class="accept-decline">
              <ion-icon class="accept" name="checkmark-circle-outline" (click)="Accept(grpObservaRequests.uid, grpObservaRequests.grpname)"></ion-icon>
-             <ion-icon class="decline" name="close-circle-outline"></ion-icon>
+             <ion-icon class="decline" name="close-circle-outline" (click)="decline(grpObservaRequests.DocID)"></ion-icon>
           </ion-col>
 </ion-row>
 </ion-grid>       
