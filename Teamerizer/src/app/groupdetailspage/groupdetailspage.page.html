@@ -139,7 +139,8 @@
               {{ item.firstName}} {{ item.lastName }}
             </ion-card-title>
             <ion-card-content>
-              <ion-avatar >
+              <!-- CP-82-NC Avtar has images displayed from database -->
+              <ion-avatar>
                 <img src="{{ item.imagePath }}" alt="profile picture" />
               </ion-avatar>
               <ion-avatar *ngIf="hasImage">
