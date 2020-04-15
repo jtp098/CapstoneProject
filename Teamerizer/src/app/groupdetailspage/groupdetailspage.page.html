@@ -139,8 +139,8 @@
               {{ item.firstName}} {{ item.lastName }}
             </ion-card-title>
             <ion-card-content>
-              <ion-avatar *ngFor="let data of ImageData$">
-                <img src="{{ data.filepath }}" alt="profile picture" />
+              <ion-avatar >
+                <img src="{{ item.imagePath }}" alt="profile picture" />
               </ion-avatar>
               <ion-avatar *ngIf="hasImage">
                 <img src="assets/icon/me.png" alt="profile picture" />

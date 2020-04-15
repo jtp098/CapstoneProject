@@ -3,16 +3,17 @@ import { AngularFirestore,AngularFirestoreDocument  } from '@angular/fire/firest
 import { UserService } from '../user.service';
 import { firestore } from 'firebase/app';
 import { AlertController } from '@ionic/angular';
-import { Router } from '@angular/router';
+import { Router,ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { PickerController } from '@ionic/angular';
 import { PickerOptions } from '@ionic/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { FireStoreFetchService } from '../fire-store-fetch.service';
+import {Observable} from "rxjs";
 
 @Component({
   selector: 'app-update-profile',
-  templateUrl: './update-profile.page.html',
+  templateUrl: './update-profile.page.html', 
   styleUrls: ['./update-profile.page.scss'],
 })
 export class UpdateProfilePage implements OnInit {
@@ -35,6 +36,8 @@ export class UpdateProfilePage implements OnInit {
     skill = '';
     selectedSkill = [];
     selectedLevel = [];
+    ImageData$;
+    hasImage: boolean;
 
   constructor(
     public afstore: AngularFirestore,
@@ -44,7 +47,21 @@ export class UpdateProfilePage implements OnInit {
     public user: UserService,
     private pickerCtrl: PickerController,
     private afAuth: AngularFireAuth,
-    public firestoreFetchService: FireStoreFetchService) { 
+    public firestoreFetchService: FireStoreFetchService,
+    private route: ActivatedRoute) { 
+      //cp82 changes
+      // this.route.queryParams.subscribe(params => {
+      //   if (this.router.getCurrentNavigation().extras.state) {
+          
+      //     this.hasImage = this.router.getCurrentNavigation().extras.state.hasImage;
+          
+      //     console.log("passedData",this.hasImage);
+      //   }else{
+      //     console.log("no Extras")
+      //   }
+      //   });
+
+      
       
 
     }
@@ -55,9 +72,30 @@ export class UpdateProfilePage implements OnInit {
       console.log("User",user);
       if (user) {
         self.setUserProfileData();
+ 
+      
+       
       } else {
         
       }});
+//cp82 changes
+      this.afAuth.authState.subscribe(user => {
+        if(user){
+            console.log("user image data:", user.uid);
+            this.getUserImage(user.uid).subscribe(data => {
+        console.log("user image data:", data);
+                this.ImageData$ = data;
+                if (this.ImageData$.length === 0) {
+                    this.hasImage = false;
+                } else{
+                    this.hasImage = true;
+                }
+    });
+            
+           
+        }
+    });
+
 
     this.firestoreFetchService.getSkills().subscribe((data) => {
       console.log("All Skills :",data);
@@ -148,14 +186,28 @@ export class UpdateProfilePage implements OnInit {
 
   async updateProfile(){
     this.busy = true
-			//await this.user.updatefirstName(this.firstName)
+      //await this.user.updatefirstName(this.firstName)
+      
+      if(this.hasImage ==true)
+      {//existing Images
+        this.mainuser.update({
+          firstName: this.firstname,
+          lastName: this.lastname, 
+          skillType: this.selectedSkill, 
+          skillLevel:this.selectedLevel,
+          interests: this.interests
+
+      })
+    }else{//New User
 			this.mainuser.update({
         firstName: this.firstname,
         lastName: this.lastname, 
         skillType: this.selectedSkill, 
         skillLevel:this.selectedLevel,
-        interests: this.interests
-			})
+        interests: this.interests, 
+        imagePath: ""
+      })
+			}
 		
       if(this.newpassword){
         await this.user.updatePassword(this.newpassword)
@@ -179,5 +231,10 @@ export class UpdateProfilePage implements OnInit {
   async cancel(){
     this.router.navigate(['/home'])
   }
+
+  //cp82 changes
+  getUserImage(uid): Observable<any> {
+    return this.afs.collection<any>('TeamerizerImages', ref => ref.where('uid', '==', uid)).valueChanges()
+}
 
 }

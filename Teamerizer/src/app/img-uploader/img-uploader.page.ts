@@ -46,6 +46,7 @@ export class ImgUploaderPage {
   userHasImage;
   ImageData$ = [];
   docID;
+  public user: any[];
   
 
 
@@ -93,6 +94,11 @@ delay(2000);
         
     });
 
+    this.getUser(this.uidPassed).subscribe(data => {
+      this.user = data;
+    
+       console.log("Pending",data);
+ });
     
 
   }
@@ -141,7 +147,9 @@ delay(2000);
       finalize(() => {
         // Get uploaded file storage path
         this.UploadedFileURL = fileRef.getDownloadURL();
-        console.log("UploadedFileURL");
+        console.log(this.UploadedFileURL);
+
+        
 
         this.UploadedFileURL.subscribe(resp => {
           this.addImagetoDB({
@@ -150,12 +158,17 @@ delay(2000);
             size: this.fileSize,
             uid: this.uidPassed
           });
+           //CP-82 Changes
+          this.imagePathUpdate(this.uidPassed,resp);
           this.isUploading = false;
           this.isUploaded = true;
         }, error => {
           console.error(error);
         });
       }),
+      
+
+      
       tap(snap => {
         this.fileSize = snap.totalBytes;
       })
@@ -190,4 +203,13 @@ delay(2000);
     async back(){
       this.router.navigate(['/profile'])
   }
+
+  getUser(uidPassed): Observable<any> {
+		return this.database.collection('users', ref => ref.where('uid', '==', uidPassed)).valueChanges({idField: 'DocID'});
+  }
+  //CP-82 Changes
+  async imagePathUpdate(DocID,resp) {
+		var db = this.database.firestore;
+		db.collection("users").doc(DocID).update({imagePath: resp});
+	 }
 }
