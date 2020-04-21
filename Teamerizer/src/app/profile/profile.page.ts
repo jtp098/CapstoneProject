@@ -162,7 +162,9 @@ export class ProfilePage implements OnInit {
         })
     }
 
-    updateProfile(){
+    updateProfile(){ 
+
+       
         this.router.navigate(['/update-profile'])
     }
 //3/23/2020 - Updated to pull on active groups back

@@ -9,7 +9,7 @@ export interface MyData {
   name: string;
   filepath: string;
   size: number;
-  uid:string;
+  uid: string;
 }
 
 @Component({
@@ -46,12 +46,13 @@ export class ImgUploaderPage {
   userHasImage;
   ImageData$ = [];
   docID;
-  
+  public user: any[];
+
 
 
   private imageCollection: AngularFirestoreCollection<MyData>;
-  constructor(private storage: AngularFireStorage, private database: AngularFirestore,private router: Router,
-		private route: ActivatedRoute) {
+  constructor(private storage: AngularFireStorage, private database: AngularFirestore, private router: Router,
+    private route: ActivatedRoute) {
     this.isUploading = false;
     this.isUploaded = false;
     // Set collection where our documents/ images info will save
@@ -59,109 +60,119 @@ export class ImgUploaderPage {
     this.images = this.imageCollection.valueChanges();
 
     this.route.queryParams.subscribe(params => {
-			if (this.router.getCurrentNavigation().extras.state) {
+      if (this.router.getCurrentNavigation().extras.state) {
 
-			
-				this.uidPassed = this.router.getCurrentNavigation().extras.state.uid;
-			
-				console.log("passedData", this.uidPassed);
-			} else {
-				console.log("no Extras")
-			}
-		});
+
+        this.uidPassed = this.router.getCurrentNavigation().extras.state.uid;
+
+        console.log('passedData', this.uidPassed);
+      } else {
+        console.log('no Extras');
+      }
+    });
   }
   ngOnInit() {
-delay(2000);
+    delay(2000);
     this.GetCurrentImage(this.uidPassed).subscribe(data => {
       delay(2000);
-      console.log("user image data:", data);
+      console.log('user image data:', data);
       this.ImageData$ = data;
       if (this.ImageData$.length === 0) {
-        console.log("no matching images");
+        console.log('no matching images');
         this.userHasImage = false;
-        console.log("userHasImage set to false", this.userHasImage);
-      }else{
+        console.log('userHasImage set to false', this.userHasImage);
+      } else {
         this.docID = this.ImageData$[0].DocID;
-        console.log("DocID", this.docID);
-        console.log("Length", this.ImageData$.length);
+        console.log('DocID', this.docID);
+        console.log('Length', this.ImageData$.length);
         this.userHasImage = true;
-          console.log("userHasImage set to true", this.userHasImage);
-        
+        console.log('userHasImage set to true', this.userHasImage);
+
 
       }
-      
-        
+
+
     });
 
-    
+    this.getUser(this.uidPassed).subscribe(data => {
+      this.user = data;
+
+      console.log('Pending', data);
+    });
+
 
   }
 
 
 
-  uploadFile(event: FileList) { 
-    if(this.userHasImage)
-    {
+  uploadFile(event: FileList) {
+    if (this.userHasImage) {
       this.removeImage(this.docID);
       this.userHasImage = false;
     }
-    if(this.userHasImage == false)
-    {
-    // The File object
-    const file = event.item(0);
+    if (this.userHasImage == false) {
+      // The File object
+      const file = event.item(0);
 
-    // Validation for Images Only
-    if (file.type.split('/')[0] !== 'image') {
-      console.error('unsupported file type :( ');
-      return;
-    }
+      // Validation for Images Only
+      if (file.type.split('/')[0] !== 'image') {
+        console.error('unsupported file type :( ');
+        return;
+      }
 
-    this.isUploading = true;
-    this.isUploaded = false;
+      this.isUploading = true;
+      this.isUploaded = false;
 
 
-    this.fileName = file.name;
+      this.fileName = file.name;
 
-    // The storage path
-    const path = `Teamerizer-Storage/${new Date().getTime()}_${file.name}`;
+      // The storage path
+      const path = `Teamerizer-Storage/${new Date().getTime()}_${file.name}`;
 
-    // Totally optional metadata
-    const customMetadata = { app: 'Teamerizer' };
+      // Totally optional metadata
+      const customMetadata = { app: 'Teamerizer' };
 
-    // File reference
-    const fileRef = this.storage.ref(path);
+      // File reference
+      const fileRef = this.storage.ref(path);
 
-    // The main task
-    this.task = this.storage.upload(path, file, { customMetadata });
+      // The main task
+      this.task = this.storage.upload(path, file, { customMetadata });
 
-    // Get file progress percentage
-    this.percentage = this.task.percentageChanges();
-    this.snapshot = this.task.snapshotChanges().pipe(
+      // Get file progress percentage
+      this.percentage = this.task.percentageChanges();
+      this.snapshot = this.task.snapshotChanges().pipe(
 
-      finalize(() => {
-        // Get uploaded file storage path
-        this.UploadedFileURL = fileRef.getDownloadURL();
-        console.log("UploadedFileURL");
+        finalize(() => {
+          // Get uploaded file storage path
+          this.UploadedFileURL = fileRef.getDownloadURL();
+          console.log(this.UploadedFileURL);
 
-        this.UploadedFileURL.subscribe(resp => {
-          this.addImagetoDB({
-            name: file.name,
-            filepath: resp,
-            size: this.fileSize,
-            uid: this.uidPassed
+
+
+          this.UploadedFileURL.subscribe(resp => {
+            this.addImagetoDB({
+              name: file.name,
+              filepath: resp,
+              size: this.fileSize,
+              uid: this.uidPassed
+            });
+            // CP-82-NC Changes Imagepath uid passing
+            this.imagePathUpdate(this.uidPassed, resp);
+            this.isUploading = false;
+            this.isUploaded = true;
+          }, error => {
+            console.error(error);
           });
-          this.isUploading = false;
-          this.isUploaded = true;
-        }, error => {
-          console.error(error);
-        });
-      }),
-      tap(snap => {
-        this.fileSize = snap.totalBytes;
-      })
-    );
+        }),
+
+
+
+        tap(snap => {
+          this.fileSize = snap.totalBytes;
+        })
+      );
     }
-    //this.back();
+    // this.back();
   }
 
   addImagetoDB(image: MyData) {
@@ -175,19 +186,28 @@ delay(2000);
       console.log('error ' + error);
     });
   }
-//JP-3/25/2020 - Gets the current images and DOCID
+  // JP-3/25/2020 - Gets the current images and DOCID
   GetCurrentImage(uid): Observable<any> {
-		return this.database.collection<any>('TeamerizerImages', ref => ref
-            .where('uid', '==', uid)).valueChanges({ idField: 'DocID' });
-            
-    }
-    //JP-3/25/2020 - This deletes any document before adding a new one
-    async removeImage(docID) {
-      this.database.doc("TeamerizerImages/" + docID).delete();
-      console.log("Image Deleted", docID);
-    }
+    return this.database.collection<any>('TeamerizerImages', ref => ref
+      .where('uid', '==', uid)).valueChanges({ idField: 'DocID' });
 
-    async back(){
-      this.router.navigate(['/profile'])
+  }
+  // JP-3/25/2020 - This deletes any document before adding a new one
+  async removeImage(docID) {
+    this.database.doc('TeamerizerImages/' + docID).delete();
+    console.log('Image Deleted', docID);
+  }
+
+  async back() {
+    this.router.navigate(['/profile']);
+  }
+
+  getUser(uidPassed): Observable<any> {
+    return this.database.collection('users', ref => ref.where('uid', '==', uidPassed)).valueChanges({ idField: 'DocID' });
+  }
+  // CP-82-NC  Changes for Imagepath with DocID
+  async imagePathUpdate(DocID, resp) {
+    const db = this.database.firestore;
+    db.collection('users').doc(DocID).update({ imagePath: resp });
   }
 }
