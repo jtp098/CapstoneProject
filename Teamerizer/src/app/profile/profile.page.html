@@ -44,7 +44,7 @@
             <div *ngFor="let admin of this.zip$">
                 <ion-item-sliding *ngFor="let admindetails of admin">
                     <div *ngIf="admindetails.grpname===item.grpname">
-                    <ion-label> Admin: {{admindetails.firstname}} {{admindetails.lastname}}</ion-label>
+                    <ion-label (click)="findAdminEmail()"> Admin: {{admindetails.firstname}} {{admindetails.lastname}}</ion-label>
                     </div>
                 </ion-item-sliding>
             </div>

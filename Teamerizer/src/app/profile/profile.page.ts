@@ -7,6 +7,7 @@ import { Router,NavigationExtras } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/auth';
 import {Observable} from "rxjs";
 import { underline } from '@angular-devkit/core/src/terminal';
+import { EmailComposer } from '@ionic-native/email-composer/ngx';
 
 @Component({
     selector: 'app-profile',
@@ -25,6 +26,7 @@ export class ProfilePage implements OnInit {
     adminInfo$ = [];
     adminInfoMul$ ;
     admincount= 0;
+    adminEmail;
     zip$ = [];
     zip2$ = [];
     username:string
@@ -45,7 +47,7 @@ export class ProfilePage implements OnInit {
 
 
     constructor(private afs: AngularFirestore, private user: UserService, private router: Router,
-                private afAuth: AngularFireAuth) {
+                private afAuth: AngularFireAuth, private emailComposer: EmailComposer) {
 
     }
 
@@ -206,6 +208,26 @@ export class ProfilePage implements OnInit {
 
     async cancel(){
         this.router.navigate(['/home'])
+    }
+
+    async findAdminEmail(adminId$) {
+        this.getGroupAdminUser(this.adminId$).subscribe(data => {
+            for (let i = 0; i < data.length; i++) {
+                this.adminEmail = data[i].email;
+                console.log(this.adminEmail);
+
+                let email = {
+                    to: this.adminEmail,
+                    subject: 'Reaching Out from the group',
+                    body: 'Hey there! <br><br>',
+                    isHtml: true
+
+                };
+
+                this.emailComposer.open(email)
+            }
+            
+        });
     }
 
 
