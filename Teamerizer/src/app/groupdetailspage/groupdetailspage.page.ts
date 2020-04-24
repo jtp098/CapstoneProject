@@ -27,7 +27,6 @@ export class GroupdetailspagePage implements OnInit {
 	selectedGrpDocID: any;
 	uidPassed: any;
 	ImageData$: any[];
-	hasImage;
 	groupUsers = [];
 	groupUsersPending = [];
 
@@ -68,8 +67,7 @@ export class GroupdetailspagePage implements OnInit {
 		private userService: UserService,
 		private router: Router,
 		private route: ActivatedRoute,
-		private afs: AngularFirestore
-	) {
+		private afs: AngularFirestore) {
 		this.route.queryParams.subscribe(params => {
 			if (this.router.getCurrentNavigation().extras.state) {
 
@@ -96,31 +94,6 @@ export class GroupdetailspagePage implements OnInit {
 			}
 		});
 
-		// this.afstore.collection('users').valueChanges().subscribe(userList => {
-		// 	this.ImageData$ = userList;
-		// 	console.log('HEllo sir', this.ImageData$);
-		// });
-
-
-		this.afAuth.authState.subscribe(user => {
-			if (user) {
-				this.getUserImage(user.uid).subscribe(data => {
-					console.log('Ninad:', data);
-					this.ImageData$ = data;
-					if (this.ImageData$.length === 0) {
-						this.hasImage = true;
-					} else {
-						this.hasImage = false;
-					}
-				});
-				// method; uses; collection, adduserstogrp;
-				// this.getUserPartOfOther(user.uid);
-			}
-		});
-
-
-
-
 		// this.groupUsers = this.userService.getGroupUsers();
 
 		this.getDetails(this.selectedGrpName).subscribe(data => {
@@ -145,16 +118,7 @@ export class GroupdetailspagePage implements OnInit {
 				this.isInNotGroup = false;
 				this.afstore.collection('users').valueChanges().subscribe(userList => {
 					this.userList = userList;
-
-
 					// CP-82-NC-4/14/2020: Image data is been stored in "ImageData$" and been accessed in form of array.
-					this.userList.forEach(element => {
-						console.log('ELement image : ', element.uid);
-						this.getUserImage(element.uid).subscribe(data => {
-							this.ImageData$ = data;
-							console.log('element image', this.ImageData$);
-						});
-					});
 					this.loadedUserList = userList;
 					console.log('userlist', userList);
 					this.getAdminDetails(this.uidPassed).subscribe(dataPending => {
@@ -216,16 +180,9 @@ export class GroupdetailspagePage implements OnInit {
 		}
 	}
 
-
 	getUserImage(uid): Observable<any> {
 		return this.afs.collection<any>('TeamerizerImages', ref => ref.where('uid', '==', uid)).valueChanges();
 	}
-
-	// getPlusUltra(): Observable<any> {
-	// 	this.afstore.collection('users').valueChanges().subscribe(userList => {
-	// 		console.log('plus ultra', userList[2]);
-	// 	});
-	// }
 
 	openDetailsWithState(firstName: string) {
 		const navigationExtras: NavigationExtras = {

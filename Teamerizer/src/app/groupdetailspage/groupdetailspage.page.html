@@ -139,10 +139,19 @@
               {{ item.firstName}} {{ item.lastName }}
             </ion-card-title>
             <ion-card-content>
-              <!-- CP-82-NC Avtar has images displayed from database -->
-              <ion-avatar>
-                <img src="{{ item.imagePath }}" alt="profile picture" />
+              <!-- CP--59-NC-4/24/2020: Image is going to display Placeholder as default if profile image is not set.  -->
+              <ion-avatar *ngIf="item.imagePath==''; else noImage">
+                <img
+                  src="../../assets/icon/profile-placeholder.png"
+                  alt="profile picture"
+                />
               </ion-avatar>
+              <!-- CP-82-NC Avtar has images displayed from database -->
+              <ng-template #noImage>
+                <ion-avatar>
+                  <img src="{{ item.imagePath }}" alt="profile picture" />
+                </ion-avatar>
+              </ng-template>
               <ion-button
                 class="add-to-group"
                 expand="full"
