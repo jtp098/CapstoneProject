@@ -3,10 +3,11 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-
-    <ion-buttons slot="end">
+    
+    <!-- CP-86_RobertHarkov_Removing Notification Icon it no notifications -->
+    <ion-buttons *ngIf="this.notification !== 0" slot="end">
       <ion-button *ngFor="let item of pendingUserInvites" (click)="pendingInvites(uid)" >
-        <ion-badge color=success>{{ notification }}</ion-badge>
+        <ion-badge color=success>{{ notification }}</ion-badge> 
         <ion-icon class="button-inner" color="medium" name="people" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-buttons>
