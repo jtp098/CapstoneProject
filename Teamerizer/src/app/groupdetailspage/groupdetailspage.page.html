@@ -30,6 +30,22 @@
       </div>
     </ion-card-header>
     <br />
+    <div *ngIf="!isadmin">
+      <div *ngFor="let admin of this.zip$">
+        <ion-item-sliding *ngFor="let admindetails of admin">
+            <div *ngIf="admindetails.grpname===selectedGrpName">
+              <ion-label (click)="findAdminEmail()"> Admin: {{admindetails.firstname}} {{admindetails.lastname}}</ion-label>
+            </div>
+        </ion-item-sliding>
+      </div>
+    </div>
+    <div *ngIf="isadmin">
+      <ion-item-sliding>
+          <div *ngFor="let admin of this.AdminUser$">
+            <ion-label (click)="findAdminEmail()"> Admin: {{admin.firstName}} {{admin.lastName}}</ion-label>
+          </div>
+      </ion-item-sliding>
+    </div>
     <ion-row>
       <ion-col size="11">
         <ion-label position="floating" style="color: #000;"

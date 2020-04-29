@@ -9,6 +9,7 @@ import { Observable } from 'rxjs';
 import { UserService } from '../user.service';
 import { Router, NavigationExtras, ActivatedRoute } from '@angular/router';
 import { forEach } from '@angular-devkit/schematics';
+import { EmailComposer } from '@ionic-native/email-composer/ngx';
 
 
 @Component({
@@ -52,6 +53,21 @@ export class GroupdetailspagePage implements OnInit {
 	inGroupData$;
 	isInGroup;
 	isInNotGroup = true;
+	allGroupListData$
+	team$;
+	teamName$;
+	adminEmail;
+	adminId$;
+	zip$ = [];
+	adminIds$ = [];
+	zip2$ = [];
+	adminU$ = [];
+	adminUser$ = [];
+	admincount = 0;
+	adminInfo$ = [];
+	adminInfoMul$;
+	otherAdminId;
+
 
 
 	docID;
@@ -67,7 +83,8 @@ export class GroupdetailspagePage implements OnInit {
 		private userService: UserService,
 		private router: Router,
 		private route: ActivatedRoute,
-		private afs: AngularFirestore) {
+		private afs: AngularFirestore,
+		private emailComposer: EmailComposer) {
 		this.route.queryParams.subscribe(params => {
 			if (this.router.getCurrentNavigation().extras.state) {
 
@@ -92,6 +109,7 @@ export class GroupdetailspagePage implements OnInit {
 					this.group$ = data;
 				});
 			}
+			this.getUserPartOfOther(user.uid);
 		});
 
 		// this.groupUsers = this.userService.getGroupUsers();
@@ -112,6 +130,10 @@ export class GroupdetailspagePage implements OnInit {
 			this.adminCheck$ = data;
 			if (this.adminCheck$.length === 0) {
 				this.isadmin = false;
+				this.getAdminDetails(this.uidPassed).subscribe(dataPending => {
+						this.AdminUser$ = dataPending;
+						console.log('Admin Members', dataPending);
+				});
 			} else {
 				// CP-25-JP-2/23/2020:If the user is the admin, isadmin is set to true, this will display the adding people section and the below will populate with users.
 				this.isadmin = true;
@@ -123,6 +145,7 @@ export class GroupdetailspagePage implements OnInit {
 					console.log('userlist', userList);
 					this.getAdminDetails(this.uidPassed).subscribe(dataPending => {
 						this.AdminUser$ = dataPending;
+
 
 						console.log('Admin Members', dataPending);
 
@@ -163,6 +186,7 @@ export class GroupdetailspagePage implements OnInit {
 
 
 		});
+		
 	}
 	// CP-45-RH- now you can press on icon "create(pencil)" and it converts the description to edit mode
 	// and then if you want to remove editing just press on "done-all (checkmarks)."
@@ -398,6 +422,38 @@ export class GroupdetailspagePage implements OnInit {
 	getGroupSkills(grpName): Observable<any> {
 		return this.afstore.collection<any>('grouplist', ref => ref.where('groupname', '==', grpName)).valueChanges();
 	}
+
+
+
+
+	getAllGroupsUserIsIn(uid): Observable<any> {
+        return this.afs.collection<any>('adduserstogrp', ref => ref.where('uid', '==', uid).where('status','==', 'Active')).valueChanges()
+    }
+
+    getAllGroupListData(): Observable<any> {
+        return this.afs.collection<any>('grouplist').valueChanges()
+    }
+    getAdminGrpName(createdBy): Observable<any> {
+        return this.afs.collection<any>('grouplist', ref => ref.where('createdBy', '==', createdBy)).valueChanges()
+    }
+    getGroupAdminUser(adminId): Observable<any> {
+        return this.afs.collection<any>('users', ref => ref.where('uid', '==', adminId)).valueChanges()
+	}
+	
+	getAdminGrpById(uid): any[] {
+        this.getAdminGrpName(uid).subscribe(data  => {
+            this.adminInfoMul$ = data ;
+            this.adminInfo$.push(this.adminInfoMul$);
+            console.log("ADMIN INFO " + JSON.stringify(this.adminInfo$));
+        });
+        return this.adminInfo$;
+    }
+
+
+
+
+
+	
 	// CP-45-RH-delete user document and delete user in general from the group
 	async removeFromGroup(docID) {
 		this.afstore.doc('adduserstogrp/' + docID).delete();
@@ -576,6 +632,122 @@ export class GroupdetailspagePage implements OnInit {
 		// 	}
 		// });
 	}
+
+	getUserPartOfOther(uid) {
+        this.getAllGroupsUserIsIn(uid).subscribe(data => {
+            console.log("Group List Data:", data);
+            this.team$ = data;
+            //Bug Fix - CP-77 - JP- 2/24/2019 - Checking the length of the data before executing the code
+            this.uid = uid;
+            if(this.team$.length === 0) {
+                console.log("no group");
+            }else {
+                console.log(data[0].grpname);
+
+                //method uses collection, groupList
+                this.getAllGroupListData().subscribe(adminData => {
+                    this.allGroupListData$ = adminData;
+                    for (let i = 0; i < adminData.length; i++) {
+                        for(let j = 0; j < this.team$.length; j++) {
+                            if(adminData[i].groupname === this.team$[j].grpname) {
+                                this.teamName$ = adminData[i].groupname;
+                                this.adminId$ = adminData[i].createdBy;
+                                console.log("admin id: " + this.adminId$);
+                                this.adminIds$.push(this.adminId$);
+                                this.zip2$ = this.allGroupListData$.map(o => {
+                                    return [{ team: o.groupname, admin: o.createdBy}];
+                                });
+                                //method uses collection, users
+                                //make sure it executes only one..
+                                this.getAdminGrpById(this.adminId$);
+                                console.log(this.adminId$);
+                                this.getGroupAdminUser(this.adminId$).subscribe(data => {
+                                    this.adminU$.push(data);
+                                    this.adminU$.map((x, i) => {
+                                        for ( let k = 0; k < this.adminInfo$.length; k++) {
+                                            if(x[0].uid === this.adminIds$[k]){
+                                                //condition  to remove duplicate grpname
+                                                if(k === this.admincount){
+                                                    this.admincount++;
+                                                    //Bug Fix - CP-71 - VG- 03/30/2020 - Looping Over multiple froups created by admin and remove duplicates if any.
+                                                    for(let m=0;m<this.adminInfo$[k].length;m++){
+                                                        if(k === m||this.adminInfo$[k].length==1){
+															this.zip$.push( [{ firstname: x[0].firstName, lastname: x[0].lastName,  grpname: (this.adminInfo$[k])[m].groupname }]);
+															console.log("ZIP "  + JSON.stringify(this.zip$));
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    });
+                                });
+                            }
+                        }
+                    }
+
+                });
+
+            }
+
+
+        });
+    }
+
+	//CP-75-JM
+	async findAdminEmail(adminId$) {
+		if (this.isadmin) {
+			this.getAdminDetails(this.uidPassed).subscribe(data => {
+				console.log("admin id " + this.uidPassed);
+				for (let i = 0; i < data.length; i++) {
+					this.adminEmail = data[i].email;
+					console.log(this.adminEmail);
+
+					let email = {
+						to: this.adminEmail,
+						subject: 'Reaching Out from the group',
+						body: 'Hey there! <br><br>',
+						isHtml: true
+
+					};
+
+					this.emailComposer.open(email)
+				}
+				
+			});
+		} else {
+
+			for (const key in this.adminInfo$) {
+				let value = this.adminInfo$[key];
+				console.log(value);
+				for (let i = 0; i < value.length; i++) {
+					console.log(value[i].groupname);
+					if (value[i].groupname === this.selectedGrpName) {
+						this.otherAdminId = value[i].createdBy;
+						console.log("Other admin Id " + JSON.stringify(this.otherAdminId));
+					}
+				}
+			}
+
+			this.getAdminDetails(this.otherAdminId).subscribe(data => {
+				console.log("Non admin id " + this.otherAdminId);
+				for (let i = 0; i < data.length; i++) {
+					this.adminEmail = data[i].email;
+					console.log(this.adminEmail);
+
+					let email = {
+						to: this.adminEmail,
+						subject: 'Reaching Out from the group',
+						body: 'Hey there! <br><br>',
+						isHtml: true
+
+					};
+
+					this.emailComposer.open(email)
+				}
+				
+			});
+		}
+    }
 
 	async cancel() {
 		this.router.navigate(['/home']);
