@@ -1,67 +1,86 @@
 <ion-header>
   <ion-toolbar class="header-style">
-    <ion-title>
-     
-    </ion-title>
+    <ion-title> </ion-title>
   </ion-toolbar>
 </ion-header>
 
-  <ion-content padding>
-    <ion-card class="card-style">
-      <ion-card-header class="shadow-2">
-        <ion-card-subtitle></ion-card-subtitle>
-
-        <div id="profile-info" *ngIf="username">
+<ion-content padding>
+  <ion-card class="card-style">
+    <ion-card-header class="shadow-2">
+      <ion-card-subtitle></ion-card-subtitle>
+      <!-- CP-89-NC Avtar shows default placeholder when Image is not set by the user-->
+      <div id="profile-info" *ngIf="username">
+        <ion-avatar *ngIf="imagePath==''; else noImage">
+          <img
+            src="../../assets/icon/profile-placeholder.png"
+            alt="profile picture"
+          />
+        </ion-avatar>
+        <!-- CP-82-NC Avtar has images displayed from database -->
+        <ng-template #noImage>
           <ion-avatar>
-            <img src="assets/icon/me.png" alt="profile picture">
+            <img src="{{ imagePath }}" alt="profile picture" />
           </ion-avatar>
-          <br>
-          <ion-card-title>{{firstname}} {{lastname}}</ion-card-title>
+        </ng-template>
+        <br />
+        <ion-card-title>{{firstname}} {{lastname}}</ion-card-title>
+      </div>
+    </ion-card-header>
+    <br />
+
+    <ion-card-content>
+      <p>
+        <b><span style="color: #0029fa;">User Name:</span></b> {{ username }}
+      </p>
+      <br />
+      <p>
+        <b><span style="color: #0029fa;">Skills(Levels):</span></b> {{ skillType
+        }}
+      </p>
+      <p *ngFor="let skill of selectedSkill; let i = index">
+        {{ selectedSkill[i].text }}({{ selectedLevel[i].text}})
+      </p>
+      <br />
+      <p>
+        <b><span style="color: #0029fa;">Interests:</span></b> {{ interests }}
+      </p>
+
+      <br />
+
+      <p id="other-teams"><b>Other teams member is in:</b></p>
+      <ion-item-sliding *ngFor="let item of this.profilePage.team$">
+        <ion-item class="team-list">
+          <ion-icon slot="start" color="medium" name="people"></ion-icon>
+          <ion-label class="team-label"> {{item.grpname}}</ion-label>
+        </ion-item>
+        <div *ngFor="let admin of this.profilePage.zip$">
+          <ion-item-sliding *ngFor="let admindetails of admin">
+            <div *ngIf="admindetails.grpname===item.grpname">
+              <ion-label>
+                Admin: {{admindetails.firstname}}
+                {{admindetails.lastname}}</ion-label
+              >
+            </div>
+          </ion-item-sliding>
         </div>
-      </ion-card-header>  
-      <br>
+      </ion-item-sliding>
 
-      <ion-card-content>
-        <p><b><span style="color:#0029FA">User Name:</span></b> {{ username }}</p>
-        <br>
-        <p><b><span style="color:#0029FA">Skills(Levels):</span></b> {{ skillType }}</p>
-        <p *ngFor="let skill of selectedSkill; let i = index">  {{ selectedSkill[i].text }}({{ selectedLevel[i].text}})</p>
-        <br>
-        <p><b><span style="color:#0029FA">Interests:</span></b> {{ interests }}</p>
+      <br />
+    </ion-card-content>
+  </ion-card>
 
-        <br>
-      
-        <p id="other-teams"><b>Other teams member is in:</b></p>
-        <ion-item-sliding *ngFor="let item of this.profilePage.team$">
-          <ion-item class="team-list">
-            <ion-icon slot="start" color="medium" name="people"></ion-icon>
-            <ion-label class="team-label"> {{item.grpname}}</ion-label>
-          </ion-item>
-          <div *ngFor="let admin of this.profilePage.zip$">
-            <ion-item-sliding *ngFor="let admindetails of admin">
-              <div *ngIf="admindetails.grpname===item.grpname">
-                <ion-label> Admin: {{admindetails.firstname}} {{admindetails.lastname}}</ion-label>
-              </div>
-            </ion-item-sliding>
-          </div>
-        </ion-item-sliding>
-        
-        <br>
-
-      </ion-card-content>
-
-    </ion-card>
-
-    
-    <ion-row>
-      <ion-col width-50 style="text-align: center">
-        <ion-button shape="round" color="primary" (click)="addToGroup(uid)  ">Invite to Group</ion-button>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col width-50 style="text-align: center">
-        <ion-button fill="solid" color="success" shape="round" (click)="goBack()">Back</ion-button>
-      </ion-col>
-    </ion-row>
-   
-  </ion-content>
+  <ion-row>
+    <ion-col width-50 style="text-align: center;">
+      <ion-button shape="round" color="primary" (click)="addToGroup(uid)  "
+        >Invite to Group</ion-button
+      >
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col width-50 style="text-align: center;">
+      <ion-button fill="solid" color="success" shape="round" (click)="goBack()"
+        >Back</ion-button
+      >
+    </ion-col>
+  </ion-row>
+</ion-content>
