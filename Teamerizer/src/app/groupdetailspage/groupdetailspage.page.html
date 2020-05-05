@@ -135,7 +135,10 @@
       <ion-slide *ngFor="let item of userList ">
         <ion-card>
           <ion-card-header>
-            <ion-card-title (click)="openDetailsWithState(item.uid)">
+            <ion-card-title
+              class="title"
+              (click)="openDetailsWithState(item.uid)"
+            >
               {{ item.firstName}} {{ item.lastName }}
             </ion-card-title>
             <ion-card-content>
@@ -144,6 +147,7 @@
                 <img
                   src="../../assets/icon/profile-placeholder.png"
                   alt="profile picture"
+                  class="circular--portrait"
                 />
               </div>
               <!-- CP-82-NC Avtar has images displayed from database -->
