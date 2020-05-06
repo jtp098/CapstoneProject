@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { UserService } from '../user.service';
-import { Router } from '@angular/router';
+import {NavigationExtras, Router} from '@angular/router';
 import { MenuController } from '@ionic/angular';
 
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
@@ -22,7 +22,7 @@ export class LoginPage implements OnInit {
   passwordtype:string='password';
   passeye:string ='eye';
   
-  constructor(private afAuth: AngularFireAuth, public user: UserService,public router: Router, private menu: MenuController, public fb: FormBuilder ) { 
+  constructor(private afAuth: AngularFireAuth, public user: UserService, public router: Router, private menu: MenuController, public fb: FormBuilder ) {
     this.authForm = this.fb.group({
       'email' : [null, Validators.compose([Validators.required])],
       'password': [null, Validators.compose([Validators.required])],
@@ -62,7 +62,7 @@ this.afAuth.auth.onAuthStateChanged(function(user) {
 
     try {
       
-      const res = await this.afAuth.auth.signInWithEmailAndPassword(loginData.email,loginData.password)
+      const res = await this.afAuth.auth.signInWithEmailAndPassword(loginData.email, loginData.password)
 
       if(res.user){
         this.user.setUser({
@@ -89,5 +89,7 @@ this.afAuth.auth.onAuthStateChanged(function(user) {
       this.passeye = 'eye';
     }
   }
-
+  resetPassword() {
+    this.router.navigate(['/passwordreset']);
+  }
 }

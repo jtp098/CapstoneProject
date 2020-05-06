@@ -15,7 +15,8 @@ const routes: Routes = [
   { path: 'member-match', loadChildren: './member-match/member-match.module#MemberMatchPageModule' },
   { path: 'update-profile', loadChildren: './update-profile/update-profile.module#UpdateProfilePageModule' },
   { path: 'groupdetailspage', loadChildren: './groupdetailspage/groupdetailspage.module#GroupdetailspagePageModule' },  { path: 'pending-invites', loadChildren: './pending-invites/pending-invites.module#PendingInvitesPageModule' },
-  { path: 'img-uploader', loadChildren: './img-uploader/img-uploader.module#ImgUploaderPageModule' }
+  { path: 'img-uploader', loadChildren: './img-uploader/img-uploader.module#ImgUploaderPageModule' },
+  { path: 'passwordreset', loadChildren: './passwordreset/passwordreset.module#PasswordresetPageModule' }
 
 ];
 
