@@ -17,36 +17,6 @@ import { EmailComposer } from '@ionic-native/email-composer/ngx';
 })
 export class MemberDetailsPage implements OnInit {
 
-  mainuser: AngularFirestoreDocument
-
-    username:string
-    firstname:string
-    lastname:string
-    skillType:string
-    skillLevel:string
-    interests:string
-    sub
-    userinfo$ :any[];
-    status: string
-  profilePage: any
-    uid: string;
-    selectedSkill = [];
-    selectedLevel = [];
-data: any;
-selectedGrpName: any;
- grpsPartOf$: any [ ];
-  constructor(private afs: AngularFirestore, private user: UserService, private router: Router, private afAuth: AngularFireAuth, private route: ActivatedRoute,private navCtrl: NavController,public alertController: AlertController, private emailComposer: EmailComposer) {
-    this.profilePage = new ProfilePage(afs, user , router , afAuth, emailComposer );
-      this.route.queryParams.subscribe(params => {
-        if (this.router.getCurrentNavigation().extras.state) {
-          this.data = this.router.getCurrentNavigation().extras.state.user;
-          this.selectedGrpName = this.router.getCurrentNavigation().extras.state.groupname;
-          console.log("passedData",this.data);
-          console.log("passedData",this.selectedGrpName);
-        }
-      });
-      
-     }
   mainuser: AngularFirestoreDocument;
 
   username: string;
@@ -66,7 +36,7 @@ selectedGrpName: any;
   data: any;
   selectedGrpName: any;
   grpsPartOf$: any[];
-  constructor(private afs: AngularFirestore, private user: UserService, private router: Router, private afAuth: AngularFireAuth, private route: ActivatedRoute, private navCtrl: NavController, public alertController: AlertController, ) {
+  constructor(private afs: AngularFirestore, private user: UserService, private router: Router, private afAuth: AngularFireAuth, private route: ActivatedRoute, private navCtrl: NavController, public alertController: AlertController ) {
     this.profilePage = new ProfilePage(afs, user, router, afAuth);
     this.route.queryParams.subscribe(params => {
       if (this.router.getCurrentNavigation().extras.state) {
