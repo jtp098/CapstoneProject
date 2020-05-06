@@ -47,7 +47,7 @@ export class ProfilePage implements OnInit {
 
 
     constructor(private afs: AngularFirestore, private user: UserService, private router: Router,
-                private afAuth: AngularFireAuth, private emailComposer: EmailComposer) {
+                private afAuth: AngularFireAuth) {
 
     }
 

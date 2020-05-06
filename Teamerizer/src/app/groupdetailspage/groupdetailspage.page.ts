@@ -704,10 +704,9 @@ export class GroupdetailspagePage implements OnInit {
 
 					let email = {
 						to: this.adminEmail,
-						subject: 'Reaching Out from the group',
-						body: 'Hey there! <br><br>',
+						subject: 'Reaching out from ' + this.selectedGrpName,
+						body: 'Hey there! ',
 						isHtml: true
-
 					};
 
 					this.emailComposer.open(email)
@@ -736,10 +735,9 @@ export class GroupdetailspagePage implements OnInit {
 
 					let email = {
 						to: this.adminEmail,
-						subject: 'Reaching Out from the group',
-						body: 'Hey there! <br><br>',
+						subject: 'Reaching out from ' + this.selectedGrpName,
+						body: 'Hey there! ',
 						isHtml: true
-
 					};
 
 					this.emailComposer.open(email)
