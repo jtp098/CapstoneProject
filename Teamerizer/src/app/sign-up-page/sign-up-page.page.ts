@@ -77,30 +77,29 @@ export class SignUpPagePage implements OnInit {
 
   async register(regData){
     const { username} = this
-    if(regData.pass == regData.cnfpass){
+    if(regData.pass == regData.cnfpass) {    
       
-      
-      
-try {
-  const res = await this.afAuth.auth.createUserWithEmailAndPassword(regData.mail, regData.pass);
-  
-  this.afstore.doc(`users/${res.user.uid}`).set({
-    username: this.regData.name,
-    uid: res.user.uid
+      try {
+        const res = await this.afAuth.auth.createUserWithEmailAndPassword(regData.mail, regData.pass);
+        
+        this.afstore.doc(`users/${res.user.uid}`).set({
+          username: this.regData.name,
+          uid: res.user.uid,
+          email: this.regData.mail
 
-  })
-  this.user.setUser({
-    username,
-    uid: res.user.uid
-  })
-  
-  this.presentAlert('Success','You are registered')
-//this will need to go to the profile later for set up
-  this.router.navigate(['/update-profile'])
+        })
+        this.user.setUser({
+          username,
+          uid: res.user.uid
+        })
+        
+        this.presentAlert('Success','You are registered')
+        //this will need to go to the profile later for set up
+        this.router.navigate(['/update-profile'])
 
-} catch (error) {
-  console.dir(error)
-}
+      } catch (error) {
+        console.dir(error)
+      }
   }
 
 }
