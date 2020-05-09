@@ -11,7 +11,7 @@ import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/form
   styleUrls: ['./passwordreset.page.scss'],
 })
 export class PasswordresetPage implements OnInit {
-   username: AbstractControl ;
+  username: AbstractControl ;
   oldPassword: AbstractControl;
   newPassword: AbstractControl;
   confirmPassword: AbstractControl;
@@ -39,15 +39,16 @@ export class PasswordresetPage implements OnInit {
   async resetPassword() {
     try {
       debugger;
+      console.log(this.username.value, this.oldPassword.value, this.newPassword.value , this.confirmPassword.value);
       // tslint:disable-next-line:prefer-const
+
       let res = await this.afAuth.auth.signInWithEmailAndPassword(this.username.value, this.oldPassword.value);
       if (res.user) {
         if( this.newPassword.value === this.confirmPassword.value ) {
-            await res.user.updatePassword(this.newPassword.value).then(function() {
-              this.router.navigate(['/home']);
-            }).catch(function(error) {
-              // An error happened.
-            });
+          await res.user.updatePassword(this.newPassword.value).catch(  () => {
+            console.log('error');
+            return; });
+          this.router.navigate(['/home']);
         }
       }
     } catch (error) {
@@ -86,8 +87,8 @@ export class PasswordresetPage implements OnInit {
   backEvent(){
     this.router.navigate(['/login'])
   }
-
   ngOnInit() {
   }
 
 }
+
