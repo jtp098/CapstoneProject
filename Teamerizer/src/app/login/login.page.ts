@@ -89,7 +89,5 @@ this.afAuth.auth.onAuthStateChanged(function(user) {
       this.passeye = 'eye';
     }
   }
-  resetPassword() {
-    this.router.navigate(['/passwordreset']);
-  }
+
 }

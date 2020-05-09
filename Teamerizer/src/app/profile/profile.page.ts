@@ -195,7 +195,7 @@ export class ProfilePage implements OnInit {
           }
         };
     
-        this.router.navigate(['/img-uploader'],navigationExtras) 
+        this.router.navigate(['/img-uploader'],navigationExtras)
       }
       //JP - 3/24/2020 - Pulls back images by user
       getUserImage(uid): Observable<any> {
@@ -205,6 +205,8 @@ export class ProfilePage implements OnInit {
     async cancel(){
         this.router.navigate(['/home'])
     }
-
+    resetPassword() {
+        this.router.navigate(['/passwordreset']);
+    }
 
 }

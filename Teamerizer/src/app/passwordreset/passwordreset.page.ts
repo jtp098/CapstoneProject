@@ -39,7 +39,6 @@ export class PasswordresetPage implements OnInit {
   async resetPassword() {
     try {
       debugger;
-      console.log(this.username.value, this.oldPassword.value, this.newPassword.value , this.confirmPassword.value);
       // tslint:disable-next-line:prefer-const
       let res = await this.afAuth.auth.signInWithEmailAndPassword(this.username.value, this.oldPassword.value);
       if (res.user) {
@@ -87,6 +86,7 @@ export class PasswordresetPage implements OnInit {
   backEvent(){
     this.router.navigate(['/login'])
   }
+
   ngOnInit() {
   }
 
