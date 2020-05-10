@@ -8,7 +8,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { NavController } from '@ionic/angular';
 import { ProfilePage } from '../profile/profile.page';
 import { Observable } from 'rxjs';
-import { EmailComposer } from '@ionic-native/email-composer/ngx';
+
 
 @Component({
   selector: 'app-member-details',
