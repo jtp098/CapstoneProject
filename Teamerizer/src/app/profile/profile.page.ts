@@ -7,6 +7,7 @@ import { Router,NavigationExtras } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/auth';
 import {Observable} from "rxjs";
 import { underline } from '@angular-devkit/core/src/terminal';
+import { EmailComposer } from '@ionic-native/email-composer/ngx';
 
 @Component({
     selector: 'app-profile',
@@ -25,6 +26,7 @@ export class ProfilePage implements OnInit {
     adminInfo$ = [];
     adminInfoMul$ ;
     admincount= 0;
+    adminEmail;
     zip$ = [];
     zip2$ = [];
     username:string
@@ -84,13 +86,11 @@ export class ProfilePage implements OnInit {
         this.getAllGroupsUserIsIn(uid).subscribe(data => {
             console.log("Group List Data:", data);
             this.team$ = data;
-            this.uid = uid;
             //Bug Fix - CP-77 - JP- 2/24/2019 - Checking the length of the data before executing the code
-            if(this.team$.length === 0)
-            {
+            this.uid = uid;
+            if(this.team$.length === 0) {
                 console.log("no group");
-            }else
-            {
+            }else {
                 console.log(data[0].grpname);
 
                 //method uses collection, groupList
@@ -106,7 +106,6 @@ export class ProfilePage implements OnInit {
                                 this.zip2$ = this.allGroupListData$.map(o => {
                                     return [{ team: o.groupname, admin: o.createdBy}];
                                 });
-                                //console.log("Admin Id Map: " + this.zip2$);
                                 //method uses collection, users
                                 //make sure it executes only one..
                                 this.getAdminGrpById(this.adminId$);
@@ -140,7 +139,8 @@ export class ProfilePage implements OnInit {
 
 
         });
-}
+    }
+
     getAdminGrpById(uid): any[] {
         this.getAdminGrpName(uid).subscribe(data  => {
             this.adminInfoMul$ = data ;
@@ -149,6 +149,7 @@ export class ProfilePage implements OnInit {
         });
         return this.adminInfo$;
     }
+
     setUserProfileData(){
         this.mainuser = this.afs.doc(`users/${this.afAuth.auth.currentUser.uid}`)
         this.sub = this.mainuser.valueChanges().subscribe(event => {
@@ -163,10 +164,9 @@ export class ProfilePage implements OnInit {
     }
 
     updateProfile(){ 
-
-       
         this.router.navigate(['/update-profile'])
     }
+
 //3/23/2020 - Updated to pull on active groups back
     getAllGroupsUserIsIn(uid): Observable<any> {
         return this.afs.collection<any>('adduserstogrp', ref => ref.where('uid', '==', uid).where('status','==', 'Active')).valueChanges()
@@ -195,19 +195,18 @@ export class ProfilePage implements OnInit {
           }
         };
     
-        this.router.navigate(['/img-uploader'],navigationExtras) 
+        this.router.navigate(['/img-uploader'],navigationExtras)
       }
       //JP - 3/24/2020 - Pulls back images by user
       getUserImage(uid): Observable<any> {
         return this.afs.collection<any>('TeamerizerImages', ref => ref.where('uid', '==', uid)).valueChanges()
-    }
-
-    
+    }   
 
     async cancel(){
         this.router.navigate(['/home'])
     }
-
-
+    resetPassword() {
+        this.router.navigate(['/passwordreset']);
+    }
 
 }

@@ -8,6 +8,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { NavController } from '@ionic/angular';
 import { ProfilePage } from '../profile/profile.page';
 import { Observable } from 'rxjs';
+import { EmailComposer } from '@ionic-native/email-composer/ngx';
 
 @Component({
   selector: 'app-member-details',
@@ -15,6 +16,7 @@ import { Observable } from 'rxjs';
   styleUrls: ['./member-details.page.scss'],
 })
 export class MemberDetailsPage implements OnInit {
+
   mainuser: AngularFirestoreDocument;
 
   username: string;
@@ -34,7 +36,7 @@ export class MemberDetailsPage implements OnInit {
   data: any;
   selectedGrpName: any;
   grpsPartOf$: any[];
-  constructor(private afs: AngularFirestore, private user: UserService, private router: Router, private afAuth: AngularFireAuth, private route: ActivatedRoute, private navCtrl: NavController, public alertController: AlertController, ) {
+  constructor(private afs: AngularFirestore, private user: UserService, private router: Router, private afAuth: AngularFireAuth, private route: ActivatedRoute, private navCtrl: NavController, public alertController: AlertController ) {
     this.profilePage = new ProfilePage(afs, user, router, afAuth);
     this.route.queryParams.subscribe(params => {
       if (this.router.getCurrentNavigation().extras.state) {

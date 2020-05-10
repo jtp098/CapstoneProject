@@ -6,6 +6,18 @@ ion-badge {
   border-radius: 100%;
 }
 
+.admin-block {
+  margin-bottom: 20px;
+}
+
+.admin-banner {
+  border-left: 8px solid var(--ion-color-primary);
+  background: var(--ion-color-light-shade);
+  height: 40px;
+  padding: 10px;
+  font-size: 16px;
+}
+
 .user-banner {
   border-left: 8px solid var(--ion-color-success);
   background: var(--ion-color-light-shade);
