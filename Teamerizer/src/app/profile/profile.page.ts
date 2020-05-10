@@ -7,7 +7,7 @@ import { Router,NavigationExtras } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/auth';
 import {Observable} from "rxjs";
 import { underline } from '@angular-devkit/core/src/terminal';
-import { EmailComposer } from '@ionic-native/email-composer/ngx';
+
 
 @Component({
     selector: 'app-profile',
