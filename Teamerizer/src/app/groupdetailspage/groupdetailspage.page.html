@@ -30,10 +30,26 @@
       </div>
     </ion-card-header>
     <br />
+    <div *ngIf="!isadmin">
+      <div *ngFor="let admin of this.zip$">
+        <div class="admin-block" *ngFor="let admindetails of admin">
+            <div *ngIf="admindetails.grpname===selectedGrpName">
+              <ion-label class="admin-banner" (click)="findAdminEmail()"> Admin: {{admindetails.firstname}} {{admindetails.lastname}}</ion-label>
+            </div>
+          </div>
+      </div>
+    </div>
+    <div *ngIf="isadmin">
+      <div class="admin-block">
+          <div *ngFor="let admin of this.AdminUser$">
+            <ion-label class="admin-banner" (click)="findAdminEmail()"> Admin: {{admin.firstName}} {{admin.lastName}}</ion-label>
+          </div>
+      </div>
+    </div>
     <ion-row>
       <ion-col size="11">
         <ion-label position="floating" style="color: #000;"
-          >Description</ion-label
+          ><u>Description</u></ion-label
         >
         <ion-textarea
           [readonly]="!isEditGroupDetail"
@@ -53,7 +69,7 @@
     <ion-row>
       <ion-col size="11">
         <ion-label position="floating" style="color: #000;"
-          >Required Skills</ion-label
+          ><u>Required Skills</u></ion-label
         >
         <ion-row *ngFor="let grp of groupDataforGroupSkills$">
           <ion-col size="11">

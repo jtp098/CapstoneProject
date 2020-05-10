@@ -50,24 +50,21 @@
         <b><span style="color: #0029fa;">Interests:</span></b> {{ interests }}
       </p>
 
-      <br />
-      <p id="other-teams"><b>Other teams you are in:</b></p>
-      <ion-item-sliding *ngFor="let item of team$">
-        <ion-item class="team-list">
-          <ion-icon slot="start" color="medium" name="people"></ion-icon>
-          <ion-label class="team-label"> {{item.grpname}}</ion-label>
-        </ion-item>
-        <div *ngFor="let admin of this.zip$">
-          <ion-item-sliding *ngFor="let admindetails of admin">
-            <div *ngIf="admindetails.grpname===item.grpname">
-              <ion-label>
-                Admin: {{admindetails.firstname}}
-                {{admindetails.lastname}}</ion-label
-              >
-            </div>
-          </ion-item-sliding>
-        </div>
-      </ion-item-sliding>
+        <br>
+        <p id="other-teams"><b>Other teams you are in:</b></p>
+        <ion-item-sliding *ngFor="let item of team$">
+          <ion-item class="team-list">
+            <ion-icon slot="start" color="medium" name="people"></ion-icon>
+            <ion-label class="team-label"> {{item.grpname}}</ion-label>
+          </ion-item>
+          <div *ngFor="let admin of this.zip$">
+              <ion-item-sliding *ngFor="let admindetails of admin">
+                  <div *ngIf="admindetails.grpname===item.grpname">
+                    <ion-label> Admin: {{admindetails.firstname}} {{admindetails.lastname}}</ion-label>
+                  </div>
+              </ion-item-sliding>
+          </div>
+        </ion-item-sliding>
 
       <br />
     </ion-card-content>
@@ -80,15 +77,19 @@
         color="primary"
         shape="round"
         (click)="updateProfile()"
-        >Update</ion-button
-      >
+      >Update
+      </ion-button>
     </ion-col>
   </ion-row>
   <ion-row>
     <ion-col width-50 style="text-align: center;">
       <ion-button fill="solid" color="success" shape="round" (click)="cancel()"
-        >Cancel</ion-button
-      >
+        >Cancel
+      </ion-button>
     </ion-col>
   </ion-row>
+
+  <div class="fpbutton">
+    <button  clear full (click)="resetPassword()" >Reset Password</button>
+  </div>
 </ion-content>
