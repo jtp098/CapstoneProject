@@ -1,7 +1,7 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar class="header-style">
     <ion-title>
-      Teamerizer Image Upload
+      <ion-img class="logo" src="assets/images/teamerizer2.png"></ion-img>
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -12,24 +12,23 @@
       <ion-card-title>Choose Images to Upload</ion-card-title>
     </ion-card-header>
     <ion-card-content>
-      <div class="fileUpload btn btn-primary">
-        <span>Upload</span>
-        <input
-          id="uploadBtn"
-          type="file"
-          class="upload"
-          (change)="uploadFile($event.target.files)"
-        />
-      </div>
-      <ion-button
-        expand="full"
+      <input
+        type="file"
+        id="file"
+        fill="solid"
         color="success"
-        (click)="back()"
-        >Go Back</ion-button
+        shape="round"
+        (change)="uploadFile($event.target.files)"
+      />
+
+      <label for="file">Choose a file</label>
+      <br /><br />
+      <ion-button fill="solid" color="success" shape="round" (click)="back()"
+        >Cancel</ion-button
       >
     </ion-card-content>
   </ion-card>
-  
+
   <ion-card text-center *ngIf="isUploading && !isUploaded">
     <ion-card-header>
       <ion-card-title>Selected File:<b>{{ fileName }}</b></ion-card-title>
@@ -45,23 +44,27 @@
         snap.bytesTransferred | fileSizePipe }}
         <div *ngIf="snapshot && snap.bytesTransferred != snap.totalBytes">
           <ion-button
-            color="warning"
+            fill="solid"
+            color="success"
+            shape="round"
             size="small"
             (click)="task.pause()"
-            class="button is-warning"
             >Pause</ion-button
           >
           <ion-button
+            fill="solid"
+            color="success"
+            shape="round"
             size="small"
             (click)="task.resume()"
-            class="button is-info"
             >Resume</ion-button
           >
           <ion-button
-            color="danger"
+            fill="solid"
+            color="success"
+            shape="round"
             size="small"
             (click)="task.cancel()"
-            class="button is-danger"
             >Cancel</ion-button
           >
         </div>
@@ -79,32 +82,10 @@
         <a [href]="url" target="_blank" rel="noopener">Download</a>
       </div>
       File Size: {{ fileSize | fileSizePipe }}
-      <ion-button
-        expand="full"
-        color="danger"
-        (click)="back()"
-        >Cancel</ion-button>
-      <ion-button
-        expand="full"
-        color="success"
-        (click)="back()"
-        >Go Back</ion-button
+      <br />
+      <ion-button fill="solid" color="success" shape="round" (click)="back()"
+        >Back</ion-button
       >
     </ion-card-content>
   </ion-card>
-
-  <!-- <h2 text-center>Uploaded Teamerizer Images</h2>
-
-  <ion-card color="light" text-center *ngFor="let item of images | async">
-    <ion-card-header>
-      <ion-card-title>
-        {{ item.name }}
-      </ion-card-title>
-    </ion-card-header>
-
-    <ion-card-content>
-      <img [src]="item.filepath" />
-      <a [href]="item.filepath" target="_blank" rel="noopener">Download</a>
-    </ion-card-content>
-  </ion-card> -->
 </ion-content>
