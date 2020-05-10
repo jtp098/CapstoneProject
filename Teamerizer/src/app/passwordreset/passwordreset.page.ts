@@ -38,21 +38,16 @@ export class PasswordresetPage implements OnInit {
   }
   async resetPassword() {
     try {
-      debugger;
-      console.log(this.username.value, this.oldPassword.value, this.newPassword.value , this.confirmPassword.value);
-      // tslint:disable-next-line:prefer-const
 
       let res = await this.afAuth.auth.signInWithEmailAndPassword(this.username.value, this.oldPassword.value);
       if (res.user) {
         if( this.newPassword.value === this.confirmPassword.value ) {
           await res.user.updatePassword(this.newPassword.value).catch(  () => {
-            console.log('error');
             return; });
           this.router.navigate(['/home']);
         }
       }
     } catch (error) {
-      console.dir(error);
 
     }
   }
