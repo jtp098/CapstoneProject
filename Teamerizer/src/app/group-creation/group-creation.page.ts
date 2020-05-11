@@ -36,6 +36,7 @@ export class GroupCreationPage implements OnInit {
   selectedSkill = [];
   selectedLevel = [];
   matchedUsers = [];
+  isadmin = true;
 
   
 
@@ -71,7 +72,8 @@ export class GroupCreationPage implements OnInit {
     let navigationExtras: NavigationExtras = {
       state: {
         user: firstName,
-        groupname:this.newGroupData.groupname
+        groupname:this.newGroupData.groupname, 
+        isadmin: this.isadmin
       }
     };
     this.router.navigate(['/member-details'], navigationExtras);
