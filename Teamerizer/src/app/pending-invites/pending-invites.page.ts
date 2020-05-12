@@ -7,7 +7,6 @@ import {AlertController} from '@ionic/angular';
 import {Observable} from 'rxjs';
 import { UserService } from '../user.service';
 import { Router,NavigationExtras,ActivatedRoute } from '@angular/router';
-import {forEach} from "@angular-devkit/schematics";
 
 
 @Component({
