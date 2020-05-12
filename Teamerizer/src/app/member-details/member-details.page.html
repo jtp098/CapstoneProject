@@ -71,7 +71,7 @@
 
   <ion-row>
     <ion-col width-50 style="text-align: center;">
-      <ion-button shape="round" color="primary" (click)="addToGroup(uid)  "
+      <ion-button *ngIf ="isadmin" shape="round" color="primary" (click)="addToGroup(uid)  "
         >Invite to Group</ion-button
       >
     </ion-col>

@@ -212,7 +212,8 @@ export class GroupdetailspagePage implements OnInit {
 		const navigationExtras: NavigationExtras = {
 			state: {
 				user: firstName,
-				groupname: this.selectedGrpName
+				groupname: this.selectedGrpName,
+				isadmin: this.isadmin
 			}
 		};
 		this.router.navigate(['/member-details'], navigationExtras);

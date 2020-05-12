@@ -36,14 +36,26 @@ export class MemberDetailsPage implements OnInit {
   data: any;
   selectedGrpName: any;
   grpsPartOf$: any[];
+  adminCheck$;
+  isadmin;
+  adminU$ = [];
+  adminUser$ = [];
+  isInGroup;
+  isInNotGroup = true;
+  public loadedUserList: any[];
+  public userList: any[];
+  AdminUser$ = [];
+  
   constructor(private afs: AngularFirestore, private user: UserService, private router: Router, private afAuth: AngularFireAuth, private route: ActivatedRoute, private navCtrl: NavController, public alertController: AlertController ) {
     this.profilePage = new ProfilePage(afs, user, router, afAuth);
     this.route.queryParams.subscribe(params => {
       if (this.router.getCurrentNavigation().extras.state) {
         this.data = this.router.getCurrentNavigation().extras.state.user;
         this.selectedGrpName = this.router.getCurrentNavigation().extras.state.groupname;
+        this.isadmin = this.router.getCurrentNavigation().extras.state.isadmin;
         console.log('passedData', this.data);
         console.log('passedData', this.selectedGrpName);
+        console.log('passed is admin', this.isadmin);
       }
     });
 
@@ -55,10 +67,16 @@ export class MemberDetailsPage implements OnInit {
       console.log('User', user);
       if (user) {
         self.setUserProfileData();
+
+        
       } else {
 
       }
     });
+
+    
+
+
 
 
   }

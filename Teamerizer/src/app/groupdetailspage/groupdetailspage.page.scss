@@ -77,7 +77,22 @@ ion-content {
 }
 
 .image {
+  width: 100px;
+  height: 100px;
+  position: relative;
+  overflow: visible;
+  border-radius: 50%;
+}
+.circular--portrait img {
+  display: inline;
   margin: auto;
-  width: 80px;
-  height: auto;
+  margin-left: -25%;
+}
+
+.title {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  max-width: 100%;
+  display: inline-block;
+  word-wrap: break-word;
 }
