@@ -119,7 +119,7 @@ export class ProfilePage implements OnInit {
                                                 if(k === this.admincount){
                                                     this.admincount++;
                                                     //Bug Fix - CP-71 - VG- 03/30/2020 - Looping Over multiple froups created by admin and remove duplicates if any.
-                                                    for(let m=0;m<this.adminInfo$[k].length;m++){
+                                                    for(let m=0;m<1;m++){
                                                         if(k === m||this.adminInfo$[k].length==1){
                                                             this.zip$.push( [{ firstname: x[0].firstName, lastname: x[0].lastName,  grpname: (this.adminInfo$[k])[m].groupname }]);
                                                         }

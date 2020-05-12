@@ -92,7 +92,7 @@ export class GroupdetailspagePage implements OnInit {
 				this.uidPassed = this.router.getCurrentNavigation().extras.state.uid;
 				this.selectedGrpDesc = this.router.getCurrentNavigation().extras.state.desc;
 				this.selectedGrpDocID = this.router.getCurrentNavigation().extras.state.DocID;
-				console.log('passedData', this.selectedGrpName, this.uidPassed);
+				console.log('passedData', this.selectedGrpName, this.uidPassed,this.selectedGrpDesc);
 			} else {
 				console.log('no Extras');
 			}
@@ -200,7 +200,7 @@ export class GroupdetailspagePage implements OnInit {
 			const updateGroup = this.afstore.doc(`grouplist/${this.selectedGrpDocID}`);
 			updateGroup.update({
 				desc: this.selectedGrpDesc
-			});
+			}); 
 		}
 	}
 
