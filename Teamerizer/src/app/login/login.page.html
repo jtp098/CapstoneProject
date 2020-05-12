@@ -15,10 +15,11 @@
   <form [formGroup]="authForm" (ngSubmit)="login(loginData)">
 
       <div class="errormsg">
-          <div *ngIf="email.errors && email.touched">
+        <div id="loginError" *ngIf="userNotFound"><p>{{loginError}}</p></div>
+          <div class="emptyField" *ngIf="email.errors && email.touched">
               <p>Email is required.</p>
           </div>
-          <div *ngIf="password.errors && password.touched">
+          <div class="emptyField" *ngIf="password.errors && password.touched">
               <p>Password is required.</p>
           </div>
         </div>
@@ -28,14 +29,14 @@
       <ion-label>
           <ion-icon ios="ios-mail" md="md-mail"></ion-icon>
       </ion-label>
-      <ion-input [(ngModel)]="loginData.email" [formControl]="email" id="email" type="text" required placeholder="Email *"></ion-input>
+      <ion-input [(ngModel)]="loginData.email" [formControl]="email" id="email" type="text" required placeholder="Email *" (change)="emailchange()" (focusout)="emailchange()"></ion-input>
     </ion-item>
     
     <ion-item class="items">
       <ion-label>
           <ion-icon ios="ios-unlock" md="md-unlock"></ion-icon>
       </ion-label>
-      <ion-input [(ngModel)]="loginData.password" [formControl]="password" id="password" type="{{passwordtype}}" required placeholder="Password *"></ion-input>
+      <ion-input [(ngModel)]="loginData.password" [formControl]="password" id="password" type="{{passwordtype}}" required placeholder="Password *"  (change)="passwordChange()" (focusout)="passwordChange()"></ion-input>
             <button ion-button clear class="eye-icon-btn" type="button" item-right (click)="showPassword()"><ion-icon name="{{passeye}}"></ion-icon></button>
     </ion-item>
 	</ion-list>

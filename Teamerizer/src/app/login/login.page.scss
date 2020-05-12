@@ -27,6 +27,14 @@ img {
     max-width: 100%;
     max-height: 100%;
 }
+#loginError {
+    color:red;
+    font-weight: bolder;
+}
+.emptyField {
+    color: green;
+    font-weight: bolder;
+}
 
 .items {
     --background: white;

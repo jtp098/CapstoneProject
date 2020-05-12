@@ -21,6 +21,9 @@ export class LoginPage implements OnInit {
 	password: AbstractControl;
   passwordtype:string='password';
   passeye:string ='eye';
+  userNotFound = false;
+  loginError: string;
+  timeoutVar;
   
   constructor(private afAuth: AngularFireAuth, public user: UserService, public router: Router, private menu: MenuController, public fb: FormBuilder ) {
     this.authForm = this.fb.group({
@@ -34,6 +37,31 @@ export class LoginPage implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  emailchange(){
+    console.log("email change called");
+    if (this.timeoutVar !=undefined) {
+      window.clearTimeout(this.timeoutVar);
+      this.timeoutVar = undefined;
+    }
+    this.timeoutVar = setTimeout(() => {
+      if (this.userNotFound == true) {
+        this.userNotFound = false;
+      }
+    }, 500);
+  }
+  passwordChange(){
+    if (this.timeoutVar !=undefined) {
+      window.clearTimeout(this.timeoutVar);
+      this.timeoutVar = undefined;
+    }
+    console.log("password change called");
+    this.timeoutVar = setTimeout(() => {
+      if (this.userNotFound == true) {
+        this.userNotFound = false;
+      }
+    }, 500);
   }
 
   async signUp(){
@@ -60,6 +88,11 @@ this.afAuth.auth.onAuthStateChanged(function(user) {
   async login(loginData){
     const { username} = this
 
+    if (this.timeoutVar !=undefined) {
+      window.clearTimeout(this.timeoutVar);
+      this.timeoutVar = undefined;
+    }
+
     try {
       
       const res = await this.afAuth.auth.signInWithEmailAndPassword(loginData.email, loginData.password)
@@ -75,6 +108,14 @@ this.afAuth.auth.onAuthStateChanged(function(user) {
       }
     } catch (error) {
       console.dir(error)
+      this.loginError = error.code;
+      this.loginError = this.loginError.slice(5,this.loginError.length);
+      this.userNotFound = true;
+      this.timeoutVar = setTimeout(() => {
+        if (this.userNotFound == true) {
+          this.userNotFound = false;
+        }
+      }, 6000);
       
     }
   }
